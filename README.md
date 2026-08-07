@@ -1,43 +1,61 @@
-# Astro Starter Kit: Minimal
+# Jerio's portfolio
+
+Astro/TypeScript static site. Content lives in `src/content/case-studies/` and
+`src/content/gallery-items/` as YAML, capability pillars in `src/data/capabilities.ts`.
+
+## Local dev
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Deploying
 
-## 🚀 Project Structure
+GitHub Pages on this repo is set to **legacy/branch-based deploy** (source: `main`,
+root), not Actions-based deploy — that was tried and found unreliable (deployments
+stuck in `deployment_queued` for 10+ minutes, phantom lock errors blocking retries).
+Don't switch it back without a real reason.
 
-Inside of your Astro project, you'll see the following folders and files:
+This branch (`astro-source`) is never served directly. `main` holds only the built
+static output. To ship a change:
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm run build
+# copy dist/* over main's root, commit, push to main
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Concretely, from a clean `astro-source` working tree:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```sh
+npm run build
+cp -r dist/* /tmp/dist_out_new   # or wherever, outside the repo
+git checkout main
+git rm -rf .
+cp -r /tmp/dist_out_new/* .
+cp /tmp/dist_out_new/.nojekyll .  # hidden file, cp with * won't grab it
+git add -A
+git commit -m "describe the change"
+git push origin main
+git checkout astro-source
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+The push to `main` **is** the deploy — GitHub Pages serves whatever's on that
+branch directly, no build step on GitHub's end. `.nojekyll` must be preserved
+(Jekyll ignores `_astro/`, Astro's asset output dir, which would silently break
+every CSS/JS reference). `CNAME` must be preserved (points the custom domain
+`whatmattersbuilt.co` at this repo).
 
-## 🧞 Commands
+If a deploy doesn't show up: retriggering a deploy for the *same commit sha*
+gets instantly cancelled by GitHub ("in progress deployment" error even when
+nothing is actually in progress) — push a trivial change to force a new sha
+rather than re-running the same commit.
 
-All commands are run from the root of the project, from a terminal:
+Rollback: `git revert` the cutover commit on `main`, or restore the pre-Astro
+single-file site from the `legacy-pre-wmb-rebuild` tag/branch.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Build check
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`.github/workflows/build-check.yml` runs `npm run build` on push/PR to this
+branch — verification only, no deploy step, so it can't touch the fragile
+Pages deploy mechanism.
