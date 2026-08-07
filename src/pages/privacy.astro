@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RailNav from '../components/nav/RailNav.astro';
+import MobileBar from '../components/nav/MobileBar.astro';
+---
+<BaseLayout title="Privacy | Jerio" description="How contact form submissions and site data are handled on this site.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="privacy-page" style="padding-top:64px;">
+        <div class="eyebrow">Privacy</div>
+        <h1 class="head">What happens to your information here.</h1>
+        <div class="about">
+          <p>This is a personal portfolio site. It collects information in one place: the contact form.</p>
+          <p><strong>Contact form.</strong> When you submit the form, your name, email, and message are sent directly to <a href="mailto:hello@whatmattersbuilt.co">hello@whatmattersbuilt.co</a> through the form's processing service. That data isn't stored anywhere else on this site, isn't sold, and isn't used for anything beyond replying to you.</p>
+          <p><strong>Email routing.</strong> Mail sent to hello@whatmattersbuilt.co is routed through Cloudflare Email Routing to an existing inbox. Cloudflare's own privacy policy governs that routing step.</p>
+          <p><strong>Analytics.</strong> If analytics are added to this site in the future, this page will be updated to name the provider and what's tracked before that happens. No personally identifiable form content is ever sent to an analytics tool.</p>
+          <p><strong>Retention.</strong> Contact form submissions are kept only as long as needed to respond, then deleted from the processing service's dashboard.</p>
+          <p><strong>Questions.</strong> Email <a href="mailto:hello@whatmattersbuilt.co">hello@whatmattersbuilt.co</a> directly for anything about how your data is handled.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>

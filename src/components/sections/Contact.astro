@@ -1,12 +1,148 @@
 ---
 ---
 <section id="contact">
-  <div class="eyebrow">Contact</div>
+  <div class="eyebrow">Talk to me</div>
   <div class="contact-block">
-    <h2 class="head">Let's build something.</h2>
+    <h2 class="head">Tell me what you're working on.</h2>
+
+    <form
+      id="talk-form"
+      class="talk-form"
+      data-formspree-id=""
+      method="POST"
+      action=""
+    >
+      <div class="form-row">
+        <label for="tf-name">Name</label>
+        <input id="tf-name" name="name" type="text" required autocomplete="name" />
+      </div>
+      <div class="form-row">
+        <label for="tf-email">Email</label>
+        <input id="tf-email" name="email" type="email" required autocomplete="email" />
+      </div>
+      <div class="form-row">
+        <label for="tf-org">Organisation <span class="optional">(optional)</span></label>
+        <input id="tf-org" name="organisation" type="text" autocomplete="organization" />
+      </div>
+      <div class="form-row">
+        <label for="tf-type">What are you working on?</label>
+        <select id="tf-type" name="enquiryType">
+          <option value="Project">Project</option>
+          <option value="Employment / Role">Employment / Role</option>
+          <option value="Collaboration">Collaboration</option>
+          <option value="Press / Speaking">Press / Speaking</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="tf-message">Message</label>
+        <textarea id="tf-message" name="message" rows="5" required></textarea>
+      </div>
+      <div class="honeypot" aria-hidden="true">
+        <label for="tf-company">Company</label>
+        <input id="tf-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button type="submit" class="talk-submit" data-cursor="SEND">
+        <span class="label-idle">Send context</span>
+        <span class="label-submitting">Sending…</span>
+      </button>
+
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+
     <div class="contact-links">
-      <a href="mailto:jerio.workspace@gmail.com">jerio.workspace@gmail.com</a>
-      <a href="https://linkedin.com/in/jerio-jerio" target="_blank" rel="noopener">linkedin.com/in/jerio-jerio</a>
+      <a href="mailto:hello@whatmattersbuilt.co">hello@whatmattersbuilt.co</a>
+      <a href="https://www.linkedin.com/in/jerio-jerio/" target="_blank" rel="noopener" data-cursor="↗">linkedin.com/in/jerio-jerio</a>
     </div>
   </div>
 </section>
+
+<style>
+  .talk-form{display:flex;flex-direction:column;gap:18px;max-width:520px;margin-top:32px;}
+  .form-row{display:flex;flex-direction:column;gap:6px;}
+  .form-row label{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dimmer);}
+  .form-row .optional{text-transform:none;letter-spacing:0;color:var(--text-faint);}
+  .form-row input,.form-row select,.form-row textarea{
+    font-family:var(--sans);font-size:14px;color:var(--text);background:var(--surface);
+    border:1px solid var(--border);border-radius:8px;padding:11px 14px;resize:vertical;
+  }
+  .form-row input:focus,.form-row select:focus,.form-row textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  .talk-submit{
+    align-self:flex-start;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bg);background:var(--accent);border:none;border-radius:24px;padding:13px 26px;cursor:pointer;
+    transition:opacity .15s ease;
+  }
+  .talk-submit:hover{opacity:.85;}
+  .talk-submit:disabled{opacity:.5;cursor:not-allowed;}
+  .talk-submit .label-submitting{display:none;}
+  .talk-form.is-submitting .label-idle{display:none;}
+  .talk-form.is-submitting .label-submitting{display:inline;}
+  .form-status{font-size:13px;margin:0;min-height:1.4em;}
+  .form-status.success{color:var(--accent-2);}
+  .form-status.error{color:var(--accent);}
+  .contact-links{display:flex;flex-direction:column;gap:10px;margin-top:32px;}
+  .contact-links a{font-family:var(--mono);font-size:14px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);width:fit-content;padding-bottom:2px;transition:color .15s ease,border-color .15s ease,transform .15s ease;display:inline-block;}
+  .contact-links a:hover{color:var(--accent);border-color:var(--accent);transform:translateX(4px);}
+  .contact-block h2.head{font-size:clamp(38px,6vw,72px);max-width:11ch;}
+</style>
+
+<script>
+  const form = document.getElementById('talk-form') as HTMLFormElement | null;
+  const status = form?.querySelector('.form-status') as HTMLElement | null;
+
+  if (form && status) {
+    const endpointId = form.dataset.formspreeId;
+    if (endpointId) {
+      form.action = `https://formspree.io/f/${endpointId}`;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const honeypot = form.querySelector<HTMLInputElement>('#tf-company');
+      if (honeypot && honeypot.value) return;
+
+      if (!form.action) {
+        status.textContent = "This form isn't connected to a delivery service yet — email hello@whatmattersbuilt.co directly for now.";
+        status.className = 'form-status error';
+        return;
+      }
+
+      if (!navigator.onLine) {
+        status.textContent = "You're offline — check your connection and try again, or email hello@whatmattersbuilt.co.";
+        status.className = 'form-status error';
+        return;
+      }
+
+      form.classList.add('is-submitting');
+      const submitBtn = form.querySelector<HTMLButtonElement>('.talk-submit');
+      if (submitBtn) submitBtn.disabled = true;
+      status.textContent = '';
+      status.className = 'form-status';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          status.textContent = 'Got it. Your message has been sent. I usually respond within 1–2 business days.';
+          status.className = 'form-status success';
+          form.reset();
+        } else {
+          status.textContent = 'Something went wrong sending that — email hello@whatmattersbuilt.co directly instead.';
+          status.className = 'form-status error';
+        }
+      } catch {
+        status.textContent = 'Something went wrong sending that — email hello@whatmattersbuilt.co directly instead.';
+        status.className = 'form-status error';
+      } finally {
+        form.classList.remove('is-submitting');
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+</script>

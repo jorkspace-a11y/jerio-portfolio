@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+const caseStudies = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
+const galleryItems = (await getCollection('gallery-items')).sort((a, b) => a.data.order - b.data.order);
+
+const CATEGORIES = ['Growth', 'Marketing', 'Brand', 'Operations', 'Systems'];
+---
+<BaseLayout title="Work | Jerio" description="Every project, filterable by discipline — growth, marketing, brand, operations, and systems work by Jerio.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="work-archive" style="padding-top:64px;">
+        <div class="eyebrow">Work</div>
+        <h1 class="head">Every project, one archive.</h1>
+
+        <div class="filters" role="group" aria-label="Filter by category">
+          <button type="button" class="filter-btn active" data-filter="All">All</button>
+          {CATEGORIES.map((c) => (
+            <button type="button" class="filter-btn" data-filter={c}>{c}</button>
+          ))}
+        </div>
+
+        <noscript>
+          <p class="filter-noscript">Filters need JavaScript. Every project is listed below regardless.</p>
+        </noscript>
+
+        <div class="archive-grid">
+          {caseStudies.map((cs) => (
+            <a href={`/work/${cs.id}/`} class="archive-card" data-cursor="VIEW" data-categories={cs.data.categories.join(' ')}>
+              <div class="archive-card-head">
+                <span class="archive-card-title">{cs.data.title}</span>
+                <StatusBadge status={cs.data.status} />
+              </div>
+              <div class="archive-card-org">{cs.data.organisation}{cs.data.parentProject ? ` · ${cs.data.parentProject}` : ''}</div>
+              <p class="archive-card-role">{cs.data.role}</p>
+            </a>
+          ))}
+          {galleryItems.map((g) => (
+            <div class="archive-card archive-card-light" data-categories={g.data.categories.join(' ')}>
+              <div class="archive-card-head">
+                <span class="archive-card-title">{g.data.title}</span>
+                {g.data.status && <StatusBadge status={g.data.status} />}
+              </div>
+              <div class="archive-card-org">{g.data.industry}</div>
+              <p class="archive-card-role">{g.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  .filter-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dimmer);background:transparent;border:1px solid var(--border);border-radius:20px;padding:8px 16px;cursor:pointer;transition:color .15s ease,border-color .15s ease,background .15s ease;}
+  .filter-btn:hover{color:var(--text);border-color:var(--accent);}
+  .filter-btn.active{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+  .filter-noscript{font-size:13px;color:var(--text-dimmer);margin-bottom:24px;}
+  .archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .archive-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
+  a.archive-card:hover{transform:translateY(-2px);border-color:var(--border);}
+  .archive-card.is-hidden{display:none;}
+  .archive-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .archive-card-title{font-family:var(--serif);font-style:italic;font-size:17px;}
+  .archive-card-org{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:10px 0;}
+  .archive-card-role{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;}
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.archive-card');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach((card) => {
+        const cats = card.dataset.categories ?? '';
+        const match = filter === 'All' || cats.split(' ').includes(filter ?? '');
+        card.classList.toggle('is-hidden', !match);
+      });
+    });
+  });
+</script>

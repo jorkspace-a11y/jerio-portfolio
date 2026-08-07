@@ -1,0 +1,71 @@
+---
+---
+<div id="wmb-cursor" class="wmb-cursor" aria-hidden="true">
+  <span class="wmb-cursor-label"></span>
+</div>
+
+<style>
+  .wmb-cursor{
+    position:fixed;top:0;left:0;z-index:9999;pointer-events:none;
+    display:flex;align-items:center;justify-content:center;
+    transform:translate(-9999px,-9999px);
+    will-change:transform;
+  }
+  .wmb-cursor-dot{
+    width:8px;height:8px;border-radius:50%;background:var(--accent);
+    transition:width .15s ease,height .15s ease,background .15s ease;
+  }
+  .wmb-cursor-label{
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bg);background:var(--accent);border-radius:20px;padding:7px 14px;
+    white-space:nowrap;opacity:0;transform:scale(.85);transition:opacity .12s ease,transform .12s ease;
+  }
+  .wmb-cursor.is-active .wmb-cursor-label{opacity:1;transform:scale(1);}
+  .wmb-cursor:not(.is-active) .wmb-cursor-label{display:none;}
+  .wmb-cursor:not(.is-active)::before{
+    content:"";display:block;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.7;
+  }
+</style>
+
+<script>
+  const supportsFinePointer = window.matchMedia('(pointer: fine)').matches;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (supportsFinePointer && !reduced) {
+    const cursor = document.getElementById('wmb-cursor');
+    if (cursor) {
+      document.body.classList.add('wmb-cursor-enabled');
+      let targetX = 0;
+      let targetY = 0;
+      let rafId: number | null = null;
+
+      function move() {
+        if (cursor) {
+          cursor.style.transform = `translate(${targetX}px, ${targetY}px)`;
+        }
+        rafId = null;
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (rafId === null) rafId = requestAnimationFrame(move);
+      });
+
+      window.addEventListener('mouseleave', () => {
+        cursor?.style.setProperty('transform', 'translate(-9999px,-9999px)');
+      });
+
+      const labelEl = cursor.querySelector('.wmb-cursor-label');
+      document.addEventListener('mouseover', (e) => {
+        const target = (e.target as HTMLElement)?.closest('[data-cursor]');
+        if (target && labelEl) {
+          labelEl.textContent = target.getAttribute('data-cursor');
+          cursor.classList.add('is-active');
+        } else {
+          cursor.classList.remove('is-active');
+        }
+      });
+    }
+  }
+</script>

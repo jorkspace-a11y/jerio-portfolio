@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found | Jerio" description="This page doesn't exist.">
+  <main class="not-found">
+    <div class="eyebrow">404</div>
+    <h1>That page doesn't exist.</h1>
+    <p>The link might be old, or mistyped. Here's where to go instead:</p>
+    <div class="not-found-links">
+      <a href="/">Home</a>
+      <a href="/work/">Work</a>
+      <a href="/writing/">Writing</a>
+      <a href="/about/">About</a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;max-width:600px;margin:0 auto;padding:0 24px;}
+  .not-found h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,5vw,44px);margin:0 0 16px;}
+  .not-found p{font-size:15px;color:var(--text-dim);margin:0 0 28px;}
+  .not-found-links{display:flex;gap:24px;flex-wrap:wrap;}
+  .not-found-links a{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;}
+  .not-found-links a:hover{color:var(--accent);border-color:var(--accent);}
+</style>

@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RailNav from '../components/nav/RailNav.astro';
+import MobileBar from '../components/nav/MobileBar.astro';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Person',
+    name: 'Jerio',
+    jobTitle: 'Digital Marketing & Business Systems Strategist',
+    url: 'https://whatmattersbuilt.co/',
+    sameAs: ['https://www.linkedin.com/in/jerio-jerio/'],
+  },
+};
+---
+<BaseLayout title="About | Jerio" description="Jerio is a digital marketing and business systems strategist based in Bali, Indonesia, working across growth, digital experience, and operations.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="about-page" style="padding-top:64px;">
+        <div class="eyebrow">About</div>
+        <h1 class="head">I tend to work where strategy meets the reality of running a business.</h1>
+        <div class="about">
+          <p>Marketing work that ignores operations produces plans nobody can execute. Operations work that ignores marketing produces systems nobody outside the business understands the point of. I've spent my career on both sides of that line, which is why the two show up together here instead of as separate specialties.</p>
+          <p>I build brand identity and run digital marketing for founders who don't have an internal team to do it themselves. I started the practice in 2023 while based in East Kalimantan, first as <strong>WWJ</strong>, then <strong>Matari.allo</strong>, before it became <strong>Allo.Society</strong>. By the time I moved to Bali in 2026, Allo.Society was already the name running brand builds from scratch, campaign strategy, CRM systems, and social management across multiple brands.</p>
+          <p>Before that, I ran paid media and CRM for other people's clients: 88 Meta Ads campaigns across four brands at Dream Box, a HubSpot sequence at KKBC that hit 14.4% click-through against a 2–3% industry benchmark, a brand launched to page-one Google rankings at RevoU.</p>
+          <p>I also spent years running physical operations, fleets, factories, compliance systems, across East and South Kalimantan before Blue Tick Ice brought me to Bali. That's why the marketing here is built to hold up under scrutiny, not just look good — I've had to answer for both sides of that equation directly.</p>
+          <p>Allo.Society is a separate company I founded, rooted in Bali, commercially scaling since 2025. It's not this site, and this site isn't it — this is my own record of the work, across whichever side of the growth-versus-operations line it happened to sit on.</p>
+        </div>
+        <div class="about-links">
+          <a href="/work/">See the work</a>
+          <a href="/#contact">Talk to me</a>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+</BaseLayout>
+
+<style>
+  .about-links{display:flex;gap:28px;margin-top:36px;}
+  .about-links a{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}
+  .about-links a:hover{color:var(--accent);border-color:var(--accent);}
+</style>

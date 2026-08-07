@@ -1,8 +1,122 @@
 ---
+const states = [
+  { word: 'STRATEGIES', project: 'Sinar Mas Land', slug: 'sinar-mas-land', role: 'Certification & process gap analysis' },
+  { word: 'CAMPAIGNS', project: 'Digimune Indonesia', slug: 'digimune-indonesia', role: 'Multi-brand marketing management' },
+  { word: 'DIGITAL EXPERIENCES', project: 'Bauntung Digital', slug: 'bauntung-digital', role: 'Digital presence strategy' },
+  { word: 'OPERATIONS', project: 'Blue Tick Ice', slug: 'blue-tick-ice', role: 'Operations lead, six departments' },
+  { word: 'SYSTEMS', project: 'PT Transkon Jaya', slug: 'pt-transkon-jaya', role: 'Fleet compliance & documentation systems' },
+];
 ---
 <section class="hero" id="hero">
-  <div class="eyebrow hero-in d1">Digital Marketing &amp; Business Systems Strategist</div>
-  <h1 class="hero-in d2">Digital strategist for brands that need both growth and structure.</h1>
-  <p class="hero-in d3">I develop marketing strategy, run campaigns, build brand identity, and design the operational systems that let a growing business hold up under scrutiny, not just look good.</p>
-  <div class="tag hero-in d4">Built through the Allo.Society visual system.</div>
+  <div class="hero-grid">
+    <div class="hero-context hero-in d1">
+      <p>I identify what matters before building what the business needs.</p>
+      <p class="hero-context-sub">Working across growth, digital experience, operations, and business systems.</p>
+    </div>
+
+    <div class="hero-main hero-in d2">
+      <h1>
+        I build <span class="hero-word" id="hero-word" data-states={JSON.stringify(states)}>{states[0].word}</span><br />
+        around what matters.
+      </h1>
+      <div class="hero-capability-select" role="group" aria-label="Select a capability">
+        {states.map((s, i) => (
+          <button type="button" class="hero-cap-btn" data-index={i} aria-pressed={i === 0 ? 'true' : 'false'}>{s.word}</button>
+        ))}
+      </div>
+    </div>
+
+    <a class="hero-evidence hero-in d3" id="hero-evidence" href={`/work/${states[0].slug}/`}>
+      <span class="hero-evidence-label">Evidence</span>
+      <span class="hero-evidence-project" id="hero-evidence-project">{states[0].project}</span>
+      <span class="hero-evidence-role" id="hero-evidence-role">{states[0].role}</span>
+    </a>
+  </div>
+  <div class="hero-scroll-hint hero-in d4">
+    <span>Digital Marketing &amp; Business Systems Strategist</span>
+    <span>Bali, Indonesia</span>
+  </div>
 </section>
+
+<style>
+  .hero-grid{display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:48px;align-items:center;}
+  @media (max-width:1100px){.hero-grid{grid-template-columns:1fr;gap:32px;}}
+
+  .hero-context p{font-size:15px;color:var(--text-dim);line-height:1.7;margin:0 0 10px;max-width:32ch;}
+  .hero-context-sub{font-size:13px;color:var(--text-dimmer);}
+  @media (max-width:1100px){.hero-context{order:3;}}
+
+  .hero-main h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(32px,4.2vw,54px);line-height:1.15;letter-spacing:-.01em;margin:0 0 22px;}
+  .hero-word{color:var(--accent);display:inline-block;transition:opacity .3s ease;}
+  .hero-word.transitioning{opacity:0;}
+  @media (prefers-reduced-motion:reduce){.hero-word{transition:none;}}
+  @media (max-width:900px){.hero-main h1{font-size:clamp(28px,8vw,40px);}}
+
+  .hero-capability-select{display:flex;flex-wrap:wrap;gap:8px;}
+  .hero-cap-btn{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--text-dimmer);background:transparent;border:1px solid var(--border);border-radius:20px;padding:7px 14px;cursor:pointer;transition:color .15s ease,border-color .15s ease,background .15s ease;}
+  .hero-cap-btn:hover{color:var(--text);border-color:var(--accent);}
+  .hero-cap-btn[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+
+  .hero-evidence{display:block;text-decoration:none;color:inherit;border-left:1px solid var(--border);padding-left:24px;}
+  .hero-evidence-label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
+  .hero-evidence-project{display:block;font-family:var(--serif);font-style:italic;font-size:19px;transition:color .2s ease;}
+  .hero-evidence:hover .hero-evidence-project{color:var(--accent);}
+  .hero-evidence-role{display:block;font-size:12px;color:var(--text-dim);margin-top:6px;}
+  @media (max-width:1100px){.hero-evidence{order:2;border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:20px;}}
+
+  .hero-scroll-hint{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-top:56px;padding-top:20px;border-top:1px solid var(--border-soft);}
+  @media (max-width:640px){.hero-scroll-hint{flex-direction:column;gap:4px;}}
+</style>
+
+<script>
+  const wordEl = document.getElementById('hero-word');
+  const evidenceLink = document.getElementById('hero-evidence') as HTMLAnchorElement | null;
+  const projectEl = document.getElementById('hero-evidence-project');
+  const roleEl = document.getElementById('hero-evidence-role');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.hero-cap-btn');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (wordEl) {
+    const states = JSON.parse(wordEl.dataset.states ?? '[]') as { word: string; project: string; slug: string; role: string }[];
+    let index = 0;
+    let timer: number | undefined;
+
+    function render(i: number) {
+      const s = states[i];
+      if (!wordEl || !evidenceLink || !projectEl || !roleEl) return;
+      const apply = () => {
+        wordEl.textContent = s.word;
+        evidenceLink.href = `/work/${s.slug}/`;
+        projectEl.textContent = s.project;
+        roleEl.textContent = s.role;
+        wordEl.classList.remove('transitioning');
+      };
+      if (reduced) {
+        apply();
+      } else {
+        wordEl.classList.add('transitioning');
+        setTimeout(apply, 180);
+      }
+      buttons.forEach((b, bi) => b.setAttribute('aria-pressed', bi === i ? 'true' : 'false'));
+    }
+
+    function startAuto() {
+      if (reduced) return;
+      timer = window.setInterval(() => {
+        index = (index + 1) % states.length;
+        render(index);
+      }, 2800);
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (timer) window.clearInterval(timer);
+        index = Number(btn.dataset.index ?? 0);
+        render(index);
+        startAuto();
+      });
+    });
+
+    startAuto();
+  }
+</script>

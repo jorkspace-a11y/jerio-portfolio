@@ -1,0 +1,26 @@
+---
+const steps = [
+  { word: 'What', desc: "Find out what's actually happening — discover, research, audit, verify. No plan starts before this." },
+  { word: 'Matters', desc: 'Decide what deserves the effort — qualify, prioritise, define. Not everything found is worth building.' },
+  { word: 'Built', desc: "Do the part that's real — develop, deliver, measure, improve. What doesn't ship doesn't count." },
+];
+---
+<section id="method">
+  <div class="eyebrow">Method</div>
+  <h2 class="head">Don't build everything. Build what matters.</h2>
+  <div class="method-list">
+    {steps.map((s) => (
+      <div class="method-step">
+        <span class="method-word">{s.word}</span>
+        <p>{s.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .method-list{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+  @media (max-width:900px){.method-list{grid-template-columns:1fr;gap:24px;}}
+  .method-word{display:block;font-family:var(--serif);font-style:italic;font-size:24px;color:var(--accent);margin-bottom:10px;}
+  .method-step p{font-size:13.5px;color:var(--text-dim);line-height:1.7;margin:0;max-width:38ch;}
+</style>

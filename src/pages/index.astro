@@ -3,10 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RailNav from '../components/nav/RailNav.astro';
 import MobileBar from '../components/nav/MobileBar.astro';
 import Hero from '../components/sections/Hero.astro';
-import About from '../components/sections/About.astro';
-import Capabilities from '../components/sections/Capabilities.astro';
-import Work from '../components/sections/Work.astro';
-import Gallery from '../components/sections/Gallery.astro';
+import SelectedWork from '../components/sections/SelectedWork.astro';
+import Method from '../components/sections/Method.astro';
+import Experience from '../components/sections/Experience.astro';
+import AboutTeaser from '../components/sections/AboutTeaser.astro';
+import WritingTeaser from '../components/sections/WritingTeaser.astro';
 import Contact from '../components/sections/Contact.astro';
 ---
 <BaseLayout>
@@ -15,10 +16,11 @@ import Contact from '../components/sections/Contact.astro';
     <RailNav />
     <main>
       <Hero />
-      <About />
-      <Capabilities />
-      <Work />
-      <Gallery />
+      <SelectedWork />
+      <Method />
+      <Experience />
+      <AboutTeaser />
+      <WritingTeaser />
       <Contact />
     </main>
   </div>

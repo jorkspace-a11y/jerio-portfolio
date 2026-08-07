@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+import CaseStudy from '../../components/CaseStudy.astro';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('case-studies');
+  return caseStudies.map((cs) => ({
+    params: { slug: cs.id },
+    props: { cs, all: caseStudies },
+  }));
+}
+
+const { cs, all } = Astro.props;
+const { title, organisation, parentProject, role, categories, status } = cs.data;
+const related = all.filter((c) => c.id !== cs.id).slice(0, 3);
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Work', item: 'https://whatmattersbuilt.co/work/' },
+    { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/work/${cs.id}/` },
+  ],
+};
+---
+<BaseLayout title={`${title} | Jerio`} description={`${role} for ${organisation}. ${cs.data.situation}`}>
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="case" style="padding-top:64px;">
+        <div class="eyebrow"><a href="/work/">Work</a> / {title}</div>
+        <div class="case-meta">
+          <div><span class="lbl">Organisation</span><span>{organisation}</span></div>
+          {parentProject && <div><span class="lbl">Parent project</span><span>{parentProject}</span></div>}
+          <div><span class="lbl">Role</span><span>{role}</span></div>
+          <div><span class="lbl">Category</span><span>{categories.join(', ')}</span></div>
+        </div>
+        <CaseStudy {...cs.data} />
+
+        {related.length > 0 && (
+          <div class="related">
+            <div class="eyebrow">Related work</div>
+            <div class="related-list">
+              {related.map((r) => (
+                <a href={`/work/${r.id}/`} class="related-link">{r.data.title}</a>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+</BaseLayout>
+
+<style>
+  .case-meta{display:flex;flex-wrap:wrap;gap:24px 40px;margin-bottom:34px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
+  .case-meta > div{display:flex;flex-direction:column;gap:4px;}
+  .case-meta .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
+  .case-meta > div > span:last-child{font-size:14px;color:var(--text);}
+  .related{margin-top:48px;padding-top:28px;border-top:1px solid var(--border-soft);}
+  .related-list{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:14px;}
+  .related-link{font-family:var(--serif);font-style:italic;font-size:16px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}
+  .related-link:hover{color:var(--accent);border-color:var(--accent);}
+</style>

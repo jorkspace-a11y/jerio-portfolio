@@ -11,8 +11,23 @@ document.addEventListener('scroll', updateProgress, { passive: true });
 updateProgress();
 
 const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.rail-nav a, .mobile-bar a'));
+const currentPath = window.location.pathname;
+
+// A nav href is same-page-navigable only if it's a bare "#..." hash, or
+// "path#hash" where path matches the current page. Anything else is a
+// normal cross-page link — querySelector must never see a raw href
+// starting with "/", which is not a valid CSS selector and throws.
+function sameHashTarget(href: string): Element | null {
+  const hashIndex = href.indexOf('#');
+  if (hashIndex === -1) return null;
+  const path = href.slice(0, hashIndex) || '/';
+  if (path !== currentPath) return null;
+  const hash = href.slice(hashIndex);
+  return hash.length > 1 ? document.querySelector(hash) : null;
+}
+
 const sections = navLinks
-  .map((a) => document.querySelector(a.getAttribute('href') ?? ''))
+  .map((a) => sameHashTarget(a.getAttribute('href') ?? ''))
   .filter((el): el is Element => el !== null);
 
 function updateActive() {
@@ -22,7 +37,15 @@ function updateActive() {
     if ((s as HTMLElement).offsetTop <= pos) current = s;
   });
   navLinks.forEach((a) => {
-    a.classList.toggle('active', document.querySelector(a.getAttribute('href') ?? '') === current);
+    const href = a.getAttribute('href') ?? '';
+    const hashIndex = href.indexOf('#');
+    const linkPath = hashIndex === -1 ? href : href.slice(0, hashIndex) || '/';
+    const isCurrentPage = linkPath.replace(/\/+$/, '') === currentPath.replace(/\/+$/, '') || (linkPath === '/' && currentPath === '/');
+    if (hashIndex === -1) {
+      a.classList.toggle('active', isCurrentPage);
+    } else {
+      a.classList.toggle('active', sameHashTarget(href) === current && current !== undefined);
+    }
   });
 }
 document.addEventListener('scroll', updateActive, { passive: true });
@@ -62,7 +85,7 @@ document.querySelectorAll<HTMLImageElement>('.thumb-frame img').forEach((img) =>
 
 navLinks.forEach((a) => {
   a.addEventListener('click', (e) => {
-    const target = document.querySelector(a.getAttribute('href') ?? '');
+    const target = sameHashTarget(a.getAttribute('href') ?? '');
     if (!target) return;
     e.preventDefault();
     target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });

@@ -1,5 +1,8 @@
 order: 6
 title: PT Transkon Jaya
+organisation: PT Transkon Jaya
+role: Fleet compliance & documentation systems
+categories: [Operations, Systems]
 status: delivered
 situation: >-
   A 1,800-unit fleet across 60+ mining sites and 9 hubs with no standardized visibility, 40+ units carrying real regulatory exposure.

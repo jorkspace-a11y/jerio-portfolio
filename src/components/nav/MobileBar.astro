@@ -1,14 +1,14 @@
 ---
 const links = [
-  { href: '#about', label: 'About' },
-  { href: '#capabilities', label: 'Capabilities' },
-  { href: '#work', label: 'Work' },
-  { href: '#gallery', label: 'Gallery' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/', label: 'Home' },
+  { href: '/work/', label: 'Work' },
+  { href: '/writing/', label: 'Writing' },
+  { href: '/about/', label: 'About' },
+  { href: '/#contact', label: 'Talk to me' },
 ];
 ---
 <div class="mobile-bar">
-  <div class="mb-name">Jerio<span>.</span></div>
+  <a href="/" class="mb-name">Jerio<span>.</span></a>
   <nav>
     {links.map((l) => <a href={l.href}>{l.label}</a>)}
   </nav>

@@ -9,10 +9,10 @@ interface Props {
   situation: string;
   decision: string;
   moved: string;
-  lesson: string;
-  archive?: { title: string; groups: { label: string; thumbs: { src: string; alt: string }[] }[] };
+  lesson?: string;
+  archives?: { title: string; groups: { label: string; thumbs: { src: string; alt: string }[] }[] }[];
 }
-const { order, title, status, situation, decision, moved, lesson, archive } = Astro.props;
+const { order, title, status, situation, decision, moved, lesson, archives = [] } = Astro.props;
 const num = String(order).padStart(2, '0');
 ---
 <div class="case">
@@ -22,10 +22,10 @@ const num = String(order).padStart(2, '0');
       <div class="case-title">{title}</div>
       <StatusBadge status={status} />
     </div>
-    <div class="case-block"><div class="lbl">Situation</div><p>{situation}</p></div>
-    <div class="case-block"><div class="lbl">Decision</div><p>{decision}</p></div>
-    <div class="case-block"><div class="lbl">Moved</div><p>{moved}</p></div>
-    <div class="case-block lesson"><p>{lesson}</p></div>
-    {archive && <ArchiveBlock title={archive.title} groups={archive.groups} />}
+    <div class="case-block"><div class="lbl">Context</div><p>{situation}</p></div>
+    <div class="case-block"><div class="lbl">What &amp; Matters</div><p>{decision}</p></div>
+    <div class="case-block"><div class="lbl">Built</div><p>{moved}</p></div>
+    {lesson && <div class="case-block lesson"><p>{lesson}</p></div>}
+    {archives.map((a) => <ArchiveBlock title={a.title} groups={a.groups} />)}
   </div>
 </div>

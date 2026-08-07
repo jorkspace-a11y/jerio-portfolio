@@ -1,0 +1,39 @@
+---
+const entries = [
+  { org: 'Allo.Society', role: 'Founder & Operator', period: '2023 — present', note: 'Brand builds, campaign strategy, CRM systems, and social management for founders without an internal team.' },
+  { org: 'Blue Tick Ice', role: 'Operations, six departments', period: 'Bali', note: 'Brought him to Bali. Manufacturing operations, reporting systems, account retention.' },
+  { org: 'Digimune Indonesia', role: 'Multi-brand marketing management', period: 'Ongoing', note: 'Cafero, XBooster, 77, plus IndoTek and Andiamo under the same engagement.' },
+  { org: 'Dream Box', role: 'Paid media management', period: undefined, note: '88 Meta Ads campaigns across four client brands.' },
+  { org: 'KKBC', role: 'CRM strategy', period: undefined, note: 'Segmentation and sequence design for a digital agency client portfolio.' },
+  { org: 'RevoU', role: 'Digital Marketing Specialist, then Project Officer', period: undefined, note: 'SEO delivery, then mentoring 450 students across 4 cohorts.' },
+];
+---
+<section id="experience">
+  <div class="eyebrow">Experience</div>
+  <h2 class="head">Where the work happened.</h2>
+  <div class="exp-list">
+    {entries.map((e) => (
+      <div class="exp-row">
+        <div class="exp-org">{e.org}</div>
+        <div class="exp-body">
+          <div class="exp-role-line">
+            <span class="exp-role">{e.role}</span>
+            {e.period && <span class="exp-period">{e.period}</span>}
+          </div>
+          <p class="exp-note">{e.note}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .exp-list{display:flex;flex-direction:column;}
+  .exp-row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;padding:20px 0;border-bottom:1px solid var(--border-soft);}
+  @media (max-width:640px){.exp-row{grid-template-columns:1fr;gap:6px;}}
+  .exp-org{font-family:var(--serif);font-style:italic;font-size:17px;}
+  .exp-role-line{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+  .exp-role{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dimmer);}
+  .exp-period{font-family:var(--mono);font-size:10px;color:var(--text-faint);}
+  .exp-note{font-size:13px;color:var(--text-dim);line-height:1.6;margin:0;max-width:56ch;}
+</style>

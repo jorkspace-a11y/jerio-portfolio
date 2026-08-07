@@ -1,5 +1,8 @@
 order: 1
 title: Soracha
+organisation: Soracha
+role: Brand identity & photography direction
+categories: [Brand, Marketing]
 status: delivered
 situation: >-
   No brand existed yet, no name recognition, no visual identity, no online presence. Building an F&B brand from literally nothing.
@@ -9,9 +12,9 @@ moved: >-
   A complete, service-ready brand foundation, identity, photography direction, and a social system the brand could launch on immediately. Live today as "Soracha, Matcha Slow Bar," running a flirty voice built on Gen Z internet humor ("Matcha for main characters only") out of Night Market Attackz and Food Center GrandCity in Balikpapan, carried mostly through short-form video.
 lesson: >-
   Verify what a client actually has, and actually needs, before you start building.
-archive:
-  title: "View full asset archive, 35 files"
-  groups:
+archives:
+  - title: "View full asset archive, 35 files"
+    groups:
     - label: Identity
       thumbs:
         - src: /images/img-001-28e91e6f0c.png
