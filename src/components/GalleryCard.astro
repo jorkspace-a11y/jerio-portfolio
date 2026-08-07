@@ -1,0 +1,24 @@
+---
+import StatusBadge from './StatusBadge.astro';
+import ArchiveBlock from './ArchiveBlock.astro';
+
+interface Props {
+  title: string;
+  industry: string;
+  size: 'standard' | 'narrow' | 'wide' | 'full';
+  description: string;
+  status?: 'delivered' | 'ongoing';
+  archives: { title: string; groups: { label: string; thumbs: { src: string; alt: string }[] }[] }[];
+}
+const { title, industry, size, description, status, archives } = Astro.props;
+const sizeClass = size === 'standard' ? '' : size;
+---
+<div class:list={['g-card', sizeClass]}>
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <div class="g-title">{title}</div>
+    {status && <StatusBadge status={status} />}
+  </div>
+  <div class="g-industry">{industry}</div>
+  <p class="g-desc">{description}</p>
+  {archives.map((a) => <ArchiveBlock title={a.title} groups={a.groups} />)}
+</div>

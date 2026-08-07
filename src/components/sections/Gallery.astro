@@ -1,0 +1,13 @@
+---
+import { getCollection } from 'astro:content';
+import GalleryCard from '../GalleryCard.astro';
+
+const items = (await getCollection('gallery-items')).sort((a, b) => a.data.order - b.data.order);
+---
+<section id="gallery">
+  <div class="eyebrow">Gallery</div>
+  <h2 class="head">The rest of it, compressed, not cut.</h2>
+  <div class="gallery">
+    {items.map((item) => <GalleryCard {...item.data} />)}
+  </div>
+</section>

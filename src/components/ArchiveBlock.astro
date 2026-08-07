@@ -1,0 +1,24 @@
+---
+import Thumb from './Thumb.astro';
+
+interface Group {
+  label: string;
+  thumbs: { src: string; alt: string }[];
+}
+interface Props {
+  title: string;
+  groups: Group[];
+}
+const { title, groups } = Astro.props;
+---
+<div class="archive-block">
+  <div class="archive-title">{title}</div>
+  {groups.map((group) => (
+    <div class="archive-group">
+      <div class="archive-group-label">{group.label}</div>
+      <div class="archive-thumbs">
+        {group.thumbs.map((t) => <Thumb src={t.src} alt={t.alt} />)}
+      </div>
+    </div>
+  ))}
+</div>

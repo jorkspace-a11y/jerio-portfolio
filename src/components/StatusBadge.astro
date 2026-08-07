@@ -1,0 +1,7 @@
+---
+interface Props {
+  status: 'delivered' | 'ongoing';
+}
+const { status } = Astro.props;
+---
+<div class:list={['status', status]}>{status === 'delivered' ? 'Delivered' : 'Ongoing'}</div>

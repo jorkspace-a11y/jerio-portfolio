@@ -1,0 +1,18 @@
+---
+import type { Capability } from '../data/capabilities';
+
+interface Props {
+  capability: Capability;
+}
+const { capability } = Astro.props;
+---
+<div class="cap">
+  <div class="cap-name">{capability.name}</div>
+  <div class="cap-body">
+    <p>{capability.description}</p>
+    <div class="cap-projects" set:html={capability.projects} />
+    <div class="tags">
+      {capability.tags.map((tag) => <span class="tag-chip">{tag}</span>)}
+    </div>
+  </div>
+</div>

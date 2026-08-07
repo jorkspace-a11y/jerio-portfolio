@@ -1,0 +1,16 @@
+---
+import { pillars } from '../../data/capabilities';
+import CapabilityCard from '../CapabilityCard.astro';
+---
+<section id="capabilities">
+  <div class="eyebrow">Capabilities</div>
+  <h2 class="head">Three connected disciplines. Six proof points behind them.</h2>
+  <div class="cap-list">
+    {pillars.map((pillar) => (
+      <>
+        <div class="pillar-label">{pillar.label}</div>
+        {pillar.capabilities.map((cap) => <CapabilityCard capability={cap} />)}
+      </>
+    ))}
+  </div>
+</section>

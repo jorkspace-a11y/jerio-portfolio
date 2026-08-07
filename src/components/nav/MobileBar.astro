@@ -1,0 +1,15 @@
+---
+const links = [
+  { href: '#about', label: 'About' },
+  { href: '#capabilities', label: 'Capabilities' },
+  { href: '#work', label: 'Work' },
+  { href: '#gallery', label: 'Gallery' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+<div class="mobile-bar">
+  <div class="mb-name">Jerio<span>.</span></div>
+  <nav>
+    {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  </nav>
+</div>

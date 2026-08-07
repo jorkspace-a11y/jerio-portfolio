@@ -1,0 +1,24 @@
+---
+const links = [
+  { href: '#about', label: 'About' },
+  { href: '#capabilities', label: 'Capabilities' },
+  { href: '#work', label: 'Featured Work' },
+  { href: '#gallery', label: 'Gallery' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+<nav class="rail">
+  <div>
+    <div class="rail-name">Jerio<span>.</span></div>
+    <div class="rail-nav">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </div>
+  </div>
+  <div>
+    <div class="rail-legend">
+      <div><span class="dot" style="background:#4A6858;"></span>Delivered</div>
+      <div><span class="dot" style="background:#D9B24C;"></span>Ongoing</div>
+    </div>
+    <div class="rail-foot" style="margin-top:20px;">Bali, 2026</div>
+  </div>
+</nav>
