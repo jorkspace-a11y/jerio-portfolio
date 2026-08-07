@@ -52,10 +52,11 @@ if (!reduced && 'IntersectionObserver' in window) {
 }
 
 document.querySelectorAll<HTMLImageElement>('.thumb-frame img').forEach((img) => {
-  if (img.complete) {
+  if (img.complete && img.naturalWidth > 0) {
     img.classList.add('loaded');
   } else {
     img.addEventListener('load', () => img.classList.add('loaded'));
+    img.addEventListener('error', () => img.classList.add('loaded'));
   }
 });
 
