@@ -1,0 +1,1 @@
+import{t as e}from"./analytics.D1aRXaXC.js";document.querySelector(`.service-cta-link`)?.addEventListener(`click`,t=>{let n=t.currentTarget.dataset.service;e(`service_cta_click`,{service:n})});

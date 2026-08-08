@@ -1,0 +1,1 @@
+function e(e,t={}){let n=window;typeof n.gtag==`function`&&n.gtag(`event`,e,t)}export{e as t};
