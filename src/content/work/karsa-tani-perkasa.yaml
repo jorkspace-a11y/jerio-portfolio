@@ -9,7 +9,7 @@ status: delivered
 summary: >-
   Logo, landing page, company profile, marketing kit. Delivered, landing page since taken down.
 archives:
-  - title: "View full asset archive, 26 files"
+  - title: "View full asset archive, 27 files"
     groups:
       - label: Identity
         thumbs:
@@ -71,3 +71,5 @@ archives:
             alt: "Guideline, page 14"
           - src: /images/img-061-7d39839956.jpeg
             alt: "Guideline, page 22"
+          - src: /images/img-062-bab9e8596f.jpeg
+            alt: "Guideline, page 25"
