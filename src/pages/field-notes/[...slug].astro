@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RailNav from '../../components/nav/RailNav.astro';
 import MobileBar from '../../components/nav/MobileBar.astro';
@@ -11,10 +11,32 @@ export async function getStaticPaths() {
 
 const { a } = Astro.props;
 const { Content } = await render(a);
-const { title, description, author, publishedAt, updatedAt, category } = a.data;
+const { title, description, author, publishedAt, updatedAt, category, relatedWork, relatedServices, relatedResources } = a.data;
 
 const wordCount = a.body?.split(/\s+/).length ?? 0;
 const readingTime = Math.max(1, Math.round(wordCount / 200));
+
+const workLinks = await Promise.all(relatedWork.map(async (id) => {
+  const entry = await getEntry('case-studies', id);
+  if (!entry) throw new Error(`Field note "${a.id}" references unknown case study id "${id}"`);
+  return { href: `/work/${entry.id}/`, label: entry.data.title };
+}));
+
+const allServices = await getCollection('services');
+const serviceLinks = relatedServices.map((slug) => {
+  const entry = allServices.find((s) => s.data.slug === slug);
+  if (!entry) throw new Error(`Field note "${a.id}" references unknown service slug "${slug}"`);
+  return { href: `/services/${entry.data.slug}/`, label: entry.data.title };
+});
+
+const allResources = await getCollection('resources');
+const resourceLinks = relatedResources.map((slug) => {
+  const entry = allResources.find((r) => r.data.slug === slug);
+  if (!entry) throw new Error(`Field note "${a.id}" references unknown resource slug "${slug}"`);
+  return { href: `/resources/${entry.data.type}s/${entry.data.slug}/`, label: entry.data.title };
+});
+
+const relatedLinks = [...workLinks, ...serviceLinks, ...resourceLinks];
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
@@ -53,6 +75,16 @@ const breadcrumbJsonLd = {
         <div class="article-body">
           <Content />
         </div>
+        {relatedLinks.length > 0 && (
+          <div class="article-related">
+            <div class="eyebrow">Referenced in this note</div>
+            <div class="related-list">
+              {relatedLinks.map((link) => (
+                <a href={link.href} class="related-link">{link.label}</a>
+              ))}
+            </div>
+          </div>
+        )}
         <div class="article-cta">
           <div class="eyebrow">Talk to me</div>
           <p>Working on something related? <a href="/#contact">Tell me what you're working on</a>.</p>
@@ -74,6 +106,10 @@ const breadcrumbJsonLd = {
   .article-body :global(p){margin:0 0 20px;}
   .article-body :global(a){color:var(--accent);}
   .article-body :global(img){border-radius:12px;margin:24px 0;}
+  .article-related{margin-top:48px;padding-top:28px;border-top:1px solid var(--border-soft);max-width:68ch;}
+  .related-list{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:14px;}
+  .related-link{font-family:var(--serif);font-style:italic;font-size:15px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;}
+  .related-link:hover{color:var(--accent);border-color:var(--accent);}
   .article-cta{margin-top:56px;padding-top:28px;border-top:1px solid var(--border-soft);}
   .article-cta p{font-size:14px;color:var(--text-dim);}
   .article-cta a{color:var(--accent);border-bottom:1px solid var(--accent);text-decoration:none;}
