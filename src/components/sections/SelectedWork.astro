@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import StatusBadge from '../StatusBadge.astro';
 
-const slugs = [
+const ids = [
   '05-blue-tick-ice',
   '09-digimune-indonesia',
   '01-soracha',
@@ -10,7 +10,15 @@ const slugs = [
   '06-pt-transkon-jaya',
   '08-sinar-mas-land',
 ];
-const items = (await Promise.all(slugs.map((id) => getEntry('case-studies', id)))).filter((e) => e !== undefined);
+const items = await Promise.all(
+  ids.map(async (id) => {
+    const entry = await getEntry('case-studies', id);
+    if (!entry) {
+      throw new Error(`SelectedWork.astro: case-study id "${id}" not found — check for a typo or a renamed/removed entry.`);
+    }
+    return entry;
+  })
+);
 ---
 <section id="selected-work">
   <div class="eyebrow">Selected Work</div>

@@ -1,11 +1,29 @@
 ---
-const states = [
-  { word: 'STRATEGIES', project: 'Sinar Mas Land', slug: 'sinar-mas-land', role: 'Certification & process gap analysis' },
-  { word: 'CAMPAIGNS', project: 'Digimune Indonesia', slug: 'digimune-indonesia', role: 'Multi-brand marketing management' },
-  { word: 'DIGITAL EXPERIENCES', project: 'Bauntung Digital', slug: 'bauntung-digital', role: 'Digital presence strategy' },
-  { word: 'OPERATIONS', project: 'Blue Tick Ice', slug: 'blue-tick-ice', role: 'Operations lead, six departments' },
-  { word: 'SYSTEMS', project: 'PT Transkon Jaya', slug: 'pt-transkon-jaya', role: 'Fleet compliance & documentation systems' },
+import { getCollection } from 'astro:content';
+
+// Hero evidence resolves to real Work routes by matching a stable content
+// key (the case study's title) against the actual collection at build time,
+// rather than hand-typed slugs — so a route/filename change can't silently
+// 404 the homepage again. Throws at build time if a title doesn't resolve.
+const caseStudies = await getCollection('case-studies');
+
+function resolve(projectTitle: string) {
+  const entry = caseStudies.find((cs) => cs.data.title === projectTitle);
+  if (!entry) {
+    throw new Error(`Hero.astro: no case-study found with title "${projectTitle}" — check for a typo or a renamed/removed entry.`);
+  }
+  return entry.id;
+}
+
+const rawStates = [
+  { word: 'STRATEGIES', project: 'Sinar Mas Land', role: 'Certification & process gap analysis' },
+  { word: 'CAMPAIGNS', project: 'Digimune Indonesia', role: 'Multi-brand marketing management' },
+  { word: 'DIGITAL EXPERIENCES', project: 'Bauntung Digital', role: 'Digital presence strategy' },
+  { word: 'OPERATIONS', project: 'Blue Tick Ice', role: 'Operations lead, six departments' },
+  { word: 'SYSTEMS', project: 'PT Transkon Jaya', role: 'Fleet compliance & documentation systems' },
 ];
+
+const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
 ---
 <section class="hero" id="hero">
   <div class="hero-grid">

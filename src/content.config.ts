@@ -16,7 +16,7 @@ const caseStudies = defineCollection({
     parentProject: z.string().optional(),
     role: z.string(),
     categories: z.array(category),
-    status: z.enum(['delivered', 'ongoing', 'archived']),
+    status: z.enum(['delivered', 'ongoing']),
     situation: z.string(),
     decision: z.string(),
     moved: z.string(),
