@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RailNav from '../../../components/nav/RailNav.astro';
+import MobileBar from '../../../components/nav/MobileBar.astro';
+
+export async function getStaticPaths() {
+  const resources = await getCollection('resources');
+  return resources.map((r) => ({
+    params: { type: `${r.data.type}s`, slug: r.data.slug },
+    props: { r },
+  }));
+}
+
+const { r } = Astro.props;
+const { title, type, summary, body, items } = r.data;
+const isCalculator = type === 'calculator';
+---
+<BaseLayout title={`${title} | Resources | Jerio`} description={summary}>
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="resource" style="padding-top:64px;">
+        <div class="eyebrow"><a href="/resources/">Resources</a> / {title}</div>
+        <h1 class="resource-title">{title}</h1>
+        <p class="resource-summary">{summary}</p>
+
+        {isCalculator ? (
+          <div class="roas-calc">
+            <div class="roas-field">
+              <label for="roas-spend">Ad spend</label>
+              <input id="roas-spend" type="number" min="0" step="any" placeholder="10000000" />
+            </div>
+            <div class="roas-field">
+              <label for="roas-revenue">Revenue from ads</label>
+              <input id="roas-revenue" type="number" min="0" step="any" placeholder="35000000" />
+            </div>
+            <div class="roas-field">
+              <label for="roas-margin">Gross margin (%)</label>
+              <input id="roas-margin" type="number" min="0" max="100" step="any" placeholder="40" />
+            </div>
+            <div class="roas-results">
+              <div><span class="lbl">ROAS</span><span id="roas-output">—</span></div>
+              <div><span class="lbl">Break-even ROAS</span><span id="roas-breakeven-output">—</span></div>
+            </div>
+            <p class="roas-note">Break-even ROAS = 1 ÷ margin. Below that, ad spend is losing money even with revenue coming in.</p>
+          </div>
+        ) : (
+          <>
+            {body && <p class="resource-body">{body}</p>}
+            {items.length > 0 && (
+              <ul class="resource-items">
+                {items.map((item: string) => <li>{item}</li>)}
+              </ul>
+            )}
+          </>
+        )}
+
+        <div class="resource-cta">
+          <a href="/#contact" class="resource-cta-link" data-cursor="TALK">Need help applying this? Talk to me &rarr;</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .resource-title{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(28px,4.5vw,42px);margin:0 0 12px;}
+  .resource-summary{font-size:15px;color:var(--text-dim);line-height:1.7;max-width:60ch;margin:0 0 32px;padding-bottom:24px;border-bottom:1px solid var(--border-soft);}
+  .resource-body{font-size:14px;color:var(--text-dim);line-height:1.75;max-width:62ch;margin:0 0 20px;}
+  .resource-items{margin:0 0 32px;padding-left:20px;}
+  .resource-items li{font-size:14px;line-height:1.85;color:var(--text-dim);}
+  .resource-cta{margin-top:24px;}
+  .resource-cta-link{font-family:var(--mono);font-size:12px;text-decoration:none;color:var(--accent);border-bottom:1px solid var(--accent);}
+
+  .roas-calc{max-width:420px;display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+  .roas-field{display:flex;flex-direction:column;gap:6px;}
+  .roas-field label{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dimmer);}
+  .roas-field input{font-family:var(--sans);font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 14px;}
+  .roas-field input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .roas-results{display:flex;gap:32px;padding:18px 0;border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);}
+  .roas-results > div{display:flex;flex-direction:column;gap:4px;}
+  .roas-results .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);}
+  .roas-results span:last-child{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--accent);}
+  .roas-note{font-size:12px;color:var(--text-faint);line-height:1.6;margin:0;}
+</style>
+
+<script>
+  const spendEl = document.getElementById('roas-spend') as HTMLInputElement | null;
+  const revenueEl = document.getElementById('roas-revenue') as HTMLInputElement | null;
+  const marginEl = document.getElementById('roas-margin') as HTMLInputElement | null;
+  const roasOut = document.getElementById('roas-output');
+  const breakevenOut = document.getElementById('roas-breakeven-output');
+
+  function calc() {
+    if (!spendEl || !revenueEl || !marginEl || !roasOut || !breakevenOut) return;
+    const spend = parseFloat(spendEl.value);
+    const revenue = parseFloat(revenueEl.value);
+    const margin = parseFloat(marginEl.value);
+
+    roasOut.textContent = spend > 0 && !isNaN(revenue) ? (revenue / spend).toFixed(2) + 'x' : '—';
+    breakevenOut.textContent = margin > 0 ? (100 / margin).toFixed(2) + 'x' : '—';
+  }
+
+  [spendEl, revenueEl, marginEl].forEach((el) => el?.addEventListener('input', calc));
+</script>

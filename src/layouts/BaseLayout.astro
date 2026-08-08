@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import CursorSystem from '../components/CursorSystem.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -25,6 +26,14 @@ const personJsonLd = {
   url: 'https://whatmattersbuilt.co/',
   email: 'mailto:hello@whatmattersbuilt.co',
   sameAs: ['https://www.linkedin.com/in/jerio-jerio/'],
+};
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'What Matters Built',
+  url: 'https://whatmattersbuilt.co/',
+  creator: { '@type': 'Person', name: 'Jerio' },
 };
 ---
 
@@ -54,10 +63,12 @@ const personJsonLd = {
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
 </head>
 <body>
   <div id="scroll-progress"></div>
   <slot />
+  <Footer />
   <CursorSystem />
   <script src="../scripts/interactions.ts"></script>
   <script src="../scripts/title-marquee.ts"></script>

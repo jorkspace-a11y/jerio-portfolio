@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('studies');
+  return studies.map((s) => ({ params: { slug: s.id }, props: { s } }));
+}
+
+const { s } = Astro.props;
+const { title, studyType, industry, categories, summary, assumptions, problem, research, analysis, proposal, limitations } = s.data;
+const typeLabel = studyType === 'independent' ? 'Independent Case Study' : 'Conceptual Study';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Studies', item: 'https://whatmattersbuilt.co/studies/' },
+    { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/studies/${s.id}/` },
+  ],
+};
+---
+<BaseLayout title={`${title} | Studies | Jerio`} description={summary}>
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="study" style="padding-top:64px;">
+        <div class="eyebrow"><a href="/studies/">Studies</a> / {title}</div>
+        <div class="study-banner">{typeLabel} — not commissioned, not implemented for a real client.</div>
+        <h1 class="study-title">{title}</h1>
+        <div class="study-meta">
+          <span>{industry}</span>
+          <span>{categories.join(', ')}</span>
+        </div>
+        <p class="study-summary">{summary}</p>
+
+        {assumptions.length > 0 && (
+          <div class="study-block"><div class="lbl">Assumptions</div><ul>{assumptions.map((a: string) => <li>{a}</li>)}</ul></div>
+        )}
+        <div class="study-block"><div class="lbl">Problem</div><p>{problem}</p></div>
+        {research && <div class="study-block"><div class="lbl">Research</div><p>{research}</p></div>}
+        <div class="study-block"><div class="lbl">Analysis</div><p>{analysis}</p></div>
+        <div class="study-block"><div class="lbl">Proposal</div><p>{proposal}</p></div>
+        {limitations.length > 0 && (
+          <div class="study-block"><div class="lbl">Limitations</div><ul>{limitations.map((l: string) => <li>{l}</li>)}</ul></div>
+        )}
+      </section>
+    </main>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+</BaseLayout>
+
+<style>
+  .study-banner{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--accent);background:rgba(204,43,29,.08);border:1px solid rgba(204,43,29,.25);border-radius:8px;padding:10px 14px;margin-bottom:24px;display:inline-block;}
+  .study-title{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,4.5vw,46px);margin:0 0 12px;}
+  .study-meta{display:flex;gap:16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);margin-bottom:20px;}
+  .study-summary{font-size:16px;color:var(--text-dim);line-height:1.7;max-width:60ch;margin:0 0 36px;padding-bottom:24px;border-bottom:1px solid var(--border-soft);}
+  .study-block{margin-bottom:24px;}
+  .study-block .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
+  .study-block p{font-size:14px;line-height:1.75;color:var(--text-dim);margin:0;max-width:62ch;}
+  .study-block ul{margin:0;padding-left:18px;}
+  .study-block li{font-size:14px;line-height:1.75;color:var(--text-dim);}
+</style>

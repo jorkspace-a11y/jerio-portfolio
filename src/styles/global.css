@@ -29,6 +29,9 @@ img{max-width:100%;display:block;}
 .rail-nav a:hover,.rail-nav a:focus-visible{color:var(--text);}
 .rail-nav a.active{color:var(--text);}
 .rail-nav a.active::before{height:14px;}
+.rail-nav a.rail-cta{margin-top:16px;padding:10px 16px;border:1px solid var(--accent);border-radius:20px;color:var(--accent);text-align:center;letter-spacing:.08em;font-family:var(--mono);font-size:10px;}
+.rail-nav a.rail-cta::before{display:none;}
+.rail-nav a.rail-cta:hover{color:var(--bg);background:var(--accent);}
 .rail-legend{font-size:10px;color:var(--text-faint);line-height:1.9;}
 .rail-legend .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin-right:7px;}
 .rail-foot{font-size:10px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;}

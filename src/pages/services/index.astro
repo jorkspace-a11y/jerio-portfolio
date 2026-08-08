@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+const services = (await getCollection('services', ({ data }) => data.active)).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Services | Jerio" description="Seven services across strategy, marketing, digital experience, and operations — scoped, with exclusions stated plainly.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="services-index" style="padding-top:64px;">
+        <div class="eyebrow">Services</div>
+        <h1 class="head">Scoped work, not a generic retainer.</h1>
+
+        <div class="services-grid">
+          {services.map((s) => (
+            <a href={`/services/${s.data.slug}/`} class="service-card" data-cursor="VIEW">
+              <span class="service-card-title">{s.data.title}</span>
+              <p class="service-card-summary">{s.data.summary}</p>
+              <span class="service-card-link">Learn more</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+  .service-card{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:28px 26px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
+  .service-card:hover{transform:translateY(-2px);border-color:var(--border);}
+  .service-card-title{font-family:var(--serif);font-style:italic;font-size:19px;}
+  .service-card-summary{font-size:13px;color:var(--text-dim);line-height:1.65;margin:0;flex:1;}
+  .service-card-link{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);}
+</style>

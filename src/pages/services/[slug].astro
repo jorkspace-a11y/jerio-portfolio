@@ -1,0 +1,104 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((s) => ({ params: { slug: s.data.slug }, props: { s } }));
+}
+
+const { s } = Astro.props;
+const { title, summary, audience, problems, scope, exclusions, deliverables, process, relatedWork, faqs } = s.data;
+
+const relatedCaseStudies = (await Promise.all(relatedWork.map((id: string) => getEntry('case-studies', id)))).filter(Boolean);
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Services', item: 'https://whatmattersbuilt.co/services/' },
+    { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/services/${s.data.slug}/` },
+  ],
+};
+---
+<BaseLayout title={`${title} | Services | Jerio`} description={summary}>
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="service" style="padding-top:64px;">
+        <div class="eyebrow"><a href="/services/">Services</a> / {title}</div>
+        <h1 class="service-title">{title}</h1>
+        <p class="service-summary">{summary}</p>
+
+        <div class="service-cols">
+          <div>
+            <div class="service-block"><div class="lbl">Who it's for</div><ul>{audience.map((a: string) => <li>{a}</li>)}</ul></div>
+            <div class="service-block"><div class="lbl">Problems it solves</div><ul>{problems.map((p: string) => <li>{p}</li>)}</ul></div>
+            <div class="service-block"><div class="lbl">Scope</div><ul>{scope.map((sc: string) => <li>{sc}</li>)}</ul></div>
+            {exclusions.length > 0 && <div class="service-block"><div class="lbl">Not included</div><ul>{exclusions.map((e: string) => <li>{e}</li>)}</ul></div>}
+          </div>
+          <div>
+            <div class="service-block"><div class="lbl">Process</div>
+              <ol class="process-list">
+                {process.map((step: { title: string; description: string }) => (
+                  <li><span class="process-step-title">{step.title}</span><p>{step.description}</p></li>
+                ))}
+              </ol>
+            </div>
+            <div class="service-block"><div class="lbl">Deliverables</div><ul>{deliverables.map((d: string) => <li>{d}</li>)}</ul></div>
+          </div>
+        </div>
+
+        {relatedCaseStudies.length > 0 && (
+          <div class="service-related">
+            <div class="lbl">Related work</div>
+            <div class="related-list">
+              {relatedCaseStudies.map((cs: any) => <a href={`/work/${cs.id}/`} class="related-link">{cs.data.title}</a>)}
+            </div>
+          </div>
+        )}
+
+        {faqs.length > 0 && (
+          <div class="service-faqs">
+            <div class="lbl">FAQs</div>
+            {faqs.map((f: { question: string; answer: string }) => (
+              <div class="faq-item"><div class="faq-q">{f.question}</div><p class="faq-a">{f.answer}</p></div>
+            ))}
+          </div>
+        )}
+
+        <div class="service-cta">
+          <a href="/#contact" class="service-cta-link" data-cursor="TALK">Start a project &rarr;</a>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+</BaseLayout>
+
+<style>
+  .service-title{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,4.5vw,46px);margin:0 0 14px;}
+  .service-summary{font-size:16px;color:var(--text-dim);line-height:1.7;max-width:62ch;margin:0 0 36px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
+  .service-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:32px;}
+  @media (max-width:900px){.service-cols{grid-template-columns:1fr;}}
+  .service-block{margin-bottom:26px;}
+  .service-block .lbl,.service-related .lbl,.service-faqs .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;}
+  .service-block ul{margin:0;padding-left:18px;}
+  .service-block li{font-size:13.5px;line-height:1.7;color:var(--text-dim);}
+  .process-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .process-list li{display:flex;flex-direction:column;gap:2px;}
+  .process-step-title{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text);}
+  .process-list p{font-size:13px;color:var(--text-dim);margin:0;line-height:1.6;}
+  .service-related,.service-faqs{margin-top:8px;margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border-soft);}
+  .related-list{display:flex;flex-wrap:wrap;gap:10px 22px;}
+  .related-link{font-family:var(--serif);font-style:italic;font-size:15px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);}
+  .related-link:hover{color:var(--accent);border-color:var(--accent);}
+  .faq-item{margin-bottom:18px;}
+  .faq-q{font-size:14px;color:var(--text);margin-bottom:4px;}
+  .faq-a{font-size:13px;color:var(--text-dim);line-height:1.6;margin:0;}
+  .service-cta{margin-top:32px;}
+  .service-cta-link{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:24px;padding:13px 26px;text-decoration:none;}
+</style>

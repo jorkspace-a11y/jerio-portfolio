@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RailNav from '../components/nav/RailNav.astro';
+import MobileBar from '../components/nav/MobileBar.astro';
+---
+<BaseLayout title="Disclosure | Jerio" description="Commercial relationships on this site, disclosed directly.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="disclosure-page" style="padding-top:64px;">
+        <div class="eyebrow">Disclosure</div>
+        <h1 class="head">What's commercial here, and what isn't.</h1>
+        <div class="about">
+          <p><strong>Affiliate links.</strong> Where a Recommendation or Field Note contains an affiliate link, it's labeled on that specific item — see the "relationship" field on each entry in <a href="/recommendations/">Recommendations</a>. As of this writing, every recommendation listed has no commercial relationship — they're tools actually used in the work shown on this site, not paid placements.</p>
+          <p><strong>Sponsored content.</strong> Nothing on this site is currently sponsored. If that changes, the specific piece will say so clearly, not in a footnote.</p>
+          <p><strong>Advertising.</strong> No display ads currently run on this site. If that changes, ad placement will be disclosed here and kept off Work and Service pages specifically — see the monetization policy referenced in this site's build documentation.</p>
+          <p><strong>Services and case studies.</strong> Case studies represent real client or employer work; ownership and scope are stated on each one. Studies are independent or conceptual exercises, never commissioned, and are labeled as such.</p>
+          <p>Questions about any specific relationship: <a href="mailto:hello@whatmattersbuilt.co">hello@whatmattersbuilt.co</a>.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+---
+<BaseLayout title="Lab | Jerio" description="Experiments, prototypes, and small utilities — validated ones graduate into Resources or Products.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="lab-index" style="padding-top:64px;">
+        <div class="eyebrow">Lab</div>
+        <h1 class="head">Nothing here yet.</h1>
+        <p class="lab-empty">The Lab is for experiments — calculators, prototypes, small tools — that graduate into <a href="/resources/">Resources</a> or <a href="/products/">Products</a> once they prove useful. Nothing's shipped here yet. The <a href="/resources/calculators/roas-calculator/">ROAS calculator</a> started this way.</p>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .lab-empty{font-size:14px;color:var(--text-dim);line-height:1.75;max-width:56ch;}
+  .lab-empty a{color:var(--accent);border-bottom:1px solid var(--accent);text-decoration:none;}
+</style>

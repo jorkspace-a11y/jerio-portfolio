@@ -1,19 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 
-const articles = (await getCollection('writing', ({ data }) => !data.draft))
+const articles = (await getCollection('field-notes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
   .slice(0, 3);
 ---
-<section id="writing">
-  <div class="eyebrow">Writing</div>
-  <h2 class="head">Latest writing.</h2>
+<section id="field-notes">
+  <div class="eyebrow">Field Notes</div>
+  <h2 class="head">Latest Field Notes.</h2>
   {articles.length === 0 ? (
-    <p class="writing-empty">Nothing published yet — first pieces are in progress. <a href="/writing/">Check the writing archive</a> for when that changes.</p>
+    <p class="writing-empty">Nothing published yet — first pieces are in progress. <a href="/field-notes/">Check the Field Notes archive</a> for when that changes.</p>
   ) : (
     <div class="writing-teaser-list">
       {articles.map((a) => (
-        <a href={`/writing/${a.id}/`} class="writing-teaser-card" data-cursor="READ">
+        <a href={`/field-notes/${a.id}/`} class="writing-teaser-card" data-cursor="READ">
           <span class="writing-teaser-category">{a.data.category}</span>
           <span class="writing-teaser-title">{a.data.title}</span>
           <p class="writing-teaser-desc">{a.data.description}</p>

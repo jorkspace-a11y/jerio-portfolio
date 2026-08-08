@@ -1,0 +1,36 @@
+order: 1
+title: Digital Strategy
+slug: digital-strategy
+summary: >-
+  Figuring out what's actually happening before deciding what to build — audits, positioning, and a plan that survives contact with the business.
+audience:
+  - Founders who need a second opinion before committing budget
+  - Businesses with scattered digital activity and no unifying plan
+problems:
+  - Marketing and operations decisions made without a shared picture of what's true
+  - Activity that looks busy but doesn't compound
+scope:
+  - Situation audit across marketing, digital presence, and operations
+  - Positioning and priority-setting
+  - A written plan with an explicit "what matters, what doesn't yet" call
+exclusions:
+  - Execution of the plan (see the relevant specific service)
+  - Guaranteed outcomes — a strategy reduces risk, it doesn't eliminate it
+deliverables:
+  - Situation audit
+  - Prioritized plan
+  - Written rationale for what's out of scope and why
+process:
+  - title: Verify
+    description: Confirm what's actually true about the current state, not what's assumed.
+  - title: Qualify
+    description: Decide what's worth acting on now versus later versus not at all.
+  - title: Plan
+    description: Write the plan in a form that can actually be executed and checked.
+relatedWork: ["08-sinar-mas-land", "03-kkbc"]
+faqs:
+  - question: Do you implement the strategy too?
+    answer: Often, yes — through the relevant execution service. Some clients take the strategy to their own team instead, which is fine.
+  - question: How long does a strategy engagement take?
+    answer: Depends on scope. A single-function audit is faster than a full cross-functional review.
+active: true

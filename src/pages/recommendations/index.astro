@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+const recs = (await getCollection('recommendations')).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Recommendations | Jerio" description="Tools actually used in the work shown on this site, with commercial relationships disclosed plainly.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="recommendations-index" style="padding-top:64px;">
+        <div class="eyebrow">Recommendations</div>
+        <h1 class="head">What's actually in use, disclosed plainly.</h1>
+        <p class="rec-note">Every recommendation here states its commercial relationship directly. "None" means exactly that — no affiliate link, no partnership, just a tool used in the work.</p>
+
+        <div class="rec-list">
+          {recs.map((r) => (
+            <div class="rec-card">
+              <div class="rec-card-head">
+                <span class="rec-card-title">{r.data.title}</span>
+                <span class="rec-card-relationship">{r.data.relationship}</span>
+              </div>
+              <div class="rec-card-category">{r.data.category} &middot; {r.data.provider}</div>
+              <p class="rec-card-summary">{r.data.summary}</p>
+              <p class="rec-card-disclosure">{r.data.disclosure}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .rec-note{font-size:14px;color:var(--text-dim);line-height:1.7;max-width:62ch;margin:0 0 32px;}
+  .rec-list{display:flex;flex-direction:column;gap:16px;max-width:640px;}
+  .rec-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;}
+  .rec-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+  .rec-card-title{font-family:var(--serif);font-style:italic;font-size:18px;}
+  .rec-card-relationship{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);}
+  .rec-card-category{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:8px 0 12px;}
+  .rec-card-summary{font-size:13px;color:var(--text-dim);line-height:1.65;margin:0 0 10px;}
+  .rec-card-disclosure{font-size:11.5px;color:var(--text-faint);line-height:1.6;margin:0;font-style:italic;}
+</style>

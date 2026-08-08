@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+const studies = (await getCollection('studies')).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Studies | Jerio" description="Independent and conceptual studies — strategic thinking exercises, not commissioned client work.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="studies-archive" style="padding-top:64px;">
+        <div class="eyebrow">Studies</div>
+        <h1 class="head">Thinking, not client work.</h1>
+        <p class="studies-note">Every item here is an independent or conceptual exercise — never commissioned, never implemented for a real client. Labeled as such throughout. For real, delivered work, see <a href="/work/">Work</a>.</p>
+
+        <div class="studies-grid">
+          {studies.map((s) => (
+            <a href={`/studies/${s.id}/`} class="study-card" data-cursor="VIEW">
+              <span class="study-card-type">{s.data.studyType === 'independent' ? 'Independent Case Study' : 'Conceptual Study'}</span>
+              <span class="study-card-title">{s.data.title}</span>
+              <div class="study-card-industry">{s.data.industry}</div>
+              <p class="study-card-desc">{s.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .studies-note{font-size:14px;color:var(--text-dim);line-height:1.7;max-width:62ch;margin:0 0 32px;}
+  .studies-note a{color:var(--accent);border-bottom:1px solid var(--accent);text-decoration:none;}
+  .studies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .study-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
+  .study-card:hover{transform:translateY(-2px);border-color:var(--border);}
+  .study-card-type{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+  .study-card-title{display:block;font-family:var(--serif);font-style:italic;font-size:18px;margin:8px 0 6px;}
+  .study-card-industry{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;}
+  .study-card-desc{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;}
+</style>

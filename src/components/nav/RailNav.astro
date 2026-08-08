@@ -1,10 +1,11 @@
 ---
 const links = [
-  { href: '/', label: 'Home.' },
   { href: '/work/', label: 'Work.' },
-  { href: '/writing/', label: 'Writing.' },
+  { href: '/studies/', label: 'Studies.' },
+  { href: '/services/', label: 'Services.' },
+  { href: '/field-notes/', label: 'Field Notes.' },
+  { href: '/resources/', label: 'Resources.' },
   { href: '/about/', label: 'About.' },
-  { href: '/#contact', label: 'Talk to me.' },
 ];
 ---
 <nav class="rail">
@@ -12,6 +13,7 @@ const links = [
     <a href="/" class="rail-name">Jerio<span>.</span></a>
     <div class="rail-nav">
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a href="/#contact" class="rail-cta" data-cursor="TALK">Start a Project</a>
     </div>
   </div>
   <div>

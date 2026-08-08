@@ -1,45 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import RailNav from '../../components/nav/RailNav.astro';
-import MobileBar from '../../components/nav/MobileBar.astro';
-
-const articles = (await getCollection('writing', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+// 301-equivalent redirect: /writing/ moved to /field-notes/. GitHub Pages
+// serves no server-side redirects, so this uses a meta-refresh + canonical
+// pointing at the new URL, plus a manual link for non-JS/no-refresh cases.
 ---
-<BaseLayout title="Writing | Jerio" description="Writing on digital marketing, digital commerce, operations, and business systems, from strategy through delivery.">
-  <MobileBar />
-  <div class="shell">
-    <RailNav />
-    <main>
-      <section id="writing-archive" style="padding-top:64px;">
-        <div class="eyebrow">Writing</div>
-        <h1 class="head">Notes from the work, not around it.</h1>
-
-        {articles.length === 0 ? (
-          <p class="empty-state">Nothing published yet. First pieces are in progress — check back soon, or <a href="/#contact">get in touch</a> if there's something specific worth writing about.</p>
-        ) : (
-          <div class="article-list">
-            {articles.map((a) => (
-              <a href={`/writing/${a.id}/`} class="article-card" data-cursor="READ">
-                <span class="article-card-category">{a.data.category}</span>
-                <span class="article-card-title">{a.data.title}</span>
-                <p class="article-card-desc">{a.data.description}</p>
-              </a>
-            ))}
-          </div>
-        )}
-      </section>
-    </main>
-  </div>
-</BaseLayout>
-
-<style>
-  .empty-state{font-size:14px;color:var(--text-dim);line-height:1.75;max-width:52ch;}
-  .empty-state a{color:var(--accent);border-bottom:1px solid var(--accent);text-decoration:none;}
-  .article-list{display:flex;flex-direction:column;gap:2px;}
-  .article-card{display:block;padding:24px 0;border-bottom:1px solid var(--border-soft);text-decoration:none;color:inherit;}
-  .article-card-category{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
-  .article-card-title{display:block;font-family:var(--serif);font-style:italic;font-size:22px;margin:8px 0;}
-  .article-card-desc{font-size:13.5px;color:var(--text-dim);margin:0;max-width:62ch;}
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Moved to Field Notes</title>
+  <link rel="canonical" href="https://whatmattersbuilt.co/field-notes/" />
+  <meta http-equiv="refresh" content="0; url=/field-notes/" />
+</head>
+<body>
+  <p>This page moved to <a href="/field-notes/">/field-notes/</a>.</p>
+</body>
+</html>

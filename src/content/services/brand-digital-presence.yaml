@@ -1,0 +1,36 @@
+order: 4
+title: Brand & Digital Presence
+slug: brand-digital-presence
+summary: >-
+  Building a brand identity and social system from nothing — logo, visual direction, and photography that a business can actually launch on.
+audience:
+  - Founders with no existing brand identity
+  - Businesses whose current identity doesn't match what they're actually selling
+problems:
+  - No visual system to build content or campaigns on top of
+  - A brand that looks generic against comparable competitors
+scope:
+  - Logo and identity system
+  - Photography direction (including self-shot where production budget doesn't exist yet)
+  - Social kit and voice guidelines
+exclusions:
+  - Paid media execution (see Performance Marketing)
+  - Full brand strategy research (see Digital Strategy)
+deliverables:
+  - Logo and identity system
+  - Photography direction and initial assets
+  - Social system ready to launch on
+process:
+  - title: Verify
+    description: Map what the business actually has versus what they think they have.
+  - title: Build
+    description: Build the identity system to work with the real production constraints, not an ideal budget.
+  - title: Launch
+    description: Hand over a system that can be extended without starting over.
+relatedWork: ["01-soracha"]
+faqs:
+  - question: Do you handle photography?
+    answer: Yes, including shooting it directly when a client doesn't have production budget yet — done this on an iPhone 16 for a prior brand build.
+  - question: What if we already have a logo?
+    answer: This can be a system-and-guidelines pass around an existing mark instead of a from-scratch build.
+active: true

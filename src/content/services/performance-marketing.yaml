@@ -1,0 +1,36 @@
+order: 2
+title: Performance Marketing
+slug: performance-marketing
+summary: >-
+  Paid campaigns and CRM sequences run against click-through and qualified leads, not impressions or vanity reach.
+audience:
+  - Brands running paid media without a clear read on what's actually converting
+  - Teams whose CRM sends go out on schedule but don't move numbers
+problems:
+  - Ad spend that isn't tied to a measurable qualified-lead outcome
+  - CRM sequences with no segmentation logic behind them
+scope:
+  - Meta Ads / Google Ads campaign management
+  - CRM segmentation and sequence design
+  - A/B testing and documented playbooks from what worked
+exclusions:
+  - Organic-only social management (see Brand & Digital Presence)
+  - Guaranteed click-through or conversion rates
+deliverables:
+  - Campaign structure and targeting logic
+  - CRM segmentation and sequences
+  - A documented playbook of what worked, for the next campaign
+process:
+  - title: Baseline
+    description: Establish what's currently running and what it's actually producing.
+  - title: Test
+    description: Run structured tests against a clear hypothesis, not random variations.
+  - title: Document
+    description: Write down the winning configuration so the next campaign doesn't start from zero.
+relatedWork: ["04-dream-box", "03-kkbc"]
+faqs:
+  - question: What platforms do you run campaigns on?
+    answer: Meta Ads Manager and Google Ads, with HubSpot or Mailchimp for CRM sequencing depending on the client's existing stack.
+  - question: Do you write the ad creative too?
+    answer: Copy and targeting logic, yes. Video/photo production is scoped separately depending on what exists already.
+active: true

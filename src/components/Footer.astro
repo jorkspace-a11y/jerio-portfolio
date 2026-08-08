@@ -1,0 +1,30 @@
+---
+const year = 2026;
+---
+<footer class="site-footer">
+  <div class="footer-top">
+    <span class="footer-brand">WHAT MATTERS BUILT</span>
+    <a href="https://www.linkedin.com/in/jerio-jerio/" target="_blank" rel="noopener" data-cursor="↗">LinkedIn</a>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; {year} What Matters Built. All rights reserved.</span>
+    <nav class="footer-legal">
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/disclosure/">Disclosure</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer{max-width:1400px;margin:0 auto;padding:40px 64px 48px;border-top:1px solid var(--border-soft);}
+  @media (max-width:900px){.site-footer{padding:32px 20px 40px;}}
+  .footer-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;}
+  .footer-brand{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--text-faint);}
+  .footer-top a{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text-dim);text-decoration:none;border-bottom:1px solid var(--border);}
+  .footer-top a:hover{color:var(--accent);border-color:var(--accent);}
+  .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:10.5px;color:var(--text-faint);}
+  .footer-legal{display:flex;gap:16px;}
+  .footer-legal a{color:var(--text-faint);text-decoration:none;}
+  .footer-legal a:hover{color:var(--accent);}
+</style>

@@ -1,0 +1,36 @@
+order: 3
+title: Web & Conversion
+slug: web-conversion
+summary: >-
+  Building the connective tissue between channels first — a website or presence a visitor can actually navigate between, before touching content or ads.
+audience:
+  - Brands with a logo and social accounts but no coherent digital presence
+  - Businesses whose visitors can't easily find one channel from another
+problems:
+  - Disconnected accounts that don't route traffic to each other
+  - A website or landing page that exists but doesn't convert visits into action
+scope:
+  - Digital presence architecture (Linktree-style hubs, cross-linked accounts)
+  - Landing page and conversion path review
+  - Tracking setup so conversion is actually measurable
+exclusions:
+  - Full custom web development (scoped separately if needed)
+  - SEO content strategy (see Digital Strategy or Research & Audit)
+deliverables:
+  - Connected digital presence across channels
+  - A conversion path a visitor can actually follow
+  - Basic conversion tracking in place
+process:
+  - title: Map
+    description: Chart where visitors currently land and where they're supposed to go next.
+  - title: Connect
+    description: Build the paths between channels before touching branding or content.
+  - title: Measure
+    description: Put tracking in place so the fix can be verified, not assumed.
+relatedWork: ["02-bauntung-digital"]
+faqs:
+  - question: Do you build full websites?
+    answer: Landing pages and presence architecture, yes. Full custom builds are scoped case by case depending on complexity.
+  - question: What if we already have a website?
+    answer: Then this is a review and fix pass, not a rebuild — most of the time the paths between channels are the actual gap, not the site itself.
+active: true

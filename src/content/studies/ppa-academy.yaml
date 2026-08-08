@@ -1,0 +1,22 @@
+order: 2
+title: PPA Academy
+studyType: independent
+industry: Vocational Training / Education
+categories: [Marketing, Growth]
+summary: >-
+  A SWOT, product-market fit, and growth/risk strategy deck, done independently rather than as commissioned client work.
+assumptions:
+  - Based on PPA Academy's public program offerings and market positioning as observed.
+problem: >-
+  Vocational training providers in this space often expand program offerings faster than they validate demand for each one, spreading marketing spend thin across programs of uneven strength.
+research: >-
+  Mapped the program lineup against visible enrollment signals and competitive alternatives to identify where demand looked strongest and weakest.
+analysis: >-
+  A full SWOT plus product-market fit read against the existing program mix, surfacing which programs justified growth investment and which carried disproportionate risk.
+proposal: >-
+  A growth and risk strategy prioritizing the programs with the clearest demand signal, deferring investment in the weaker ones until validated.
+limitations:
+  - Not implemented — this is a strategic exercise, not a delivered engagement.
+  - No access to actual enrollment or financial data; based on public signals only.
+notImplemented: true
+featured: false

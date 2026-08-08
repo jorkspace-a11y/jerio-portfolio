@@ -1,0 +1,9 @@
+order: 1
+title: ROAS Calculator
+slug: roas-calculator
+type: calculator
+summary: >-
+  Enter ad spend and revenue to get return on ad spend, plus the break-even ROAS you need to hit given your margin.
+free: true
+requiresEmail: false
+monetization: none

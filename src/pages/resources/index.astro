@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+const resources = (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Resources | Jerio" description="Free tools, calculators, and checklists — practical, not gated behind an email you don't want to give.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="resources-index" style="padding-top:64px;">
+        <div class="eyebrow">Resources</div>
+        <h1 class="head">Free, useful, no signup required.</h1>
+
+        <div class="resources-grid">
+          {resources.map((r) => (
+            <a href={`/resources/${r.data.type}s/${r.data.slug}/`} class="resource-card" data-cursor="OPEN">
+              <span class="resource-card-type">{r.data.type}</span>
+              <span class="resource-card-title">{r.data.title}</span>
+              <p class="resource-card-summary">{r.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .resource-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
+  .resource-card:hover{transform:translateY(-2px);border-color:var(--border);}
+  .resource-card-type{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+  .resource-card-title{display:block;font-family:var(--serif);font-style:italic;font-size:18px;margin:8px 0 6px;}
+  .resource-card-summary{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;}
+</style>

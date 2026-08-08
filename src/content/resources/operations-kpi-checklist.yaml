@@ -1,0 +1,18 @@
+order: 3
+title: Operations KPI Checklist
+slug: operations-kpi-checklist
+type: guide
+summary: >-
+  What's actually worth tracking on an operations dashboard, versus what just looks good on one.
+free: true
+requiresEmail: false
+monetization: none
+body: >-
+  The gap between something breaking and someone finding out is the number that matters most in most operational reporting. Everything else is secondary.
+items:
+  - Time between an issue occurring and it being visible to the person who can act on it
+  - Machine or resource utilization against real (not theoretical) capacity
+  - Document/compliance validity rate, checked against the actual current requirement, not last year's
+  - Scheduling conflict rate across shared resources or teams
+  - Manual reporting hours per week, and what happens to that time once it's automated
+  - Named ownership per KPI — a number with no owner doesn't get acted on

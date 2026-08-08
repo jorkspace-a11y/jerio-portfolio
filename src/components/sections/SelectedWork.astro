@@ -2,44 +2,32 @@
 import { getEntry } from 'astro:content';
 import StatusBadge from '../StatusBadge.astro';
 
-const bti = await getEntry('case-studies', '05-blue-tick-ice');
-const digimune = await getEntry('case-studies', '09-digimune-indonesia');
+const slugs = [
+  '05-blue-tick-ice',
+  '09-digimune-indonesia',
+  '01-soracha',
+  '03-kkbc',
+  '06-pt-transkon-jaya',
+  '08-sinar-mas-land',
+];
+const items = (await Promise.all(slugs.map((id) => getEntry('case-studies', id)))).filter((e) => e !== undefined);
 ---
 <section id="selected-work">
   <div class="eyebrow">Selected Work</div>
-  <h2 class="head">Three ways the same discipline shows up.</h2>
+  <h2 class="head">Six ways the same discipline shows up.</h2>
 
   <div class="selected-list">
-    {bti && (
-      <a href={`/work/${bti.id}/`} class="selected-card" data-cursor="VIEW">
+    {items.map((cs) => (
+      <a href={`/work/${cs.id}/`} class="selected-card" data-cursor="VIEW">
         <div class="selected-card-head">
-          <span class="selected-card-org">Blue Tick Ice</span>
-          <StatusBadge status={bti.data.status} />
+          <span class="selected-card-org">{cs.data.organisation}</span>
+          <StatusBadge status={cs.data.status} />
         </div>
-        <p class="selected-card-role">{bti.data.role}</p>
-        <p class="selected-card-desc">{bti.data.moved}</p>
+        <p class="selected-card-role">{cs.data.role}</p>
+        <p class="selected-card-desc">{cs.data.moved}</p>
         <span class="selected-card-link">View case study</span>
       </a>
-    )}
-    {digimune && (
-      <a href={`/work/${digimune.id}/`} class="selected-card" data-cursor="VIEW">
-        <div class="selected-card-head">
-          <span class="selected-card-org">Digimune Indonesia</span>
-          <StatusBadge status={digimune.data.status} />
-        </div>
-        <p class="selected-card-role">{digimune.data.role}</p>
-        <p class="selected-card-desc">{digimune.data.moved}</p>
-        <span class="selected-card-link">View case study</span>
-      </a>
-    )}
-    <a href="/about/" class="selected-card" data-cursor="VIEW">
-      <div class="selected-card-head">
-        <span class="selected-card-org">Allo.Society</span>
-      </div>
-      <p class="selected-card-role">Founded by Jerio &middot; separate company</p>
-      <p class="selected-card-desc">A Bali-rooted consultancy running brand builds, campaign strategy, CRM systems, and social management for founders who don't have an internal team to do it themselves. Not this site, and this site isn't it.</p>
-      <span class="selected-card-link">About Jerio</span>
-    </a>
+    ))}
   </div>
 
   <a href="/work/" class="selected-archive-link">See the full archive &rarr;</a>
@@ -47,13 +35,14 @@ const digimune = await getEntry('case-studies', '09-digimune-indonesia');
 
 <style>
   .selected-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
-  @media (max-width:900px){.selected-list{grid-template-columns:1fr;}}
-  .selected-card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:28px 26px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
+  @media (max-width:1100px){.selected-list{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:640px){.selected-list{grid-template-columns:1fr;}}
+  .selected-card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:26px 24px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
   .selected-card:hover{transform:translateY(-3px);border-color:var(--border);}
   .selected-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
-  .selected-card-org{font-family:var(--serif);font-style:italic;font-size:19px;}
+  .selected-card-org{font-family:var(--serif);font-style:italic;font-size:18px;}
   .selected-card-role{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:0;}
-  .selected-card-desc{font-size:13px;color:var(--text-dim);line-height:1.65;margin:0;flex:1;}
+  .selected-card-desc{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;flex:1;}
   .selected-card-link{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:4px;}
   .selected-archive-link{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;}
   .selected-archive-link:hover{color:var(--accent);border-color:var(--accent);}

@@ -1,0 +1,19 @@
+order: 2
+title: Marketing Audit Checklist
+slug: marketing-audit-checklist
+type: guide
+summary: >-
+  The questions worth answering before spending on a new campaign, not after.
+free: true
+requiresEmail: false
+monetization: none
+body: >-
+  Most campaign underperformance traces back to something that was never checked before launch, not the creative itself. This is the check pass worth running first.
+items:
+  - Is conversion tracking actually firing correctly, verified end to end, not just installed?
+  - Does every channel route to a page built to convert that specific visitor's intent?
+  - Is there a documented ideal customer profile, or is targeting based on assumption?
+  - Are past campaign results written down anywhere, or does every campaign start from zero?
+  - Is CRM segmentation doing real work, or is every contact getting the same sequence?
+  - Does the reported metric (impressions, clicks, reach) actually tie to a business outcome?
+  - Is there a named owner for each channel, or is everything "the marketing person's job"?

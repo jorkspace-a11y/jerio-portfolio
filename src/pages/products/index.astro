@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RailNav from '../../components/nav/RailNav.astro';
+import MobileBar from '../../components/nav/MobileBar.astro';
+
+const products = (await getCollection('products', ({ data }) => data.active)).sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Products | Jerio" description="Owned templates, dashboards, and toolkits — free and paid.">
+  <MobileBar />
+  <div class="shell">
+    <RailNav />
+    <main>
+      <section id="products-index" style="padding-top:64px;">
+        <div class="eyebrow">Products</div>
+        <h1 class="head">Nothing live yet.</h1>
+        {products.length === 0 ? (
+          <p class="products-empty">No products are live for purchase or download yet — checkout and delivery need a payment provider set up first, which is a separate, deliberate step. <a href="/resources/">Resources</a> has free tools and checklists in the meantime.</p>
+        ) : (
+          <div class="products-grid">
+            {products.map((p) => (
+              <a href={`/products/${p.data.slug}/`} class="product-card">
+                <span class="product-card-title">{p.data.title}</span>
+                <p class="product-card-summary">{p.data.summary}</p>
+                <span class="product-card-price">{p.data.priceType === 'free' ? 'Free' : `${p.data.price} ${p.data.currency}`}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .products-empty{font-size:14px;color:var(--text-dim);line-height:1.75;max-width:56ch;}
+  .products-empty a{color:var(--accent);border-bottom:1px solid var(--accent);text-decoration:none;}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .product-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;}
+  .product-card-title{font-family:var(--serif);font-style:italic;font-size:18px;}
+  .product-card-summary{font-size:12.5px;color:var(--text-dim);margin:8px 0;}
+  .product-card-price{font-family:var(--mono);font-size:11px;color:var(--accent);}
+</style>

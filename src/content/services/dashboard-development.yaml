@@ -1,0 +1,36 @@
+order: 6
+title: Dashboard Development
+slug: dashboard-development
+summary: >-
+  Reporting pipelines and dashboards that replace hours of manual compilation with a system that surfaces problems before someone has to go looking for them.
+audience:
+  - Teams still compiling weekly/monthly reports by hand
+  - Operations that need visibility across production, sales, or logistics data
+problems:
+  - Reporting that takes hours to compile and is stale by the time it's read
+  - No single place to see what's actually happening across departments
+scope:
+  - Data pipeline design (Python/SQLite/ETL)
+  - Dashboard build (React or equivalent, matched to the team's actual usage)
+  - Handover and documentation so the system survives without the builder
+exclusions:
+  - Full custom software products beyond reporting/operational dashboards
+  - Ongoing hosting/maintenance unless separately scoped
+deliverables:
+  - Working data pipeline
+  - Dashboard interface
+  - Documentation for handover
+process:
+  - title: Audit
+    description: Confirm what data actually exists and where it currently lives before designing anything.
+  - title: Build
+    description: Build the pipeline and dashboard around how the team actually works, not a generic template.
+  - title: Hand over
+    description: Document it so it keeps running without the person who built it.
+relatedWork: ["05-blue-tick-ice"]
+faqs:
+  - question: What tools do you build with?
+    answer: Python/SQLite for pipelines, React for dashboards, AppSheet for lighter internal tools — matched to what the team can actually maintain.
+  - question: Can this integrate with our existing systems?
+    answer: Depends on what's already in place — this gets scoped after an audit of the current data sources.
+active: true

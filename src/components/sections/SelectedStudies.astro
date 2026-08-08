@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+
+const studies = (await getCollection('studies')).sort((a, b) => a.data.order - b.data.order);
+---
+<section id="selected-studies">
+  <div class="eyebrow">Selected Studies</div>
+  <h2 class="head">Thinking, clearly separated from client work.</h2>
+  <p class="studies-teaser-note">Independent and conceptual exercises — never commissioned, never implemented for a real client.</p>
+  <div class="studies-teaser-list">
+    {studies.map((s) => (
+      <a href={`/studies/${s.id}/`} class="studies-teaser-card" data-cursor="VIEW">
+        <span class="studies-teaser-type">{s.data.studyType === 'independent' ? 'Independent Case Study' : 'Conceptual Study'}</span>
+        <span class="studies-teaser-title">{s.data.title}</span>
+        <p class="studies-teaser-desc">{s.data.summary}</p>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .studies-teaser-note{font-size:13px;color:var(--text-dim);margin:0 0 24px;max-width:56ch;}
+  .studies-teaser-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  @media (max-width:640px){.studies-teaser-list{grid-template-columns:1fr;}}
+  .studies-teaser-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:22px 20px;text-decoration:none;color:inherit;}
+  .studies-teaser-type{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+  .studies-teaser-title{display:block;font-family:var(--serif);font-style:italic;font-size:18px;margin:8px 0;}
+  .studies-teaser-desc{font-size:12.5px;color:var(--text-dim);margin:0;line-height:1.6;}
+</style>

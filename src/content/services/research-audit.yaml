@@ -1,0 +1,36 @@
+order: 7
+title: Research & Audit
+slug: research-audit
+summary: >-
+  Gap analysis and process audits that name the actual failure points, with an owner attached to every fix — not a report that gets filed and forgotten.
+audience:
+  - Businesses preparing for certification or external audit
+  - Teams that suspect something's broken but haven't named it precisely
+problems:
+  - Process failures nobody has formally owned
+  - Certification paths with no clear gap analysis behind them
+scope:
+  - Gap analysis against the relevant standard or goal
+  - Procedure documentation with a named owner per fix
+  - Verification that fixes actually close the gap, not just paper over it
+exclusions:
+  - Certification issuance itself (that's the certifying body's call)
+  - Legal or regulatory advice
+deliverables:
+  - Written gap analysis
+  - Procedures with named owners
+  - Verified closure of each identified failure
+process:
+  - title: Audit
+    description: Run the gap analysis against the real standard, not an assumed one.
+  - title: Assign
+    description: Attach a named owner to every fix — a fix without one doesn't survive.
+  - title: Verify
+    description: Confirm each fix actually closed the gap before calling it done.
+relatedWork: ["08-sinar-mas-land"]
+faqs:
+  - question: What standards have you worked against?
+    answer: ISO 9001:2018 and SMK3 directly, plus fleet/mine-site compliance requirements in a separate engagement.
+  - question: Do you issue the certification?
+    answer: No — this gets the business to certification-ready status; the certifying body issues it.
+active: true
