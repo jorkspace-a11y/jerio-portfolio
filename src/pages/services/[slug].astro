@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 const { s } = Astro.props;
 const { title, summary, audience, problems, scope, exclusions, deliverables, process, relatedWork, faqs } = s.data;
 
-const relatedCaseStudies = (await Promise.all(relatedWork.map((id: string) => getEntry('case-studies', id)))).filter(Boolean);
+const relatedWorkItems = (await Promise.all(relatedWork.map((id: string) => getEntry('work', id)))).filter(Boolean);
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -61,11 +61,11 @@ const serviceJsonLd = {
           </div>
         </div>
 
-        {relatedCaseStudies.length > 0 && (
+        {relatedWorkItems.length > 0 && (
           <div class="service-related">
             <div class="lbl">Related work</div>
             <div class="related-list">
-              {relatedCaseStudies.map((cs: any) => <a href={`/work/${cs.id}/`} class="related-link">{cs.data.title}</a>)}
+              {relatedWorkItems.map((w: any) => <a href={`/work/${w.id}/`} class="related-link">{w.data.title}</a>)}
             </div>
           </div>
         )}

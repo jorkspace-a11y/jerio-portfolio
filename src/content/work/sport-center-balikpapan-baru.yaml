@@ -1,9 +1,12 @@
-order: 9
+order: 16
 title: Sport Center Balikpapan Baru
-industry: Sports & Recreation
+organisation: Sport Center Balikpapan Baru
+slug: sport-center-balikpapan-baru
+featured: false
 categories: [Brand]
-size: wide
-description: >-
+industry: Sports & Recreation
+status: delivered
+summary: >-
   Logo design, nothing beyond scope. Delivered, logo only.
 archives:
   - title: "View logo variants, 4 files"

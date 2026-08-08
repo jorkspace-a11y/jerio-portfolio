@@ -1,0 +1,27 @@
+order: 3
+title: KKBC
+organisation: KKBC
+slug: 03-kkbc
+featured: true
+categories: [Marketing]
+status: delivered
+role: CRM strategy & segmentation
+summary: >-
+  A digital agency's client portfolio needed CRM sequences that actually converted, not just automated sends going out on schedule.
+workDone:
+  - >-
+    I built segmentation logic and wrote copy for each touchpoint separately, then automated the parts that were pure manual overhead, contact tagging, sequence enrollment, lead status updates.
+outcomes:
+  - value: "14.4%"
+    label: Click-through rate
+    evidenceNote: "1,534 emails delivered at a 14.4% click-through rate against a 2-3% B2B industry benchmark."
+  - value: "74"
+    label: Qualified leads generated
+    evidenceNote: "74 qualified leads generated."
+  - value: "2 hrs/week"
+    label: Manual CRM work removed by automation
+    evidenceNote: "Automation removed 2 hours of manual CRM work every week."
+lessons:
+  - Segmentation and copy carry a CRM sequence. Send volume doesn't.
+relatedServices: [digital-strategy, performance-marketing]
+relatedFieldNotes: [digital-strategy-before-the-build-plan, segmentation-before-automation]

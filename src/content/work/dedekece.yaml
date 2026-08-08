@@ -1,7 +1,10 @@
-order: 11
+order: 17
 title: Dedekece
-industry: "Retail / Rental Service (Baby & Kids)"
+organisation: Dedekece
+slug: dedekece
+featured: false
 categories: [Brand]
-size: standard
-description: >-
+industry: "Retail / Rental Service (Baby & Kids)"
+status: delivered
+summary: >-
   A Jabodetabek baby and kids toy rental shop, same day service, positioned around safety and hygiene. Pastel pink and teal branding with a mascot character, promo and rate-card content. Delivered, personal project.

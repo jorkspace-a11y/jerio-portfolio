@@ -12,9 +12,9 @@ const ids = [
 ];
 const items = await Promise.all(
   ids.map(async (id) => {
-    const entry = await getEntry('case-studies', id);
+    const entry = await getEntry('work', id);
     if (!entry) {
-      throw new Error(`SelectedWork.astro: case-study id "${id}" not found — check for a typo or a renamed/removed entry.`);
+      throw new Error(`SelectedWork.astro: Work id "${id}" not found — check for a typo or a renamed/removed entry.`);
     }
     return entry;
   })
@@ -32,8 +32,8 @@ const items = await Promise.all(
           <StatusBadge status={cs.data.status} />
         </div>
         <p class="selected-card-role">{cs.data.role}</p>
-        <p class="selected-card-desc">{cs.data.moved}</p>
-        <span class="selected-card-link">View case study</span>
+        <p class="selected-card-desc">{cs.data.summary}</p>
+        <span class="selected-card-link">View Work</span>
       </a>
     ))}
   </div>

@@ -6,17 +6,16 @@ import MobileBar from '../../components/nav/MobileBar.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { CATEGORIES } from '../../data/taxonomy';
 
-const caseStudies = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
-const galleryItems = (await getCollection('gallery-items')).sort((a, b) => a.data.order - b.data.order);
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 
 // Filter buttons are derived from the canonical taxonomy (src/data/taxonomy.ts),
 // narrowed to categories with at least one published entry — never a second
 // hand-written list. The underlying taxonomy stays canonical even when a
 // category is temporarily hidden for lack of content.
-const usedCategories = new Set([...caseStudies, ...galleryItems].flatMap((item) => item.data.categories));
+const usedCategories = new Set(work.flatMap((item) => item.data.categories));
 const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
 ---
-<BaseLayout title="Work | Jerio" description="Every project, filterable by discipline — growth, marketing, brand, operations, and systems work by Jerio.">
+<BaseLayout title="Work | Jerio" description="Every project, filterable by discipline — strategy, growth, marketing, brand, operations, and systems work by Jerio.">
   <MobileBar />
   <div class="shell">
     <RailNav />
@@ -37,25 +36,20 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
         </noscript>
 
         <div class="archive-grid">
-          {caseStudies.map((cs) => (
-            <a href={`/work/${cs.id}/`} class="archive-card" data-cursor="VIEW" data-categories={cs.data.categories.join(' ')}>
+          {work.map((w) => (
+            <a
+              href={`/work/${w.id}/`}
+              class="archive-card"
+              data-cursor="VIEW"
+              data-categories={JSON.stringify(w.data.categories)}
+            >
               <div class="archive-card-head">
-                <span class="archive-card-title">{cs.data.title}</span>
-                <StatusBadge status={cs.data.status} />
+                <span class="archive-card-title">{w.data.title}</span>
+                <StatusBadge status={w.data.status} />
               </div>
-              <div class="archive-card-org">{cs.data.organisation}{cs.data.parentProject ? ` · ${cs.data.parentProject}` : ''}</div>
-              <p class="archive-card-role">{cs.data.role}</p>
+              <div class="archive-card-org">{w.data.organisation}{w.data.industry ? ` · ${w.data.industry}` : ''}</div>
+              <p class="archive-card-role">{w.data.role ?? w.data.summary}</p>
             </a>
-          ))}
-          {galleryItems.map((g) => (
-            <div class="archive-card archive-card-light" data-categories={g.data.categories.join(' ')}>
-              <div class="archive-card-head">
-                <span class="archive-card-title">{g.data.title}</span>
-                {g.data.status && <StatusBadge status={g.data.status} />}
-              </div>
-              <div class="archive-card-org">{g.data.industry}</div>
-              <p class="archive-card-role">{g.data.description}</p>
-            </div>
           ))}
         </div>
       </section>
@@ -71,7 +65,7 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
   .filter-noscript{font-size:13px;color:var(--text-dimmer);margin-bottom:24px;}
   .archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
   .archive-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
-  a.archive-card:hover{transform:translateY(-2px);border-color:var(--border);}
+  .archive-card:hover{transform:translateY(-2px);border-color:var(--border);}
   .archive-card.is-hidden{display:none;}
   .archive-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .archive-card-title{font-family:var(--serif);font-style:italic;font-size:17px;}
@@ -92,8 +86,8 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
       const filter = btn.dataset.filter;
       trackEvent('work_filter_used', { filter });
       cards.forEach((card) => {
-        const cats = card.dataset.categories ?? '';
-        const match = filter === 'All' || cats.split(' ').includes(filter ?? '');
+        const cats = JSON.parse(card.dataset.categories ?? '[]') as string[];
+        const match = filter === 'All' || cats.includes(filter ?? '');
         card.classList.toggle('is-hidden', !match);
       });
     });

@@ -25,3 +25,29 @@ Covered in detail in `docs/schema-map.md`. Noted here because an earlier PRD dra
 ## `/writing/` redirect — correcting an earlier inaccurate note
 
 An earlier commit this sprint (`feed5fa`) and `docs/route-audit.json` describe fixing a "missing source file" for the `/writing/` redirect. That description was wrong: the real source (`src/pages/writing/index.astro`) existed the whole time. The actual mistake was mine — a flawed file search missed it, leading me to create a duplicate `public/writing/index.html` that shadowed the real page. That duplicate has been removed; the site now builds from the original, correct source with no warnings. Recorded here as a factual correction to the sprint's own evidence trail, per the standing rule against evidence documents containing untested or inaccurate claims.
+
+---
+
+# Release A: Work model migration deviations
+
+Deviations made while merging `case-studies` + `gallery-items` into the unified `work` collection per the Canonical PRD V2 (section 11).
+
+## Kept the old `archives` field alongside the PRD's `media` field
+
+The Canonical PRD V2's Work schema (section 11.1) specifies a flat `media` array. The old case-studies/gallery-items schema had a richer, labeled/grouped `archives` structure (`title` → `groups[]` → `label` + `thumbs[]`) that's already carrying real content: Soracha's 35-image asset archive across 4 labeled groups, Digimune Indonesia's 46 images across 4 separate archive blocks, Karsa Tani Perkasa's 27-image brand system, Arkasa Compliance's 9 logo variants, Sport Center's 4 logo variants. Dropping that structure down to a flat `media` list would either lose the grouping/labeling entirely or force an awkward re-labeling pass with no real benefit. Both fields now exist on the schema: `media` for the PRD's flat case, `archives` for the grouped case that's actually in use. Nothing currently populates `media` — it's there for a future entry that needs a simple flat gallery without grouping.
+
+## Preserved numeric-prefixed route IDs for all 9 former case-studies
+
+PRD section 12.4 explicitly allows this: "If removing numeric prefixes risks unnecessary redirect complexity or indexing churn, the agent may preserve existing route IDs for this release and document the decision." All 9 former case-studies (`01-soracha` through `09-digimune-indonesia`) already have live, Search-Console-indexed routes at `/work/{numeric-id}/` — confirmed indexed via URL Inspection this session. Renaming them to clean slugs would require either a redirect layer (GitHub Pages has none) or accepting a hard 404 on every existing inbound/shared link and an indexing reset. Kept as-is. The 9 former gallery-items never had individual routes, so they got clean slugs with no prefix (`karsa-tani-perkasa`, `xiaomi`, etc.) — there was nothing to preserve for those.
+
+## Status call: Ditlantas Polda Kalimantan Timur marked `delivered`
+
+Full reasoning in `docs/work-migration-map.md`. Source text ("Real engagement, case study pending. Scope and outcomes not yet documented here") doesn't state active/ongoing status. Marked `delivered` rather than `ongoing`, per PRD section 13.2's explicit instruction not to call thin documentation "ongoing work" by default.
+
+## The Canonical PRD V2's stated verified baseline was already stale when work started
+
+The PRD document states `main@5d58466...` and `astro-source@14a9fcd...` as the verified baseline. By the time it was read, production was already at `main@9838380...` (astro-source `de96739...`) — GA4 was live with a real measurement ID, Search Console was verified, and the sitemap was submitted, all done earlier in this same session after the PRD's stated baseline was captured. This meant several of the PRD's P3 "known defects" (GA4 wired but not live, Search Console not verified, sitemap not submitted) were already resolved before Release A started. Not a deviation from the PRD's intent, just a timing note so the acceptance evidence doesn't look like it's re-solving an already-solved problem.
+
+## `RevoU, Digital Marketing Specialist` / `RevoU, Project Officer` used as both title and organisation
+
+These two former gallery-items don't name a separate company — RevoU is the platform, and the title itself names the role/program. Following the pattern already established by every other item in this dataset (organisation always equals title, verified across all 9 original case-studies), `organisation` was set equal to `title` for these two rather than inventing a separate company name that isn't in the source.

@@ -1,0 +1,27 @@
+order: 5
+title: Blue Tick Ice
+organisation: Blue Tick Ice
+slug: 05-blue-tick-ice
+featured: true
+categories: [Operations, Systems]
+status: ongoing
+role: Operations lead, six departments
+summary: >-
+  Took over six departments at once, at a factory with no standardized systems and a team that needed training from scratch.
+workDone:
+  - >-
+    Trained the team to full production capacity before touching software. Then built a reporting pipeline to replace manual weekly reporting entirely.
+outcomes:
+  - value: "74% -> 83%"
+    label: Machine utilization
+    evidenceNote: "Machine utilization up from 74% to 83%."
+  - value: "4 hrs -> under 5 min"
+    label: Weekly executive reporting time
+    evidenceNote: "Weekly executive reporting cut from four hours to under five minutes."
+  - value: "6 accounts, 0 missed"
+    label: Premium Bali F&B accounts on recurring weekly revenue
+    evidenceNote: "Recurring weekly revenue secured from six premium Bali F&B accounts, zero missed deliveries."
+lessons:
+  - Shrinking the time between something breaking and someone finding out mattered more than any dashboard.
+relatedServices: [operational-systems, dashboard-development]
+relatedFieldNotes: [operations-dashboard-what-it-should-shorten]

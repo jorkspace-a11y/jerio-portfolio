@@ -1,17 +1,21 @@
 order: 1
 title: Soracha
 organisation: Soracha
-role: Brand identity & photography direction
+slug: 01-soracha
+featured: true
 categories: [Brand, Marketing]
 status: delivered
-situation: >-
+role: Brand identity & photography direction
+summary: >-
   No brand existed yet, no name recognition, no visual identity, no online presence. Building an F&B brand from literally nothing.
-decision: >-
-  Before locking any visual direction, I mapped what Soracha actually had versus what they thought they had. Rather than wait on a production budget that didn't exist, I shot the initial photography myself on an iPhone 16, and built the identity system in Photoshop and Canva so it could be extended later.
-moved: >-
-  A complete, service-ready brand foundation, identity, photography direction, and a social system the brand could launch on immediately. Live today as "Soracha, Matcha Slow Bar," running a flirty voice built on Gen Z internet humor ("Matcha for main characters only") out of Night Market Attackz and Food Center GrandCity in Balikpapan, carried mostly through short-form video.
-lesson: >-
-  Verify what a client actually has, and actually needs, before you start building.
+workDone:
+  - >-
+    Before locking any visual direction, I mapped what Soracha actually had versus what they thought they had. Rather than wait on a production budget that didn't exist, I shot the initial photography myself on an iPhone 16, and built the identity system in Photoshop and Canva so it could be extended later.
+  - >-
+    A complete, service-ready brand foundation, identity, photography direction, and a social system the brand could launch on immediately. Live today as "Soracha, Matcha Slow Bar," running a flirty voice built on Gen Z internet humor ("Matcha for main characters only") out of Night Market Attackz and Food Center GrandCity in Balikpapan, carried mostly through short-form video.
+lessons:
+  - Verify what a client actually has, and actually needs, before you start building.
+relatedServices: [brand-digital-presence]
 archives:
   - title: "View full asset archive, 35 files"
     groups:

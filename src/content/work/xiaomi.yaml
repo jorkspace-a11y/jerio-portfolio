@@ -1,7 +1,10 @@
-order: 3
+order: 12
 title: Xiaomi
-industry: Consumer Electronics
+organisation: Xiaomi
+slug: xiaomi
+featured: false
 categories: [Marketing]
-size: narrow
-description: >-
+industry: Consumer Electronics
+status: delivered
+summary: >-
   Social media strategy and digital marketing planning for a physical retail partner, Xiaomi Authorized Store by GadgetMart in Balikpapan. 91 posts live, mixing official product launches with native, relatable short-form video in the account's own voice. Delivered.

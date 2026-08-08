@@ -1,42 +1,382 @@
 {
   "generatedAt": "2026-08-08",
-  "method": "Built dist/ locally with npm run build, then verified: (1) every href in every generated HTML page resolves to an actual file in dist/ via a script that walked the full output tree, (2) production routes spot-checked live via curl against https://whatmattersbuilt.co/ after deploy.",
+  "method": "Regenerated after the P1 Work-model migration (case-studies + gallery-items merged into a single `work` collection, all 18 items now clickable). Built dist/ locally with npm run build, verified every href in every generated HTML page resolves to an actual file in dist/ via a script that walks the full output tree.",
   "routes": [
-    { "route": "/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/", "indexable": true, "notes": "" },
-    { "route": "/work/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/", "indexable": true, "notes": "Filterable archive, 9 case studies + gallery items" },
-    { "route": "/work/01-soracha/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/01-soracha/", "indexable": true, "notes": "" },
-    { "route": "/work/02-bauntung-digital/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/02-bauntung-digital/", "indexable": true, "notes": "" },
-    { "route": "/work/03-kkbc/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/03-kkbc/", "indexable": true, "notes": "" },
-    { "route": "/work/04-dream-box/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/04-dream-box/", "indexable": true, "notes": "" },
-    { "route": "/work/05-blue-tick-ice/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/05-blue-tick-ice/", "indexable": true, "notes": "status: ongoing (corrected this sprint)" },
-    { "route": "/work/06-pt-transkon-jaya/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/06-pt-transkon-jaya/", "indexable": true, "notes": "" },
-    { "route": "/work/07-putra-perkasa-abadi/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/07-putra-perkasa-abadi/", "indexable": true, "notes": "" },
-    { "route": "/work/08-sinar-mas-land/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/08-sinar-mas-land/", "indexable": true, "notes": "Hero evidence link target, confirmed no longer 404" },
-    { "route": "/work/09-digimune-indonesia/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/work/09-digimune-indonesia/", "indexable": true, "notes": "status: ongoing" },
-    { "route": "/studies/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/studies/", "indexable": true, "notes": "" },
-    { "route": "/studies/ifurnholic/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/studies/ifurnholic/", "indexable": true, "notes": "Independent Case Study, not client work" },
-    { "route": "/studies/ppa-academy/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/studies/ppa-academy/", "indexable": true, "notes": "Independent Case Study, not client work" },
-    { "route": "/services/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/", "indexable": true, "notes": "" },
-    { "route": "/services/digital-strategy/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/digital-strategy/", "indexable": true, "notes": "" },
-    { "route": "/services/performance-marketing/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/performance-marketing/", "indexable": true, "notes": "" },
-    { "route": "/services/web-conversion/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/web-conversion/", "indexable": true, "notes": "" },
-    { "route": "/services/brand-digital-presence/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/brand-digital-presence/", "indexable": true, "notes": "Slug differs from PRD's earlier conceptual /services/brand-digital — see docs/prd-deviations.md" },
-    { "route": "/services/operational-systems/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/operational-systems/", "indexable": true, "notes": "" },
-    { "route": "/services/dashboard-development/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/dashboard-development/", "indexable": true, "notes": "" },
-    { "route": "/services/research-audit/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/services/research-audit/", "indexable": true, "notes": "" },
-    { "route": "/field-notes/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/field-notes/", "indexable": true, "notes": "3 cornerstone notes published this sprint" },
-    { "route": "/resources/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/resources/", "indexable": true, "notes": "" },
-    { "route": "/resources/calculators/roas-calculator/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/resources/calculators/roas-calculator/", "indexable": true, "notes": "Real working calculator" },
-    { "route": "/resources/guides/marketing-audit-checklist/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/resources/guides/marketing-audit-checklist/", "indexable": true, "notes": "" },
-    { "route": "/resources/guides/operations-kpi-checklist/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/resources/guides/operations-kpi-checklist/", "indexable": true, "notes": "" },
-    { "route": "/products/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/products/", "indexable": true, "notes": "Intentionally empty — no payment provider connected" },
-    { "route": "/recommendations/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/recommendations/", "indexable": true, "notes": "2 real tools, no affiliate relationship, honestly disclosed" },
-    { "route": "/lab/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/lab/", "indexable": true, "notes": "Intentionally empty" },
-    { "route": "/about/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/about/", "indexable": true, "notes": "ProfilePage + Person JSON-LD" },
-    { "route": "/privacy/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/privacy/", "indexable": true, "notes": "" },
-    { "route": "/terms/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/terms/", "indexable": true, "notes": "" },
-    { "route": "/disclosure/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/disclosure/", "indexable": true, "notes": "" },
-    { "route": "/writing/", "expectedStatus": 200, "actualStatus": 200, "canonical": "https://whatmattersbuilt.co/field-notes/", "indexable": false, "notes": "Compatibility route: static page with meta-refresh + JS redirect to /field-notes/, and canonical points to the new location so it doesn't compete for indexing" },
-    { "route": "/404.html", "expectedStatus": 200, "actualStatus": 200, "canonical": null, "indexable": false, "notes": "GitHub Pages 404 handler" }
+    {
+      "route": "/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/about/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/about/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/disclosure/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/disclosure/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/field-notes/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/field-notes/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/field-notes/digital-strategy-before-the-build-plan/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/field-notes/digital-strategy-before-the-build-plan/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/field-notes/operations-dashboard-what-it-should-shorten/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/field-notes/operations-dashboard-what-it-should-shorten/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/field-notes/segmentation-before-automation/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/field-notes/segmentation-before-automation/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/lab/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/lab/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/privacy/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/privacy/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/products/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/products/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/recommendations/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/recommendations/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/resources/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/resources/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/resources/calculators/roas-calculator/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/resources/calculators/roas-calculator/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/resources/guides/marketing-audit-checklist/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/resources/guides/marketing-audit-checklist/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/resources/guides/operations-kpi-checklist/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/resources/guides/operations-kpi-checklist/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/brand-digital-presence/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/brand-digital-presence/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/dashboard-development/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/dashboard-development/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/digital-strategy/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/digital-strategy/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/operational-systems/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/operational-systems/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/performance-marketing/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/performance-marketing/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/research-audit/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/research-audit/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/services/web-conversion/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/services/web-conversion/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/studies/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/studies/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/studies/ifurnholic/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/studies/ifurnholic/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/studies/ppa-academy/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/studies/ppa-academy/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/terms/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/terms/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/",
+      "indexable": true,
+      "notes": "Filterable archive, all 18 real Work items, every card clickable (P1 release A fix)"
+    },
+    {
+      "route": "/work/01-soracha/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/01-soracha/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/02-bauntung-digital/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/02-bauntung-digital/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/03-kkbc/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/03-kkbc/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/04-dream-box/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/04-dream-box/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/05-blue-tick-ice/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/05-blue-tick-ice/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/06-pt-transkon-jaya/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/06-pt-transkon-jaya/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/07-putra-perkasa-abadi/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/07-putra-perkasa-abadi/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/08-sinar-mas-land/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/08-sinar-mas-land/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/09-digimune-indonesia/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/09-digimune-indonesia/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/arkasa-compliance/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/arkasa-compliance/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/dedekece/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/dedekece/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/ditlantas-polda-kaltim/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/ditlantas-polda-kaltim/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/karsa-tani-perkasa/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/karsa-tani-perkasa/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/pt-global-express-sejahtera/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/pt-global-express-sejahtera/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/revou-dm-specialist/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/revou-dm-specialist/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/revou-project-officer/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/revou-project-officer/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/sport-center-balikpapan-baru/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/sport-center-balikpapan-baru/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/work/xiaomi/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/work/xiaomi/",
+      "indexable": true,
+      "notes": ""
+    },
+    {
+      "route": "/writing/",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "canonical": "https://whatmattersbuilt.co/field-notes/",
+      "indexable": false,
+      "notes": "Compatibility route: meta-refresh + JS redirect to /field-notes/, canonical points to /field-notes/, noindex,follow, excluded from sitemap"
+    }
   ]
 }

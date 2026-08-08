@@ -1,0 +1,24 @@
+order: 8
+title: Sinar Mas Land
+organisation: Sinar Mas Land
+slug: 08-sinar-mas-land
+featured: true
+categories: [Operations]
+status: delivered
+role: Certification & process gap analysis
+summary: >-
+  Three property profit centers with no certification path and five process failures nobody owned.
+workDone:
+  - >-
+    Ran the gap analysis and wrote the procedures directly, with a named owner on every fix instead of just a written note.
+outcomes:
+  - value: "3/3 sites"
+    label: Reached certification-ready status for ISO 9001:2018 and SMK3
+    evidenceNote: "All three sites reached certification-ready status for ISO 9001:2018 and SMK3."
+  - value: "5/5"
+    label: Process failures closed and verified
+    evidenceNote: "All five failures closed and verified."
+lessons:
+  - A fix without a name attached doesn't survive.
+relatedServices: [digital-strategy, research-audit]
+relatedFieldNotes: [digital-strategy-before-the-build-plan]

@@ -2,15 +2,15 @@
 import { getCollection } from 'astro:content';
 
 // Hero evidence resolves to real Work routes by matching a stable content
-// key (the case study's title) against the actual collection at build time,
+// key (the project's title) against the actual collection at build time,
 // rather than hand-typed slugs — so a route/filename change can't silently
 // 404 the homepage again. Throws at build time if a title doesn't resolve.
-const caseStudies = await getCollection('case-studies');
+const work = await getCollection('work');
 
 function resolve(projectTitle: string) {
-  const entry = caseStudies.find((cs) => cs.data.title === projectTitle);
+  const entry = work.find((w) => w.data.title === projectTitle);
   if (!entry) {
-    throw new Error(`Hero.astro: no case-study found with title "${projectTitle}" — check for a typo or a renamed/removed entry.`);
+    throw new Error(`Hero.astro: no Work item found with title "${projectTitle}" — check for a typo or a renamed/removed entry.`);
   }
   return entry.id;
 }

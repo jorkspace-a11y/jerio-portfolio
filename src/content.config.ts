@@ -8,36 +8,48 @@ const archiveBlock = z.object({ title: z.string(), groups: z.array(archiveGroup)
 
 const category = z.enum(CATEGORIES);
 
-const caseStudies = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/case-studies' }),
+const media = z.object({
+  src: z.string(),
+  alt: z.string(),
+  caption: z.string().optional(),
+  type: z.enum(['image', 'screenshot', 'logo', 'document', 'dashboard', 'video']).default('image'),
+});
+
+const outcome = z.object({
+  value: z.string(),
+  label: z.string(),
+  evidenceNote: z.string().optional(),
+});
+
+// Unified real-Work model (PRD "Canonical PRD V2" section 11.1). Replaces the
+// old case-studies/gallery-items split: every real project is one Work
+// entity with adaptive content depth, not two collection types with
+// different clickability. `featured` controls homepage prominence only —
+// it is not a content-depth or client-relationship signal.
+const work = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/work' }),
   schema: z.object({
     order: z.number(),
     title: z.string(),
     organisation: z.string(),
-    parentProject: z.string().optional(),
-    role: z.string(),
+    slug: z.string(),
+    featured: z.boolean().default(false),
     categories: z.array(category),
+    industry: z.string().optional(),
     status: z.enum(['delivered', 'ongoing']),
-    situation: z.string(),
-    decision: z.string(),
-    moved: z.string(),
-    lesson: z.string().optional(),
+    role: z.string().optional(),
+    summary: z.string(),
+    context: z.string().optional(),
+    scope: z.array(z.string()).default([]),
+    workDone: z.array(z.string()).default([]),
+    outcomes: z.array(outcome).default([]),
+    limitations: z.array(z.string()).default([]),
+    lessons: z.array(z.string()).default([]),
+    media: z.array(media).default([]),
     archives: z.array(archiveBlock).default([]),
-  }),
-});
-
-const galleryItems = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/gallery-items' }),
-  schema: z.object({
-    order: z.number(),
-    title: z.string(),
-    industry: z.string(),
-    parentProject: z.string().optional(),
-    categories: z.array(category),
-    size: z.enum(['standard', 'narrow', 'wide', 'full']).default('standard'),
-    description: z.string(),
-    status: z.enum(['delivered', 'ongoing']).optional(),
-    archives: z.array(archiveBlock).default([]),
+    relatedServices: z.array(z.string()).default([]),
+    relatedFieldNotes: z.array(z.string()).default([]),
+    relatedResources: z.array(z.string()).default([]),
   }),
 });
 
@@ -160,8 +172,7 @@ const products = defineCollection({
 });
 
 export const collections = {
-  'case-studies': caseStudies,
-  'gallery-items': galleryItems,
+  work,
   'field-notes': fieldNotes,
   studies,
   services,

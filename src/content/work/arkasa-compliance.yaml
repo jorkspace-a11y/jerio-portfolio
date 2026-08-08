@@ -1,9 +1,12 @@
-order: 2
+order: 11
 title: Arkasa Compliance
-industry: Compliance / Professional Service
+organisation: Arkasa Compliance
+slug: arkasa-compliance
+featured: false
 categories: [Brand, Marketing]
-size: wide
-description: >-
+industry: Compliance / Professional Service
+status: delivered
+summary: >-
   Brand presence built entirely from available materials. Live today as a vehicle document compliance service (STNK renewal and fleet administration) based in Balikpapan, serving companies nationwide, running problem/solution educational content: missed tax dates, fleet paperwork headaches, solved. Delivered.
 archives:
   - title: "View logo exploration, 9 files"

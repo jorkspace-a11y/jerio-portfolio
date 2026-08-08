@@ -1,0 +1,23 @@
+order: 4
+title: Dream Box
+organisation: Dream Box
+slug: 04-dream-box
+featured: false
+categories: [Marketing, Growth]
+status: delivered
+role: Paid media management, four brands
+summary: >-
+  Four client brands running concurrently, each needing independent campaign management on a combined IDR 80M ad budget.
+workDone:
+  - >-
+    I A/B tested interest-based versus lookalike targeting separately for each client, then documented the winning configurations as playbooks so the next campaign didn't start from zero.
+outcomes:
+  - value: "88"
+    label: Meta Ads campaigns managed
+    evidenceNote: "Managed 88 Meta Ads campaigns across the four brands."
+  - value: "3"
+    label: Documented targeting gaps adopted into positioning and pricing
+    evidenceNote: "Found three documented gaps between targeting intent and actual audience behavior, adopted directly into product positioning and pricing the following quarter."
+lessons:
+  - Running the campaigns mattered less than writing down what worked. That's what kept the next campaign from starting at zero.
+relatedServices: [performance-marketing]

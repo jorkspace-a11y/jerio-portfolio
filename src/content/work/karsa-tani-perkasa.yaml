@@ -1,9 +1,12 @@
-order: 1
+order: 10
 title: Karsa Tani Perkasa
-industry: Agriculture
+organisation: Karsa Tani Perkasa
+slug: karsa-tani-perkasa
+featured: false
 categories: [Brand]
-size: narrow
-description: >-
+industry: Agriculture
+status: delivered
+summary: >-
   Logo, landing page, company profile, marketing kit. Delivered, landing page since taken down.
 archives:
   - title: "View full asset archive, 27 files"

@@ -3,26 +3,53 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RailNav from '../../components/nav/RailNav.astro';
 import MobileBar from '../../components/nav/MobileBar.astro';
-import CaseStudy from '../../components/CaseStudy.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import ArchiveBlock from '../../components/ArchiveBlock.astro';
 
 export async function getStaticPaths() {
-  const caseStudies = await getCollection('case-studies');
-  return caseStudies.map((cs) => ({
-    params: { slug: cs.id },
-    props: { cs, all: caseStudies },
+  const work = await getCollection('work');
+  return work.map((w) => ({
+    params: { slug: w.id },
+    props: { w, all: work },
   }));
 }
 
-const { cs, all } = Astro.props;
-const { title, organisation, parentProject, role, categories } = cs.data;
-const related = all.filter((c) => c.id !== cs.id).slice(0, 3);
+const { w, all } = Astro.props;
+const {
+  title, organisation, role, categories, status, summary,
+  context, scope, workDone, outcomes, limitations, lessons,
+  media, archives, relatedServices, relatedFieldNotes, relatedResources,
+} = w.data;
+
+const related = all.filter((e) => e.id !== w.id).slice(0, 3);
+
+const allServices = await getCollection('services');
+const serviceLinks = relatedServices.map((slug) => {
+  const entry = allServices.find((s) => s.data.slug === slug);
+  if (!entry) throw new Error(`Work "${w.id}" references unknown service slug "${slug}"`);
+  return { href: `/services/${entry.data.slug}/`, label: entry.data.title };
+});
+
+const allFieldNotes = await getCollection('field-notes');
+const fieldNoteLinks = relatedFieldNotes.map((id) => {
+  const entry = allFieldNotes.find((n) => n.id === id);
+  if (!entry) throw new Error(`Work "${w.id}" references unknown field note id "${id}"`);
+  return { href: `/field-notes/${entry.id}/`, label: entry.data.title };
+});
+
+const allResources = await getCollection('resources');
+const resourceLinks = relatedResources.map((slug) => {
+  const entry = allResources.find((r) => r.data.slug === slug);
+  if (!entry) throw new Error(`Work "${w.id}" references unknown resource slug "${slug}"`);
+  return { href: `/resources/${entry.data.type}s/${entry.data.slug}/`, label: entry.data.title };
+});
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Work', item: 'https://whatmattersbuilt.co/work/' },
-    { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/work/${cs.id}/` },
+    { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/work/${w.id}/` },
   ],
 };
 
@@ -30,31 +57,86 @@ const workJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CreativeWork',
   name: title,
-  description: `${role} for ${organisation}. ${cs.data.situation}`,
+  description: `${role ? `${role} for ${organisation}. ` : ''}${summary}`,
   creator: { '@type': 'Person', name: 'Jerio' },
   about: organisation,
   keywords: categories.join(', '),
-  url: `https://whatmattersbuilt.co/work/${cs.id}/`,
+  url: `https://whatmattersbuilt.co/work/${w.id}/`,
 };
 ---
-<BaseLayout title={`${title} | Jerio`} description={`${role} for ${organisation}. ${cs.data.situation}`}>
+<BaseLayout title={`${title} | Jerio`} description={`${role ? `${role} for ${organisation}. ` : ''}${summary}`}>
   <MobileBar />
   <div class="shell">
     <RailNav />
     <main>
-      <section id="case" style="padding-top:64px;">
+      <section id="work-detail" style="padding-top:64px;">
         <div class="eyebrow"><a href="/work/">Work</a> / {title}</div>
-        <div class="case-meta">
+        <div class="work-meta">
           <div><span class="lbl">Organisation</span><span>{organisation}</span></div>
-          {parentProject && <div><span class="lbl">Parent project</span><span>{parentProject}</span></div>}
-          <div><span class="lbl">Role</span><span>{role}</span></div>
+          {role && <div><span class="lbl">Role</span><span>{role}</span></div>}
           <div><span class="lbl">Category</span><span>{categories.join(', ')}</span></div>
+          <div class="lbl-status"><StatusBadge status={status} /></div>
         </div>
-        <CaseStudy {...cs.data} />
+
+        <p class="work-summary">{summary}</p>
+
+        {context && <div class="work-block"><div class="lbl">Context</div><p>{context}</p></div>}
+
+        {scope.length > 0 && (
+          <div class="work-block"><div class="lbl">Scope</div><ul>{scope.map((s) => <li>{s}</li>)}</ul></div>
+        )}
+
+        {workDone.map((w2) => (
+          <div class="work-block"><div class="lbl">Work</div><p>{w2}</p></div>
+        ))}
+
+        {outcomes.length > 0 && (
+          <div class="work-block">
+            <div class="lbl">Outcomes</div>
+            <div class="outcomes-grid">
+              {outcomes.map((o) => (
+                <div class="outcome">
+                  <span class="outcome-value">{o.value}</span>
+                  <span class="outcome-label">{o.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {limitations.length > 0 && (
+          <div class="work-block"><div class="lbl">Limitations</div><ul>{limitations.map((l) => <li>{l}</li>)}</ul></div>
+        )}
+
+        {lessons.length > 0 && (
+          <div class="work-block lesson">{lessons.map((l) => <p>{l}</p>)}</div>
+        )}
+
+        {media.length > 0 && (
+          <div class="work-block">
+            <div class="lbl">Media</div>
+            <div class="media-grid">
+              {media.map((m) => <img src={m.src} alt={m.alt} loading="lazy" />)}
+            </div>
+          </div>
+        )}
+
+        {archives.map((a) => <ArchiveBlock title={a.title} groups={a.groups} />)}
+
+        {(serviceLinks.length > 0 || fieldNoteLinks.length > 0 || resourceLinks.length > 0) && (
+          <div class="related">
+            <div class="eyebrow">Related</div>
+            <div class="related-list">
+              {[...serviceLinks, ...fieldNoteLinks, ...resourceLinks].map((link) => (
+                <a href={link.href} class="related-link">{link.label}</a>
+              ))}
+            </div>
+          </div>
+        )}
 
         {related.length > 0 && (
           <div class="related">
-            <div class="eyebrow">Related work</div>
+            <div class="eyebrow">More Work</div>
             <div class="related-list">
               {related.map((r) => (
                 <a href={`/work/${r.id}/`} class="related-link">{r.data.title}</a>
@@ -70,10 +152,23 @@ const workJsonLd = {
 </BaseLayout>
 
 <style>
-  .case-meta{display:flex;flex-wrap:wrap;gap:24px 40px;margin-bottom:34px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
-  .case-meta > div{display:flex;flex-direction:column;gap:4px;}
-  .case-meta .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
-  .case-meta > div > span:last-child{font-size:14px;color:var(--text);}
+  .work-meta{display:flex;flex-wrap:wrap;align-items:center;gap:24px 32px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
+  .work-meta > div{display:flex;flex-direction:column;gap:4px;}
+  .work-meta .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
+  .work-meta > div > span:last-child{font-size:14px;color:var(--text);}
+  .work-summary{font-size:16px;color:var(--text-dim);line-height:1.7;max-width:62ch;margin:0 0 28px;}
+  .work-block{margin-bottom:24px;}
+  .work-block .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
+  .work-block p{font-size:14px;line-height:1.75;color:var(--text-dim);margin:0 0 10px;max-width:62ch;}
+  .work-block ul{margin:0;padding-left:18px;}
+  .work-block li{font-size:14px;line-height:1.75;color:var(--text-dim);}
+  .work-block.lesson p{font-family:var(--serif);font-style:italic;color:var(--text);font-size:16px;}
+  .outcomes-grid{display:flex;flex-wrap:wrap;gap:20px 32px;}
+  .outcome{display:flex;flex-direction:column;gap:2px;}
+  .outcome-value{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--accent);}
+  .outcome-label{font-size:11.5px;color:var(--text-dim);max-width:24ch;}
+  .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+  .media-grid img{width:100%;border-radius:8px;}
   .related{margin-top:48px;padding-top:28px;border-top:1px solid var(--border-soft);}
   .related-list{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:14px;}
   .related-link{font-family:var(--serif);font-style:italic;font-size:16px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}

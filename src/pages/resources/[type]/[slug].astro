@@ -90,10 +90,11 @@ const isCalculator = type === 'calculator';
   import { trackEvent } from '../../../scripts/analytics';
 
   const resourceSection = document.getElementById('resource');
-  trackEvent('resource_use', {
+  const resourceParams = {
     resource: resourceSection?.dataset.resourceSlug,
     type: resourceSection?.dataset.resourceType,
-  });
+  };
+  trackEvent('resource_view', resourceParams);
 
   const spendEl = document.getElementById('roas-spend') as HTMLInputElement | null;
   const revenueEl = document.getElementById('roas-revenue') as HTMLInputElement | null;
@@ -101,14 +102,24 @@ const isCalculator = type === 'calculator';
   const roasOut = document.getElementById('roas-output');
   const breakevenOut = document.getElementById('roas-breakeven-output');
 
+  let hasFiredUse = false;
+
   function calc() {
     if (!spendEl || !revenueEl || !marginEl || !roasOut || !breakevenOut) return;
     const spend = parseFloat(spendEl.value);
     const revenue = parseFloat(revenueEl.value);
     const margin = parseFloat(marginEl.value);
 
-    roasOut.textContent = spend > 0 && !isNaN(revenue) ? (revenue / spend).toFixed(2) + 'x' : '—';
-    breakevenOut.textContent = margin > 0 ? (100 / margin).toFixed(2) + 'x' : '—';
+    const validSpendRevenue = spend > 0 && !isNaN(revenue);
+    const validMargin = margin > 0;
+
+    roasOut.textContent = validSpendRevenue ? (revenue / spend).toFixed(2) + 'x' : '—';
+    breakevenOut.textContent = validMargin ? (100 / margin).toFixed(2) + 'x' : '—';
+
+    if (!hasFiredUse && (validSpendRevenue || validMargin)) {
+      hasFiredUse = true;
+      trackEvent('resource_use', resourceParams);
+    }
   }
 
   [spendEl, revenueEl, marginEl].forEach((el) => el?.addEventListener('input', calc));

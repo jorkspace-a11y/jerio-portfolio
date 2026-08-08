@@ -1,41 +1,41 @@
 # Analytics audit
 
-## Status: implemented, not yet live
+## Status: live
 
-GA4 requires a Google-account property to be created and verified — that's an auth boundary I can't cross. Everything on this side of that boundary is done and verified; the account-creation step is handed off below.
+GA4 property created, Measurement ID `G-PT94PQTWK8` deployed, tag confirmed live on production. Verified via GA4 Realtime: test visits from two separate browser contexts registered as active users in the same session this doc was written.
 
 ## What's implemented
 
-**Tag**: `src/layouts/BaseLayout.astro` reads `import.meta.env.PUBLIC_GA_MEASUREMENT_ID` at build time. If it's unset, no GA4 script renders at all — confirmed by grepping the built `dist/index.html` for `googletagmanager`: zero matches in the current build. If it's set, the standard `gtag.js` snippet renders sitewide, exactly once, in `<head>`.
+**Tag**: `src/layouts/BaseLayout.astro` reads `import.meta.env.PUBLIC_GA_MEASUREMENT_ID` at build time. `.env.production` on the build machine holds the real ID (gitignored, never committed). Confirmed present sitewide in the built output, correct ID injected via `define:vars`.
 
-**Event helper**: `src/scripts/analytics.ts` exports `trackEvent(name, params)`, which no-ops safely if `window.gtag` isn't present (i.e. before a measurement ID exists, or if GA is blocked client-side). Every event call site uses this helper, so none of them need to know whether GA is actually configured.
+**Event helper**: `src/scripts/analytics.ts` exports `trackEvent(name, params)`, which no-ops safely if `window.gtag` isn't present.
 
-**The 6 required events, wired and verified against the built output:**
+**Events wired and verified against the built output:**
 
 | Event | Fires when | File |
 |---|---|---|
 | `hero_evidence_click` | Homepage hero evidence link clicked | `src/components/sections/Hero.astro` |
 | `work_filter_used` | A category filter button clicked on `/work/` | `src/pages/work/index.astro` |
 | `service_cta_click` | "Start a project" clicked on a service page | `src/pages/services/[slug].astro` |
-| `resource_use` | A resource page (`/resources/{type}/{slug}/`) loads | `src/pages/resources/[type]/[slug].astro` |
+| `resource_view` | A resource page (`/resources/{type}/{slug}/`) loads | `src/pages/resources/[type]/[slug].astro` |
+| `resource_use` | Demonstrated interaction with a resource (first valid calculator input) | `src/pages/resources/[type]/[slug].astro` |
 | `contact_form_start` | First focus into any field of the Talk to Me form | `src/components/sections/Contact.astro` |
 | `generate_lead` | Formspree submission returns a success response | `src/components/sections/Contact.astro` |
 
-`generate_lead` fires only after `res.ok` from the actual Formspree POST, with no form field values in the event params, no name/email/message content, per the PRD's PII requirement.
+`generate_lead` fires only after `res.ok` from the actual Formspree POST, with no form field values in the event params.
 
-## What's verified vs. what isn't
+## `resource_view` / `resource_use` split
 
-Verified: `npx astro check` (0 errors), full production build succeeds, GA script correctly absent with no env var set, all 6 `trackEvent` call sites compile and appear in the built JS bundles (`_astro/Hero.*.js`, `_astro/Contact.*.js`, etc., confirmed present in `dist/_astro/`).
+Originally `resource_use` fired on every page load, indistinguishable from a page view. Split per the Canonical PRD V2 (section 37): `resource_view` now fires unconditionally on load, `resource_use` fires only on demonstrated use.
 
-Not verified, and can't be until a real measurement ID exists: actual event delivery to a GA4 property, DebugView confirmation, or real-time report data. That requires the property to exist first.
+The ROAS calculator fires `resource_use` once, the first time a spend/revenue pair or a margin value produces a real computed output (guarded so it only fires once per page load, not on every keystroke).
 
-## Handoff: creating the GA4 property
+The two checklist-type resources (Marketing Audit Checklist, Operations KPI Checklist) have no interactive element beyond the "Talk to me" CTA, they're read-only lists. `resource_use` doesn't fire on those pages, there's no real interaction to distinguish from the view. This is accurate to what the pages actually are, not a gap, adding a fake interaction just to populate the event would misrepresent what happened.
 
-This needs your own Google account login, which I don't have access to.
+## Not yet implemented
 
-1. Go to [analytics.google.com](https://analytics.google.com), create a property for `whatmattersbuilt.co` (or add it to an existing Google account if you already have one for other work).
-2. Under **Data Streams**, add a Web stream for `https://whatmattersbuilt.co`.
-3. Copy the Measurement ID it gives you (format `G-XXXXXXXXXX`).
-4. Send me that ID. I'll set `PUBLIC_GA_MEASUREMENT_ID` in the build environment, rebuild, and redeploy — the tag and all 6 events go live in that one build, since the wiring above is already done and just gated on this value.
+The Canonical PRD V2 (section 41.2) also lists `work_preview_open` and `work_view` as required events. Both depend on interactive components (the Work preview Dialog/Drawer, and a Work-detail-page view distinct from the archive) that don't exist yet, they're scoped to Release C (P2 interactive experience: React + shadcn Dialog/Drawer). Deferred, not skipped, tracked against that release, not this one.
 
-No code changes will be needed on my end once you have the ID beyond that env var and a rebuild.
+## Verification method
+
+`npx astro check` (0 errors), full production build, GA script confirmed present in `dist/index.html` with the correct measurement ID, live production `curl` confirming the tag on the deployed homepage, and a direct GA4 Realtime check (2 active users registered from live test visits) as the actual delivery proof, not just "the code compiled."

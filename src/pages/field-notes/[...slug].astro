@@ -17,8 +17,8 @@ const wordCount = a.body?.split(/\s+/).length ?? 0;
 const readingTime = Math.max(1, Math.round(wordCount / 200));
 
 const workLinks = await Promise.all(relatedWork.map(async (id) => {
-  const entry = await getEntry('case-studies', id);
-  if (!entry) throw new Error(`Field note "${a.id}" references unknown case study id "${id}"`);
+  const entry = await getEntry('work', id);
+  if (!entry) throw new Error(`Field note "${a.id}" references unknown Work id "${id}"`);
   return { href: `/work/${entry.id}/`, label: entry.data.title };
 }));
 

@@ -7,7 +7,7 @@ What structured data is emitted on each surface, verified against the actual sou
 | Every page (sitewide) | `Person`, `WebSite` | `src/layouts/BaseLayout.astro` |
 | `/about/` | `ProfilePage` (wrapping `Person`) | `src/pages/about.astro` |
 | `/services/[slug]/` (7 pages) | `Service`, `BreadcrumbList` | `src/pages/services/[slug].astro` |
-| `/work/[slug]/` (9 pages) | `CreativeWork`, `BreadcrumbList` | `src/pages/work/[...slug].astro` |
+| `/work/[slug]/` (18 pages) | `CreativeWork`, `BreadcrumbList` | `src/pages/work/[...slug].astro` |
 | `/studies/[slug]/` (2 pages) | `CreativeWork`, `BreadcrumbList` | `src/pages/studies/[...slug].astro` |
 | `/field-notes/[slug]/` | `BlogPosting`, `BreadcrumbList` | `src/pages/field-notes/[...slug].astro` |
 | Everything else (`/work/`, `/studies/`, `/services/`, `/field-notes/`, `/resources/`, `/products/`, `/recommendations/`, `/lab/`, `/privacy/`, `/terms/`, `/disclosure/`, `/404`) | none beyond the sitewide `Person`/`WebSite` | — |
@@ -23,6 +23,10 @@ What structured data is emitted on each surface, verified against the actual sou
 **Services uses `Service` + `BreadcrumbList`, added this sprint.** Previously services pages had no schema beyond the sitewide Person/WebSite — this was a real gap, now closed. Fields: `name`, `description`, `provider` (Person), `url`. No `aggregateRating`, `review`, or `offers` — none of those exist on the visible page, so none are claimed in schema.
 
 **No fake data anywhere.** No `AggregateRating`, no `Review`, no `Organization` (What Matters Built is represented as `WebSite`, not `Organization` — it isn't a registered legal entity, per the master PRD's own entity rule), no awards, no fabricated dates.
+
+## Release A update: unified Work model
+
+The old `case-studies` (9 items) and `gallery-items` (9 items) collections merged into a single `work` collection (18 items, all clickable) per the Canonical PRD V2. `CreativeWork` continues to be the correct type for every entry, richly documented or thin, since none of them are articles. See `docs/work-migration-map.md` for the full per-item migration record and `docs/prd-deviations.md` for the deliberate deviations made during that merge (the `archives` field kept alongside the PRD's `media` field, and the route-preservation decision).
 
 ## Verification method
 
