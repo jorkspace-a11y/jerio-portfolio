@@ -1,0 +1,1 @@
+import{t as e}from"./analytics.D1aRXaXC.js";var t=document.getElementById(`work-detail`);e(`work_view`,{work:t?.dataset.workId});
