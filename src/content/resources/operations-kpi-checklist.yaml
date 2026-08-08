@@ -15,4 +15,4 @@ items:
   - Document/compliance validity rate, checked against the actual current requirement, not last year's
   - Scheduling conflict rate across shared resources or teams
   - Manual reporting hours per week, and what happens to that time once it's automated
-  - Named ownership per KPI — a number with no owner doesn't get acted on
+  - Named ownership per KPI. A number with no owner doesn't get acted on

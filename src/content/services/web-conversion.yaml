@@ -2,7 +2,7 @@ order: 3
 title: Web & Conversion
 slug: web-conversion
 summary: >-
-  Building the connective tissue between channels first — a website or presence a visitor can actually navigate between, before touching content or ads.
+  Building the connective tissue between channels first: a website or presence a visitor can actually navigate between, before touching content or ads.
 audience:
   - Brands with a logo and social accounts but no coherent digital presence
   - Businesses whose visitors can't easily find one channel from another
@@ -32,5 +32,5 @@ faqs:
   - question: Do you build full websites?
     answer: Landing pages and presence architecture, yes. Full custom builds are scoped case by case depending on complexity.
   - question: What if we already have a website?
-    answer: Then this is a review and fix pass, not a rebuild — most of the time the paths between channels are the actual gap, not the site itself.
+    answer: Then this is a review and fix pass, not a rebuild. Most of the time the paths between channels are the actual gap, not the site itself.
 active: true

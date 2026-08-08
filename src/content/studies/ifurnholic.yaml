@@ -16,7 +16,7 @@ analysis: >-
 proposal: >-
   A brand optimization direction paired with a paid ads strategy built around a sharper position, rather than incremental creative testing on an unclear one.
 limitations:
-  - Not implemented — this is a strategic exercise, not a delivered engagement.
+  - Not implemented. This is a strategic exercise, not a delivered engagement.
   - No access to the brand's actual performance data; recommendations are based on public signals only.
 notImplemented: true
 featured: false

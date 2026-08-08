@@ -6,7 +6,7 @@ import MobileBar from '../../components/nav/MobileBar.astro';
 
 const services = (await getCollection('services', ({ data }) => data.active)).sort((a, b) => a.data.order - b.data.order);
 ---
-<BaseLayout title="Services | Jerio" description="Seven services across strategy, marketing, digital experience, and operations — scoped, with exclusions stated plainly.">
+<BaseLayout title="Services | Jerio" description="Seven services across strategy, marketing, digital experience, and operations, scoped, with exclusions stated plainly.">
   <MobileBar />
   <div class="shell">
     <RailNav />

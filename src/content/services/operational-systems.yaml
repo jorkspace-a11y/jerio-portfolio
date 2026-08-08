@@ -2,7 +2,7 @@ order: 5
 title: Operational Systems
 slug: operational-systems
 summary: >-
-  Fleets, factories, compliance systems — trained teams and built pipelines that shrink the gap between something breaking and someone finding out.
+  Fleets, factories, compliance systems: trained teams and built pipelines that shrink the gap between something breaking and someone finding out.
 audience:
   - Operations leaders taking over departments with no standardized systems
   - Fleets or facilities carrying real compliance exposure
@@ -15,14 +15,14 @@ scope:
   - Compliance checklist and documentation systems
 exclusions:
   - Software development beyond reporting/dashboard needs (see Dashboard Development)
-  - Legal compliance advice — systems support compliance, they don't replace legal review
+  - Legal compliance advice. Systems support compliance, they don't replace legal review
 deliverables:
   - Trained team at production capacity
   - Working reporting pipeline
   - Site-calibrated compliance checklists
 process:
   - title: Train
-    description: Get the team to full capacity before touching software — systems on top of an untrained team just fail slower.
+    description: Get the team to full capacity before touching software. Systems on top of an untrained team just fail slower.
   - title: Build
     description: Replace manual reporting with a pipeline that surfaces problems before they compound.
   - title: Verify
@@ -30,7 +30,7 @@ process:
 relatedWork: ["05-blue-tick-ice", "06-pt-transkon-jaya", "07-putra-perkasa-abadi"]
 faqs:
   - question: What industries does this apply to?
-    answer: Manufacturing, fleet/logistics, and mining-adjacent operations so far — the underlying discipline (visibility before automation) transfers across most operational contexts.
+    answer: Manufacturing, fleet/logistics, and mining-adjacent operations so far. The underlying discipline (visibility before automation) transfers across most operational contexts.
   - question: Do you need on-site access?
     answer: For team training and reporting-pipeline work, generally yes for at least part of the engagement.
 active: true

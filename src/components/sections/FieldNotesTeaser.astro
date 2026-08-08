@@ -9,7 +9,7 @@ const articles = (await getCollection('field-notes', ({ data }) => !data.draft))
   <div class="eyebrow">Field Notes</div>
   <h2 class="head">Latest Field Notes.</h2>
   {articles.length === 0 ? (
-    <p class="writing-empty">Nothing published yet — first pieces are in progress. <a href="/field-notes/">Check the Field Notes archive</a> for when that changes.</p>
+    <p class="writing-empty">Nothing published yet, first pieces are in progress. <a href="/field-notes/">Check the Field Notes archive</a> for when that changes.</p>
   ) : (
     <div class="writing-teaser-list">
       {articles.map((a) => (

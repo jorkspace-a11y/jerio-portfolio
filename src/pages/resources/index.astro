@@ -6,7 +6,7 @@ import MobileBar from '../../components/nav/MobileBar.astro';
 
 const resources = (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
 ---
-<BaseLayout title="Resources | Jerio" description="Free tools, calculators, and checklists — practical, not gated behind an email you don't want to give.">
+<BaseLayout title="Resources | Jerio" description="Free tools, calculators, and checklists, practical, not gated behind an email you don't want to give.">
   <MobileBar />
   <div class="shell">
     <RailNav />

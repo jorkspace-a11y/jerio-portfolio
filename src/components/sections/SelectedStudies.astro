@@ -6,7 +6,7 @@ const studies = (await getCollection('studies')).sort((a, b) => a.data.order - b
 <section id="selected-studies">
   <div class="eyebrow">Selected Studies</div>
   <h2 class="head">Thinking, clearly separated from client work.</h2>
-  <p class="studies-teaser-note">Independent and conceptual exercises — never commissioned, never implemented for a real client.</p>
+  <p class="studies-teaser-note">Independent and conceptual exercises, never commissioned, never implemented for a real client.</p>
   <div class="studies-teaser-list">
     {studies.map((s) => (
       <a href={`/studies/${s.id}/`} class="studies-teaser-card" data-cursor="VIEW">

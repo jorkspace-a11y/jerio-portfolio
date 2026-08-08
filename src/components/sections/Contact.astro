@@ -114,13 +114,13 @@
       if (honeypot && honeypot.value) return;
 
       if (!form.action) {
-        status.textContent = "This form isn't connected to a delivery service yet — email hello@whatmattersbuilt.co directly for now.";
+        status.textContent = "This form isn't connected to a delivery service yet, email hello@whatmattersbuilt.co directly for now.";
         status.className = 'form-status error';
         return;
       }
 
       if (!navigator.onLine) {
-        status.textContent = "You're offline — check your connection and try again, or email hello@whatmattersbuilt.co.";
+        status.textContent = "You're offline. Check your connection and try again, or email hello@whatmattersbuilt.co.";
         status.className = 'form-status error';
         return;
       }
@@ -143,11 +143,11 @@
           trackEvent('generate_lead', {});
           form.reset();
         } else {
-          status.textContent = 'Something went wrong sending that — email hello@whatmattersbuilt.co directly instead.';
+          status.textContent = 'Something went wrong sending that, email hello@whatmattersbuilt.co directly instead.';
           status.className = 'form-status error';
         }
       } catch {
-        status.textContent = 'Something went wrong sending that — email hello@whatmattersbuilt.co directly instead.';
+        status.textContent = 'Something went wrong sending that, email hello@whatmattersbuilt.co directly instead.';
         status.className = 'form-status error';
       } finally {
         form.classList.remove('is-submitting');

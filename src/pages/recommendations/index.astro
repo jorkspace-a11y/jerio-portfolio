@@ -14,7 +14,7 @@ const recs = (await getCollection('recommendations')).sort((a, b) => a.data.orde
       <section id="recommendations-index" style="padding-top:64px;">
         <div class="eyebrow">Recommendations</div>
         <h1 class="head">What's actually in use, disclosed plainly.</h1>
-        <p class="rec-note">Every recommendation here states its commercial relationship directly. "None" means exactly that — no affiliate link, no partnership, just a tool used in the work.</p>
+        <p class="rec-note">Every recommendation here states its commercial relationship directly. "None" means exactly that: no affiliate link, no partnership, just a tool used in the work.</p>
 
         <div class="rec-list">
           {recs.map((r) => (

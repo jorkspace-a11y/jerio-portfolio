@@ -2,7 +2,7 @@ order: 4
 title: Brand & Digital Presence
 slug: brand-digital-presence
 summary: >-
-  Building a brand identity and social system from nothing — logo, visual direction, and photography that a business can actually launch on.
+  Building a brand identity and social system from nothing: logo, visual direction, and photography that a business can actually launch on.
 audience:
   - Founders with no existing brand identity
   - Businesses whose current identity doesn't match what they're actually selling
@@ -30,7 +30,7 @@ process:
 relatedWork: ["01-soracha"]
 faqs:
   - question: Do you handle photography?
-    answer: Yes, including shooting it directly when a client doesn't have production budget yet — done this on an iPhone 16 for a prior brand build.
+    answer: Yes, including shooting it directly when a client doesn't have production budget yet, done this on an iPhone 16 for a prior brand build.
   - question: What if we already have a logo?
     answer: This can be a system-and-guidelines pass around an existing mark instead of a from-scratch build.
 active: true

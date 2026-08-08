@@ -7,7 +7,7 @@ import MobileBar from '../../components/nav/MobileBar.astro';
 const articles = (await getCollection('field-notes', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
-<BaseLayout title="Field Notes | Jerio" description="Field Notes on strategy, marketing, performance, web and conversion, operations, and data — from strategy through delivery.">
+<BaseLayout title="Field Notes | Jerio" description="Field Notes on strategy, marketing, performance, web and conversion, operations, and data, from strategy through delivery.">
   <MobileBar />
   <div class="shell">
     <RailNav />
@@ -17,7 +17,7 @@ const articles = (await getCollection('field-notes', ({ data }) => !data.draft))
         <h1 class="head">Notes from the work, not around it.</h1>
 
         {articles.length === 0 ? (
-          <p class="empty-state">Nothing published yet. First pieces are in progress — check back soon, or <a href="/#contact">get in touch</a> if there's something specific worth writing about.</p>
+          <p class="empty-state">Nothing published yet. First pieces are in progress, check back soon, or <a href="/#contact">get in touch</a> if there's something specific worth writing about.</p>
         ) : (
           <div class="article-list">
             {articles.map((a) => (

@@ -6,7 +6,7 @@ import MobileBar from '../../components/nav/MobileBar.astro';
 
 const products = (await getCollection('products', ({ data }) => data.active)).sort((a, b) => a.data.order - b.data.order);
 ---
-<BaseLayout title="Products | Jerio" description="Owned templates, dashboards, and toolkits — free and paid.">
+<BaseLayout title="Products | Jerio" description="Owned templates, dashboards, and toolkits, free and paid.">
   <MobileBar />
   <div class="shell">
     <RailNav />
@@ -15,7 +15,7 @@ const products = (await getCollection('products', ({ data }) => data.active)).so
         <div class="eyebrow">Products</div>
         <h1 class="head">Nothing live yet.</h1>
         {products.length === 0 ? (
-          <p class="products-empty">No products are live for purchase or download yet — checkout and delivery need a payment provider set up first, which is a separate, deliberate step. <a href="/resources/">Resources</a> has free tools and checklists in the meantime.</p>
+          <p class="products-empty">No products are live for purchase or download yet. Checkout and delivery need a payment provider set up first, which is a separate, deliberate step. <a href="/resources/">Resources</a> has free tools and checklists in the meantime.</p>
         ) : (
           <div class="products-grid">
             {products.map((p) => (

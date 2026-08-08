@@ -30,7 +30,7 @@ process:
 relatedWork: ["05-blue-tick-ice"]
 faqs:
   - question: What tools do you build with?
-    answer: Python/SQLite for pipelines, React for dashboards, AppSheet for lighter internal tools — matched to what the team can actually maintain.
+    answer: Python/SQLite for pipelines, React for dashboards, AppSheet for lighter internal tools, matched to what the team can actually maintain.
   - question: Can this integrate with our existing systems?
-    answer: Depends on what's already in place — this gets scoped after an audit of the current data sources.
+    answer: Depends on what's already in place. This gets scoped after an audit of the current data sources.
 active: true

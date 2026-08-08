@@ -2,7 +2,7 @@ order: 1
 title: Digital Strategy
 slug: digital-strategy
 summary: >-
-  Figuring out what's actually happening before deciding what to build — audits, positioning, and a plan that survives contact with the business.
+  Figuring out what's actually happening before deciding what to build: audits, positioning, and a plan that survives contact with the business.
 audience:
   - Founders who need a second opinion before committing budget
   - Businesses with scattered digital activity and no unifying plan
@@ -15,7 +15,7 @@ scope:
   - A written plan with an explicit "what matters, what doesn't yet" call
 exclusions:
   - Execution of the plan (see the relevant specific service)
-  - Guaranteed outcomes — a strategy reduces risk, it doesn't eliminate it
+  - Guaranteed outcomes. A strategy reduces risk, it doesn't eliminate it
 deliverables:
   - Situation audit
   - Prioritized plan
@@ -30,7 +30,7 @@ process:
 relatedWork: ["08-sinar-mas-land", "03-kkbc"]
 faqs:
   - question: Do you implement the strategy too?
-    answer: Often, yes — through the relevant execution service. Some clients take the strategy to their own team instead, which is fine.
+    answer: Often, yes, through the relevant execution service. Some clients take the strategy to their own team instead, which is fine.
   - question: How long does a strategy engagement take?
     answer: Depends on scope. A single-function audit is faster than a full cross-functional review.
 active: true
