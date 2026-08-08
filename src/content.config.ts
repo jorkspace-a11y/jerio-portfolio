@@ -2,7 +2,12 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { CATEGORIES } from './data/taxonomy';
 
-const thumb = z.object({ src: z.string(), alt: z.string() });
+// `fit` is an explicit override for the rare case the inferred default (see
+// getMediaFit in src/lib/media-fit.ts) picks the wrong crop behavior for a
+// specific asset — most items never need to set it (PRD "P2 UI/UX
+// Remediation" section 11.3: don't infer from filenames, but don't build a
+// large new taxonomy either).
+const thumb = z.object({ src: z.string(), alt: z.string(), fit: z.enum(['contain', 'cover']).optional() });
 const archiveGroup = z.object({ label: z.string(), thumbs: z.array(thumb) });
 const archiveBlock = z.object({ title: z.string(), groups: z.array(archiveGroup) });
 
@@ -13,6 +18,7 @@ const media = z.object({
   alt: z.string(),
   caption: z.string().optional(),
   type: z.enum(['image', 'screenshot', 'logo', 'document', 'dashboard', 'video']).default('image'),
+  fit: z.enum(['contain', 'cover']).optional(),
 });
 
 const outcome = z.object({

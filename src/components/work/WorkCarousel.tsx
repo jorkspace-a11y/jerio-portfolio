@@ -8,6 +8,7 @@ export interface WorkMediaSlide {
   description?: string;
   label?: string;
   href?: string;
+  fit?: 'contain' | 'cover';
 }
 
 export interface WorkCarouselProps {
@@ -97,7 +98,11 @@ export function WorkCarousel({ slides, initialIndex = 0, onActiveChange }: WorkC
             <img
               src={slide.image}
               alt={slide.alt}
-              className="h-full w-full object-cover"
+              className={
+                slide.fit === 'contain'
+                  ? 'h-full w-full object-contain bg-surface p-4'
+                  : 'h-full w-full object-cover'
+              }
               loading={offset === 0 ? 'eager' : 'lazy'}
               draggable={false}
             />

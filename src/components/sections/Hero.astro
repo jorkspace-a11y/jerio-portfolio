@@ -64,23 +64,30 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
   .hero-context-sub{font-size:13px;color:var(--text-dimmer);}
   @media (max-width:1100px){.hero-context{order:3;}}
 
-  .hero-main h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(32px,4.2vw,54px);line-height:1.15;letter-spacing:-.01em;margin:0 0 22px;}
-  .hero-word{color:var(--accent);display:inline-block;transition:opacity .3s ease;}
+  /* P2 remediation, Direction B + Typography System 3: the capability word
+     and evidence project move from italic Cormorant to weighted mono, and
+     the evidence panel gets a full-strength left rule (was soft border)
+     that shares the accent color with the active capability, a visible
+     structural connection rather than an unrelated sidebar (PRD section
+     46.5). */
+  .hero-main h1{font-family:var(--sans);font-weight:300;font-size:clamp(30px,4vw,50px);line-height:1.16;letter-spacing:-.01em;margin:0 0 22px;}
+  .hero-word{font-family:var(--mono);font-weight:500;color:var(--accent);display:inline-block;transition:opacity .3s ease;min-width:min(19ch,100%);}
   .hero-word.transitioning{opacity:0;}
   @media (prefers-reduced-motion:reduce){.hero-word{transition:none;}}
-  @media (max-width:900px){.hero-main h1{font-size:clamp(28px,8vw,40px);}}
+  @media (max-width:900px){.hero-main h1{font-size:clamp(26px,7vw,38px);}.hero-word{min-width:0;}}
 
-  .hero-capability-select{display:flex;flex-wrap:wrap;gap:8px;}
-  .hero-cap-btn{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--text-dimmer);background:transparent;border:1px solid var(--border);border-radius:20px;padding:7px 14px;cursor:pointer;transition:color .15s ease,border-color .15s ease,background .15s ease;}
-  .hero-cap-btn:hover{color:var(--text);border-color:var(--accent);}
-  .hero-cap-btn[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+  .hero-capability-select{display:flex;flex-wrap:wrap;gap:16px;}
+  .hero-cap-btn{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--text-dimmer);background:transparent;border:none;padding:0 0 8px;cursor:pointer;position:relative;transition:color .15s ease;}
+  .hero-cap-btn:hover{color:var(--text);}
+  .hero-cap-btn[aria-pressed="true"]{color:var(--text);}
+  .hero-cap-btn[aria-pressed="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);}
 
-  .hero-evidence{display:block;text-decoration:none;color:inherit;border-left:1px solid var(--border);padding-left:24px;}
+  .hero-evidence{display:block;text-decoration:none;color:inherit;border-left:2px solid var(--accent);padding-left:24px;}
   .hero-evidence-label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
-  .hero-evidence-project{display:block;font-family:var(--serif);font-style:italic;font-size:19px;transition:color .2s ease;}
+  .hero-evidence-project{display:block;font-family:var(--mono);font-weight:500;font-size:18px;transition:color .2s ease;}
   .hero-evidence:hover .hero-evidence-project{color:var(--accent);}
   .hero-evidence-role{display:block;font-size:12px;color:var(--text-dim);margin-top:6px;}
-  @media (max-width:1100px){.hero-evidence{order:2;border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:20px;}}
+  @media (max-width:1100px){.hero-evidence{order:2;border-left:none;border-top:2px solid var(--accent);padding-left:0;padding-top:20px;}}
 
   .hero-scroll-hint{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-top:56px;padding-top:20px;border-top:1px solid var(--border-soft);}
   @media (max-width:640px){.hero-scroll-hint{flex-direction:column;gap:4px;}}
@@ -125,15 +132,19 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
       timer = window.setInterval(() => {
         index = (index + 1) % states.length;
         render(index);
-      }, 2800);
+      }, 3400);
     }
 
+    // After a deliberate click, don't immediately fight the visitor by
+    // auto-advancing away from what they just chose (PRD "P2 UI/UX
+    // Remediation" section 46.2: pause long enough to read, restart after
+    // ~6-10s of inactivity, not on the next tick).
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
         if (timer) window.clearInterval(timer);
         index = Number(btn.dataset.index ?? 0);
         render(index);
-        startAuto();
+        if (!reduced) timer = window.setTimeout(startAuto, 7000);
       });
     });
 

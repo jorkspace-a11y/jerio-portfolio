@@ -2,12 +2,17 @@
 interface Props {
   src: string;
   alt: string;
+  fit?: 'contain' | 'cover';
 }
-const { src, alt } = Astro.props;
+const { src, alt, fit = 'cover' } = Astro.props;
 ---
 <div class="thumb">
-  <div class="thumb-frame">
+  <div class:list={['thumb-frame', fit === 'contain' && 'thumb-frame-contain']}>
     <img loading="lazy" decoding="async" src={src} alt={alt} />
   </div>
   <div class="thumb-cap">{alt}</div>
 </div>
+
+<style>
+  .thumb-frame-contain img{object-fit:contain;padding:12px;background:var(--surface);}
+</style>

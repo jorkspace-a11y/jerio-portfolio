@@ -6,6 +6,7 @@ import MobileBar from '../../components/nav/MobileBar.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import { WorkPreviewManager } from '../../components/work/WorkPreviewManager';
 import { CATEGORIES } from '../../data/taxonomy';
+import { getThumbFit, getMediaFit } from '../../lib/media-fit';
 import type { WorkPreviewItem } from '../../components/work/WorkPreviewManager';
 
 const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
@@ -22,8 +23,13 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
 // preview is the honest fallback for items with no media (PRD 23.3).
 const previewItems: WorkPreviewItem[] = work.map((w) => {
   const firstThumb = w.data.archives[0]?.groups[0]?.thumbs[0];
+  const firstThumbGroup = w.data.archives[0]?.groups[0]?.label;
   const firstMedia = w.data.media[0];
-  const image = firstThumb ?? firstMedia;
+  const image = firstMedia
+    ? { src: firstMedia.src, alt: firstMedia.alt, fit: getMediaFit(firstMedia.fit, firstMedia.type) }
+    : firstThumb
+    ? { src: firstThumb.src, alt: firstThumb.alt, fit: getThumbFit(firstThumb.fit, firstThumbGroup ?? '') }
+    : undefined;
   return {
     id: w.id,
     title: w.data.title,
@@ -56,64 +62,73 @@ const previewItems: WorkPreviewItem[] = work.map((w) => {
           <p class="filter-noscript">Filters need JavaScript. Every project is listed below regardless.</p>
         </noscript>
 
-        <div class="archive-grid">
-          {work.map((w) => (
-            <div class="archive-card-wrap" data-categories={JSON.stringify(w.data.categories)}>
-              <a href={`/work/${w.id}/`} class="archive-card" data-cursor="VIEW">
-                <div class="archive-card-head">
-                  <span class="archive-card-title">{w.data.title}</span>
-                  <StatusBadge status={w.data.status} />
-                </div>
-                <div class="archive-card-org">{w.data.organisation}{w.data.industry ? ` · ${w.data.industry}` : ''}</div>
-                <p class="archive-card-role">{w.data.role ?? w.data.summary}</p>
-              </a>
-              <button
-                type="button"
-                class="preview-trigger"
-                data-preview-trigger={w.id}
-                aria-label={`Preview ${w.data.title}`}
+        <div class="work-shell">
+          <div class="work-list" id="work-list">
+            {work.map((w) => (
+              <a
+                href={`/work/${w.id}/`}
+                class="work-row"
+                data-work-row={w.id}
+                data-categories={JSON.stringify(w.data.categories)}
+                data-cursor="VIEW"
               >
-                Preview
-              </button>
-            </div>
-          ))}
-        </div>
+                <span class="work-row-title">{w.data.title}</span>
+                <span class="work-row-meta">
+                  {w.data.categories.join(', ')}
+                  {w.data.organisation !== w.data.title && ` · ${w.data.organisation}`}
+                </span>
+                <StatusBadge status={w.data.status} />
+                <span class="work-row-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
 
-        <WorkPreviewManager items={previewItems} client:idle />
+          <WorkPreviewManager items={previewItems} client:load />
+        </div>
       </section>
     </main>
   </div>
 </BaseLayout>
 
 <style>
-  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
-  .filter-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dimmer);background:transparent;border:1px solid var(--border);border-radius:20px;padding:8px 16px;cursor:pointer;transition:color .15s ease,border-color .15s ease,background .15s ease;}
-  .filter-btn:hover{color:var(--text);border-color:var(--accent);}
-  .filter-btn.active{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+  /* P2 remediation, Direction B (Utilitarian + restrained Neo-Brutalism):
+     text-tab filters with an underline active state, not filled pills. */
+  .filters{display:flex;flex-wrap:wrap;gap:20px;margin-bottom:36px;border-bottom:1px solid var(--border-soft);}
+  .filter-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dimmer);background:transparent;border:none;padding:0 0 12px;cursor:pointer;position:relative;}
+  .filter-btn:hover{color:var(--text);}
+  .filter-btn.active{color:var(--text);}
+  .filter-btn.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);}
   .filter-noscript{font-size:13px;color:var(--text-dimmer);margin-bottom:24px;}
-  .archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-  .archive-card-wrap{position:relative;}
-  .archive-card-wrap.is-hidden{display:none;}
-  .archive-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
-  .archive-card:hover{transform:translateY(-2px);border-color:var(--border);}
-  .archive-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-right:64px;}
-  .archive-card-title{font-family:var(--serif);font-style:italic;font-size:17px;}
-  .archive-card-org{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:10px 0;}
-  .archive-card-role{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;}
-  .preview-trigger{
-    position:absolute;top:20px;right:20px;z-index:2;
-    font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--text-faint);background:var(--bg);border:1px solid var(--border);border-radius:14px;
-    padding:5px 10px;cursor:pointer;transition:color .15s ease,border-color .15s ease;
+
+  /* Interactive Work Index: list + sticky preview, replaces the repeated
+     card grid entirely (PRD "P2 UI/UX Remediation" section 5-7). */
+  .work-shell{display:grid;grid-template-columns:60% 1fr;gap:40px;align-items:start;}
+  @media (max-width:900px){.work-shell{grid-template-columns:1fr;}}
+
+  .work-list{display:flex;flex-direction:column;}
+  .work-row{
+    display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:18px;
+    padding:18px 4px;border-bottom:1px solid var(--border-soft);
+    text-decoration:none;color:inherit;background:none;
   }
-  .preview-trigger:hover,.preview-trigger:focus-visible{color:var(--accent);border-color:var(--accent);}
+  .work-row-title{font-family:var(--mono);font-weight:500;font-size:19px;transition:color .12s ease;}
+  .work-row-meta{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);}
+  .work-row-arrow{color:var(--accent);opacity:0;transition:opacity .12s ease,transform .12s ease;}
+  .work-row:hover,.work-row:focus-visible{outline:none;}
+  .work-row:hover .work-row-title,.work-row:focus-visible .work-row-title{color:var(--accent);}
+  .work-row:hover .work-row-arrow,.work-row:focus-visible .work-row-arrow{opacity:1;transform:translateX(2px);}
+  .work-row.is-hidden{display:none;}
+  @media (max-width:640px){
+    .work-row{grid-template-columns:1fr auto;row-gap:6px;}
+    .work-row-meta{grid-column:1 / -1;}
+  }
 </style>
 
 <script>
   import { trackEvent } from '../../scripts/analytics';
 
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cardWraps = document.querySelectorAll<HTMLElement>('.archive-card-wrap');
+  const rows = document.querySelectorAll<HTMLElement>('.work-row');
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -121,17 +136,18 @@ const previewItems: WorkPreviewItem[] = work.map((w) => {
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       trackEvent('work_filter_used', { filter });
-      cardWraps.forEach((wrap) => {
-        const cats = JSON.parse(wrap.dataset.categories ?? '[]') as string[];
+      let firstVisible: HTMLElement | null = null;
+      rows.forEach((row) => {
+        const cats = JSON.parse(row.dataset.categories ?? '[]') as string[];
         const match = filter === 'All' || cats.includes(filter ?? '');
-        wrap.classList.toggle('is-hidden', !match);
+        row.classList.toggle('is-hidden', !match);
+        if (match && !firstVisible) firstVisible = row;
       });
-    });
-  });
-
-  document.querySelectorAll<HTMLButtonElement>('[data-preview-trigger]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      trackEvent('work_preview_open', { work: btn.dataset.previewTrigger });
+      // If the previewed project just got filtered out, move the preview to
+      // the first still-visible row instead of showing a hidden project
+      // (PRD 14.2: "if the currently previewed project becomes hidden,
+      // preview must change").
+      if (firstVisible) (firstVisible as HTMLElement).dispatchEvent(new Event('mouseenter'));
     });
   });
 </script>

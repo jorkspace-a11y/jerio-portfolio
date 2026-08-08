@@ -4,11 +4,11 @@ Deliberate differences between what the PRDs describe and what's actually live. 
 
 ## Hosting: GitHub Pages, not Cloudflare Pages
 
-Master PRD floated a Cloudflare Pages migration. Not done — needs the user's own Cloudflare login (OAuth boundary), out of scope for a closeout sprint that explicitly forbids infra migration. Site runs on GitHub Pages `legacy` build_type (branch-based deploy from `main`), documented in `docs/deployment-state.md`. DNS/CNAME already point at Cloudflare for DNS-only proxying — the migration is a future task, not a blocker to anything in this sprint.
+Master PRD floated a Cloudflare Pages migration. Not done, it needs the user's own Cloudflare login (OAuth boundary), out of scope for a closeout sprint that explicitly forbids infra migration. Site runs on GitHub Pages `legacy` build_type (branch-based deploy from `main`), documented in `docs/deployment-state.md`. DNS/CNAME already point at Cloudflare for DNS-only proxying: the migration is a future task, not a blocker to anything in this sprint.
 
 ## `/services/brand-digital-presence/` slug, not `/services/brand-digital/`
 
-Earlier PRD drafts referenced a conceptual `brand-digital` service. The actual content collection entry (`src/content/services/`) uses slug `brand-digital-presence` — chosen when the service was written for clarity (it covers both brand and digital presence work, and the shorter slug read as ambiguous). Live routes, sitemap, and internal links all use the actual slug consistently; nothing links to the old conceptual name.
+Earlier PRD drafts referenced a conceptual `brand-digital` service. The actual content collection entry (`src/content/services/`) uses slug `brand-digital-presence`, chosen when the service was written for clarity (it covers both brand and digital presence work, and the shorter slug read as ambiguous). Live routes, sitemap, and internal links all use the actual slug consistently; nothing links to the old conceptual name.
 
 ## Recommendations, Products, Lab not in primary nav
 
@@ -16,15 +16,15 @@ Earlier PRD drafts referenced a conceptual `brand-digital` service. The actual c
 
 ## Studies use `CreativeWork` schema, not a PRD-unspecified type
 
-Covered in detail in `docs/schema-map.md`. Noted here because an earlier PRD draft didn't specify a schema type for Studies at all — this sprint made the call rather than leaving it unstructured, on the reasoning that the disclosure-heavy nature of Studies content makes an explicit, honest schema type more important here than most other surfaces, not less.
+Covered in detail in `docs/schema-map.md`. Noted here because an earlier PRD draft didn't specify a schema type for Studies at all, this sprint made the call rather than leaving it unstructured, on the reasoning that the disclosure-heavy nature of Studies content makes an explicit, honest schema type more important here than most other surfaces, not less.
 
 ## `products` collection is registered but empty
 
-`content.config.ts` registers a `products` collection (per data-model requirements) but no product entries exist yet — there's nothing to sell/list yet. This is expected emptiness, not a bug (the earlier `src/content/products/` missing-directory bug, now fixed with `.gitkeep`, was about the directory vanishing outright, not about it lacking entries).
+`content.config.ts` registers a `products` collection (per data-model requirements) but no product entries exist yet, there's nothing to sell/list yet. This is expected emptiness, not a bug (the earlier `src/content/products/` missing-directory bug, now fixed with `.gitkeep`, was about the directory vanishing outright, not about it lacking entries).
 
-## `/writing/` redirect — correcting an earlier inaccurate note
+## `/writing/` redirect: correcting an earlier inaccurate note
 
-An earlier commit this sprint (`feed5fa`) and `docs/route-audit.json` describe fixing a "missing source file" for the `/writing/` redirect. That description was wrong: the real source (`src/pages/writing/index.astro`) existed the whole time. The actual mistake was mine — a flawed file search missed it, leading me to create a duplicate `public/writing/index.html` that shadowed the real page. That duplicate has been removed; the site now builds from the original, correct source with no warnings. Recorded here as a factual correction to the sprint's own evidence trail, per the standing rule against evidence documents containing untested or inaccurate claims.
+An earlier commit this sprint (`feed5fa`) and `docs/route-audit.json` describe fixing a "missing source file" for the `/writing/` redirect. That description was wrong: the real source (`src/pages/writing/index.astro`) existed the whole time. The actual mistake was mine: a flawed file search missed it, leading me to create a duplicate `public/writing/index.html` that shadowed the real page. That duplicate has been removed; the site now builds from the original, correct source with no warnings. Recorded here as a factual correction to the sprint's own evidence trail, per the standing rule against evidence documents containing untested or inaccurate claims.
 
 ---
 
@@ -34,11 +34,11 @@ Deviations made while merging `case-studies` + `gallery-items` into the unified 
 
 ## Kept the old `archives` field alongside the PRD's `media` field
 
-The Canonical PRD V2's Work schema (section 11.1) specifies a flat `media` array. The old case-studies/gallery-items schema had a richer, labeled/grouped `archives` structure (`title` → `groups[]` → `label` + `thumbs[]`) that's already carrying real content: Soracha's 35-image asset archive across 4 labeled groups, Digimune Indonesia's 46 images across 4 separate archive blocks, Karsa Tani Perkasa's 27-image brand system, Arkasa Compliance's 9 logo variants, Sport Center's 4 logo variants. Dropping that structure down to a flat `media` list would either lose the grouping/labeling entirely or force an awkward re-labeling pass with no real benefit. Both fields now exist on the schema: `media` for the PRD's flat case, `archives` for the grouped case that's actually in use. Nothing currently populates `media` — it's there for a future entry that needs a simple flat gallery without grouping.
+The Canonical PRD V2's Work schema (section 11.1) specifies a flat `media` array. The old case-studies/gallery-items schema had a richer, labeled/grouped `archives` structure (`title` → `groups[]` → `label` + `thumbs[]`) that's already carrying real content: Soracha's 35-image asset archive across 4 labeled groups, Digimune Indonesia's 46 images across 4 separate archive blocks, Karsa Tani Perkasa's 27-image brand system, Arkasa Compliance's 9 logo variants, Sport Center's 4 logo variants. Dropping that structure down to a flat `media` list would either lose the grouping/labeling entirely or force an awkward re-labeling pass with no real benefit. Both fields now exist on the schema: `media` for the PRD's flat case, `archives` for the grouped case that's actually in use. Nothing currently populates `media`, it's there for a future entry that needs a simple flat gallery without grouping.
 
 ## Preserved numeric-prefixed route IDs for all 9 former case-studies
 
-PRD section 12.4 explicitly allows this: "If removing numeric prefixes risks unnecessary redirect complexity or indexing churn, the agent may preserve existing route IDs for this release and document the decision." All 9 former case-studies (`01-soracha` through `09-digimune-indonesia`) already have live, Search-Console-indexed routes at `/work/{numeric-id}/` — confirmed indexed via URL Inspection this session. Renaming them to clean slugs would require either a redirect layer (GitHub Pages has none) or accepting a hard 404 on every existing inbound/shared link and an indexing reset. Kept as-is. The 9 former gallery-items never had individual routes, so they got clean slugs with no prefix (`karsa-tani-perkasa`, `xiaomi`, etc.) — there was nothing to preserve for those.
+PRD section 12.4 explicitly allows this: "If removing numeric prefixes risks unnecessary redirect complexity or indexing churn, the agent may preserve existing route IDs for this release and document the decision." All 9 former case-studies (`01-soracha` through `09-digimune-indonesia`) already have live, Search-Console-indexed routes at `/work/{numeric-id}/`, confirmed indexed via URL Inspection this session. Renaming them to clean slugs would require either a redirect layer (GitHub Pages has none) or accepting a hard 404 on every existing inbound/shared link and an indexing reset. Kept as-is. The 9 former gallery-items never had individual routes, so they got clean slugs with no prefix (`karsa-tani-perkasa`, `xiaomi`, etc.), there was nothing to preserve for those.
 
 ## Status call: Ditlantas Polda Kalimantan Timur marked `delivered`
 
@@ -46,17 +46,17 @@ Full reasoning in `docs/work-migration-map.md`. Source text ("Real engagement, c
 
 ## The Canonical PRD V2's stated verified baseline was already stale when work started
 
-The PRD document states `main@5d58466...` and `astro-source@14a9fcd...` as the verified baseline. By the time it was read, production was already at `main@9838380...` (astro-source `de96739...`) — GA4 was live with a real measurement ID, Search Console was verified, and the sitemap was submitted, all done earlier in this same session after the PRD's stated baseline was captured. This meant several of the PRD's P3 "known defects" (GA4 wired but not live, Search Console not verified, sitemap not submitted) were already resolved before Release A started. Not a deviation from the PRD's intent, just a timing note so the acceptance evidence doesn't look like it's re-solving an already-solved problem.
+The PRD document states `main@5d58466...` and `astro-source@14a9fcd...` as the verified baseline. By the time it was read, production was already at `main@9838380...` (astro-source `de96739...`). GA4 was live with a real measurement ID, Search Console was verified, and the sitemap was submitted, all done earlier in this same session after the PRD's stated baseline was captured. This meant several of the PRD's P3 "known defects" (GA4 wired but not live, Search Console not verified, sitemap not submitted) were already resolved before Release A started. Not a deviation from the PRD's intent, just a timing note so the acceptance evidence doesn't look like it's re-solving an already-solved problem.
 
 ## `RevoU, Digital Marketing Specialist` / `RevoU, Project Officer` used as both title and organisation
 
-These two former gallery-items don't name a separate company — RevoU is the platform, and the title itself names the role/program. Following the pattern already established by every other item in this dataset (organisation always equals title, verified across all 9 original case-studies), `organisation` was set equal to `title` for these two rather than inventing a separate company name that isn't in the source.
+These two former gallery-items don't name a separate company: RevoU is the platform, and the title itself names the role/program. Following the pattern already established by every other item in this dataset (organisation always equals title, verified across all 9 original case-studies), `organisation` was set equal to `title` for these two rather than inventing a separate company name that isn't in the source.
 
 ---
 
 # Release B: interactive stack deviations
 
-## shadcn token collision — `--accent` and `--border` got silently overwritten
+## shadcn token collision: `--accent` and `--border` got silently overwritten
 
 `npx shadcn init` scans the target CSS file (`src/styles/global.css`) for an existing `:root` block and merges its own default token values into it. WMB's hand-written tokens happen to share two names with shadcn's own convention: `--accent` and `--border`. The init command overwrote `--accent:#CC2B1D` (WMB's brand red) with `oklch(0.97 0 0)` (a near-white gray) and `--border:rgba(22,20,16,.12)` with `oklch(0.922 0 0)` (a generic light gray), and separately pulled in `@fontsource-variable/geist` plus a `--font-sans:'Geist Variable'` override that would have replaced DM Sans sitewide.
 
@@ -98,6 +98,32 @@ Standard verification workflow used throughout: swap `client:visible` to `client
 | `client` (React + ReactDOM + Motion runtime, shared) | 180KB | Any page with a hydrated island |
 | `button` | 40KB | Any page using the shared Button component |
 | `WorkCarousel` | 4KB | Individual Work detail pages with real media (own logic only, shares the `client` runtime) |
-| `GradientFooterEffect` | 12KB | Every page (it's in `BaseLayout`) — the one sitewide cost this release adds |
+| `GradientFooterEffect` | 12KB | Every page (it's in `BaseLayout`), the one sitewide cost this release adds |
 
 No duplicate motion libraries, no unhydrated static content, every component gated behind `client:visible` or `client:idle` except the two verified-necessary `client:load` uses (`/lab/`'s smoke test, reasoned in the Release B deviations above).
+
+---
+
+# P2 UI/UX Remediation deviations
+
+Per `WMB_P2_UI_UX_REMEDIATION_PRD_V1_2`. Full concept-to-implementation comparison in `docs/p2-ui-fidelity-ledger.md`, this section covers the process/scope decisions that ledger doesn't.
+
+## Concept gate followed literally, not skipped
+
+This PRD's own text (sections 10.3, 31, 67) forbids going from PRD to code without a presented, approved concept. Built a real interactive HTML concept board (3 style directions + a typography comparison, real WMB content, no lorem) as a Claude Artifact, published it, and used `AskUserQuestion` to get an explicit choice before writing any component code. Direction B (Utilitarian + restrained Neo-Brutalism + Modular Typography) + Typography System 3 (Modular utility) is what got approved and implemented. Full token spec in `docs/p2-design-tokens.md`.
+
+## `WorkPreviewManager.tsx` rewritten, not patched
+
+The Release C version opened a shadcn Dialog on click for desktop, exactly the pattern this PRD's section 25 forbids ("no modal required for ordinary archive browsing"). This wasn't a style tweak, it was an architecture change: the component now renders an always-visible sticky preview panel for desktop (updated via hover/focus event delegation on the static row list) and keeps the Drawer for mobile only. The Dialog import and all Dialog usage were removed entirely, not left dormant.
+
+## Real gap found and closed: Work detail pages had no visible H1
+
+Building the typography concept surfaced that `work/[...slug].astro` never rendered a title heading, the project name only appeared in the breadcrumb eyebrow and the `<title>` tag. Not something the PRD called out directly, but a real SEO/accessibility gap adjacent to its typography scope. Added `.work-title` (mono, System 3) rather than leaving it as found.
+
+## Carousel cap didn't exist before, PRD section 13 required one
+
+Previously every archive image (up to 46 for Digimune Indonesia) fed into the carousel unconditionally, duplicating the exhaustive `ArchiveBlock` below it. Now capped at 6 slides (one per archive group plus flat `media` entries), and skipped entirely below 4 total assets, since a 2-3 image "highlights reel" over a 2-3 image full archive isn't a meaningful distinction.
+
+## Pixel screenshot verification wasn't available this session
+
+Same Browser-pane limitation documented in the Release C section above (the pane doesn't composite frames in this environment). PRD section 36 wants concept-vs-implementation screenshots compared directly, that step is marked incomplete in `docs/p2-ui-fidelity-ledger.md` rather than faked. Verification instead used direct DOM/state extraction (confirmed exact rendered classes, computed content, and live interaction results via `.click()` dispatch and `get_page_text`) at every required breakpoint, which is real evidence, just not the specific screenshot-diff format the PRD asked for.

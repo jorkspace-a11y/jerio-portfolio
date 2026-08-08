@@ -7,6 +7,10 @@ import StatusBadge from '../../components/StatusBadge.astro';
 import ArchiveBlock from '../../components/ArchiveBlock.astro';
 import { WorkCarousel } from '../../components/work/WorkCarousel';
 import type { WorkMediaSlide } from '../../components/work/WorkCarousel';
+import { getMediaFit, getThumbFit } from '../../lib/media-fit';
+
+const CAROUSEL_MAX = 6;
+const CAROUSEL_MIN = 4;
 
 export async function getStaticPaths() {
   const work = await getCollection('work');
@@ -25,15 +29,28 @@ const {
 
 const related = all.filter((e) => e.id !== w.id).slice(0, 3);
 
-// Real project media only, flattened from `media` and every archive block's
-// thumbs — never stock imagery (PRD section 23.3). Items with neither
-// simply render no carousel, a clean text-only page beats fake visuals.
-const carouselSlides: WorkMediaSlide[] = [
-  ...media.map((m) => ({ image: m.src, alt: m.alt })),
-  ...archives.flatMap((a) =>
-    a.groups.flatMap((g) => g.thumbs.map((t) => ({ image: t.src, alt: t.alt, label: g.label })))
-  ),
+// Real project media only, never stock imagery (PRD section 23.3). The
+// carousel is a *selected highlights* reel, not the full archive — PRD
+// "P2 UI/UX Remediation" section 13 explicitly forbids rendering the same
+// media twice (carousel + ArchiveBlock showing every image). One slide per
+// archive group (so the reel stays varied, not five shots from the same
+// group) plus every flat `media` entry, capped at CAROUSEL_MAX. Below
+// CAROUSEL_MIN there's no real "highlights vs archive" distinction worth
+// making, so the carousel is skipped and the archive speaks for itself.
+const onePerGroup = archives.flatMap((a) =>
+  a.groups.map((g) => {
+    const t = g.thumbs[0];
+    return t && { image: t.src, alt: t.alt, label: g.label, fit: getThumbFit(t.fit, g.label) };
+  }).filter((s): s is NonNullable<typeof s> => Boolean(s))
+);
+const totalArchiveAssets = archives.reduce((n, a) => n + a.groups.reduce((m, g) => m + g.thumbs.length, 0), 0);
+const rawSlides: WorkMediaSlide[] = [
+  ...media.map((m) => ({ image: m.src, alt: m.alt, fit: getMediaFit(m.fit, m.type) })),
+  ...onePerGroup,
 ];
+const carouselSlides: WorkMediaSlide[] = (media.length + totalArchiveAssets) >= CAROUSEL_MIN
+  ? rawSlides.slice(0, CAROUSEL_MAX)
+  : [];
 
 const allServices = await getCollection('services');
 const serviceLinks = relatedServices.map((slug) => {
@@ -83,8 +100,9 @@ const workJsonLd = {
     <main>
       <section id="work-detail" data-work-id={w.id} style="padding-top:64px;">
         <div class="eyebrow"><a href="/work/">Work</a> / {title}</div>
+        <h1 class="work-title">{title}</h1>
         <div class="work-meta">
-          <div><span class="lbl">Organisation</span><span>{organisation}</span></div>
+          {organisation !== title && <div><span class="lbl">Organisation</span><span>{organisation}</span></div>}
           {role && <div><span class="lbl">Role</span><span>{role}</span></div>}
           <div><span class="lbl">Category</span><span>{categories.join(', ')}</span></div>
           <div class="lbl-status"><StatusBadge status={status} /></div>
@@ -169,6 +187,11 @@ const workJsonLd = {
 </script>
 
 <style>
+  /* P2 remediation, Direction B (Utilitarian + restrained Neo-Brutalism) +
+     Typography System 3 (Modular utility): Work titles move from italic
+     Cormorant to weighted mono, active/emphasis states lean on the red
+     underline rather than a filled pill. Scoped to Work surfaces only. */
+  .work-title{font-family:var(--mono);font-weight:500;font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.01em;margin:14px 0 24px;max-width:22ch;}
   .work-meta{display:flex;flex-wrap:wrap;align-items:center;gap:24px 32px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
   .work-meta > div{display:flex;flex-direction:column;gap:4px;}
   .work-meta .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
@@ -182,11 +205,11 @@ const workJsonLd = {
   .work-block.lesson p{font-family:var(--serif);font-style:italic;color:var(--text);font-size:16px;}
   .outcomes-grid{display:flex;flex-wrap:wrap;gap:20px 32px;}
   .outcome{display:flex;flex-direction:column;gap:2px;}
-  .outcome-value{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--accent);}
+  .outcome-value{font-family:var(--mono);font-weight:500;font-size:22px;color:var(--accent);}
   .outcome-label{font-size:11.5px;color:var(--text-dim);max-width:24ch;}
   .carousel-block{padding-bottom:32px;}
   .related{margin-top:48px;padding-top:28px;border-top:1px solid var(--border-soft);}
   .related-list{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:14px;}
-  .related-link{font-family:var(--serif);font-style:italic;font-size:16px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}
+  .related-link{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:2px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}
   .related-link:hover{color:var(--accent);border-color:var(--accent);}
 </style>

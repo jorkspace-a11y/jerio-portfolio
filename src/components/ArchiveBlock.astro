@@ -1,9 +1,10 @@
 ---
 import Thumb from './Thumb.astro';
+import { getThumbFit } from '../lib/media-fit';
 
 interface Group {
   label: string;
-  thumbs: { src: string; alt: string }[];
+  thumbs: { src: string; alt: string; fit?: 'contain' | 'cover' }[];
 }
 interface Props {
   title: string;
@@ -17,7 +18,7 @@ const { title, groups } = Astro.props;
     <div class="archive-group">
       <div class="archive-group-label">{group.label}</div>
       <div class="archive-thumbs">
-        {group.thumbs.map((t) => <Thumb src={t.src} alt={t.alt} />)}
+        {group.thumbs.map((t) => <Thumb src={t.src} alt={t.alt} fit={getThumbFit(t.fit, group.label)} />)}
       </div>
     </div>
   ))}
