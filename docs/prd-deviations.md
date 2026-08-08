@@ -71,3 +71,33 @@ Kept `client:load` for this component, not just to route around the test-environ
 ## shadcn base library: `base` (Base UI), not `radix`
 
 The shadcn CLI's current default/recommended primitive library is Base UI (`-b base`), not the historically-standard Radix UI. PRD section 20 doesn't specify which to use. Went with the CLI's own current recommendation rather than the older convention most existing shadcn tutorials assume, since the PRD elsewhere (Appendix A) explicitly says to check current first-party docs over stale tutorial instructions at execution time, same principle applied here.
+
+---
+
+# Release C: interactive components deviations
+
+## Real bug found and fixed: Base UI `nativeButton` violation
+
+`WorkPreviewManager.tsx`'s "View Work" CTA renders shadcn's `Button` polymorphically as an `<a>` via Base UI's `render` prop (`<Button render={<a href={...} />}>`). Base UI's Button defaults to `nativeButton={true}`, which assumes the rendered element is a real `<button>`; rendering it as an anchor without disabling that flag throws a real runtime console error ("expected a native `<button>`... impacts forms and accessibility") on every dialog open. Fixed by adding `nativeButton={false}` to that one Button usage. Caught via live interactive testing in a running dev server, not just a type-check, confirmed resolved in a fresh browser tab with no prior console history to make sure it wasn't a stale/unrelated error.
+
+## Testing-environment limitations discovered (not shipped bugs)
+
+Several checks in this release's live-browser verification produced results that looked like bugs at first and turned out to be artifacts of the specific automated browser pane used for testing, not the shipped code. Documented here in detail because each one cost real verification time and the pattern is worth recognizing quickly if it recurs:
+
+1. **`requestAnimationFrame` never fires in a backgrounded/non-composited tab.** Confirmed directly: a `requestAnimationFrame` loop timed out after 30 seconds with zero frames. This is standard browser behavior (rAF throttling for hidden tabs), not an Astro or Motion bug. It explains three downstream symptoms: `client:visible` islands never hydrating (their `IntersectionObserver` never gets a frame to fire against), Base UI Dialog's exit-animation never completing (stuck in `data-closed`/`data-ending-style` waiting for an `animationend` that never comes, even though the underlying React state closed correctly, verified via `data-open`/`data-closed` attributes), and Motion's `useScroll`-driven style updates not visibly reflecting in the pane.
+2. **Newly created background tabs report `innerWidth: 0`.** A fresh tab opened via the browser tool's tab-create action, before being brought to front, reported zero viewport dimensions, which fed into `useMediaQuery` and produced misleading results. Resolved by testing only in the fronted/active tab, where dimensions were real (confirmed 930×598, then verified at all 8 required breakpoints with zero horizontal overflow).
+3. **`prefers-reduced-motion` emulation gap for value-less media queries.** `window.matchMedia('(prefers-reduced-motion: reduce)').matches` correctly returned `true` in this environment, but Motion's own internal reduced-motion detection (`node_modules/motion-dom`, third-party code) queries `matchMedia('(prefers-reduced-motion)')` without the `: reduce` value, and that query did not pick up the emulated preference the same way. This is Motion's own shipped implementation, not something in this codebase to fix, and it's a widely-used, well-tested pattern in production. Verification for this specific path relied on code review (the component's own branching logic is a straightforward `if (reducedMotion) return <static>; return <motion.div>`) rather than a live visual confirmation, since the environment couldn't produce one.
+
+Standard verification workflow used throughout: swap `client:visible` to `client:load` temporarily in a live dev server to force hydration past the rAF/IntersectionObserver limitation, verify the actual interaction (click, keyboard, drag config, responsive switching, real content/links), then revert to the PRD-correct directive before shipping. Every interactive element in this release was verified this way: click-to-open, Escape/Close-button state transitions (verified via `data-open`/`data-closed` attributes, not visual animation), keyboard arrow navigation, Dialog-vs-Drawer responsive switching, real image sources, and correct CTA hrefs.
+
+## Bundle sizes, measured
+
+| Chunk | Size | Loads on |
+|---|---|---|
+| `WorkPreviewManager` | 92KB | `/work/` only (Dialog + Drawer + Base UI primitives for both) |
+| `client` (React + ReactDOM + Motion runtime, shared) | 180KB | Any page with a hydrated island |
+| `button` | 40KB | Any page using the shared Button component |
+| `WorkCarousel` | 4KB | Individual Work detail pages with real media (own logic only, shares the `client` runtime) |
+| `GradientFooterEffect` | 12KB | Every page (it's in `BaseLayout`) — the one sitewide cost this release adds |
+
+No duplicate motion libraries, no unhydrated static content, every component gated behind `client:visible` or `client:idle` except the two verified-necessary `client:load` uses (`/lab/`'s smoke test, reasoned in the Release B deviations above).

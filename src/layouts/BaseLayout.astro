@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import CursorSystem from '../components/CursorSystem.astro';
 import Footer from '../components/Footer.astro';
+import { GradientFooterEffect } from '../components/GradientFooterEffect';
 
 interface Props {
   title?: string;
@@ -83,6 +84,7 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 <body>
   <div id="scroll-progress"></div>
   <slot />
+  <GradientFooterEffect client:visible />
   <Footer />
   <CursorSystem />
   <script src="../scripts/interactions.ts"></script>

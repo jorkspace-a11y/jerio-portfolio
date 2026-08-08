@@ -4,7 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import RailNav from '../../components/nav/RailNav.astro';
 import MobileBar from '../../components/nav/MobileBar.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import { WorkPreviewManager } from '../../components/work/WorkPreviewManager';
 import { CATEGORIES } from '../../data/taxonomy';
+import type { WorkPreviewItem } from '../../components/work/WorkPreviewManager';
 
 const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 
@@ -14,6 +16,25 @@ const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.
 // category is temporarily hidden for lack of content.
 const usedCategories = new Set(work.flatMap((item) => item.data.categories));
 const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
+
+// Preview data: one real image per item when one exists (first archive
+// thumb, or first media entry), never a stock placeholder — a text-only
+// preview is the honest fallback for items with no media (PRD 23.3).
+const previewItems: WorkPreviewItem[] = work.map((w) => {
+  const firstThumb = w.data.archives[0]?.groups[0]?.thumbs[0];
+  const firstMedia = w.data.media[0];
+  const image = firstThumb ?? firstMedia;
+  return {
+    id: w.id,
+    title: w.data.title,
+    organisation: w.data.organisation,
+    role: w.data.role,
+    summary: w.data.summary,
+    categories: w.data.categories,
+    status: w.data.status,
+    image,
+  };
+});
 ---
 <BaseLayout title="Work | Jerio" description="Every project, filterable by discipline — strategy, growth, marketing, brand, operations, and systems work by Jerio.">
   <MobileBar />
@@ -37,21 +58,28 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
 
         <div class="archive-grid">
           {work.map((w) => (
-            <a
-              href={`/work/${w.id}/`}
-              class="archive-card"
-              data-cursor="VIEW"
-              data-categories={JSON.stringify(w.data.categories)}
-            >
-              <div class="archive-card-head">
-                <span class="archive-card-title">{w.data.title}</span>
-                <StatusBadge status={w.data.status} />
-              </div>
-              <div class="archive-card-org">{w.data.organisation}{w.data.industry ? ` · ${w.data.industry}` : ''}</div>
-              <p class="archive-card-role">{w.data.role ?? w.data.summary}</p>
-            </a>
+            <div class="archive-card-wrap" data-categories={JSON.stringify(w.data.categories)}>
+              <a href={`/work/${w.id}/`} class="archive-card" data-cursor="VIEW">
+                <div class="archive-card-head">
+                  <span class="archive-card-title">{w.data.title}</span>
+                  <StatusBadge status={w.data.status} />
+                </div>
+                <div class="archive-card-org">{w.data.organisation}{w.data.industry ? ` · ${w.data.industry}` : ''}</div>
+                <p class="archive-card-role">{w.data.role ?? w.data.summary}</p>
+              </a>
+              <button
+                type="button"
+                class="preview-trigger"
+                data-preview-trigger={w.id}
+                aria-label={`Preview ${w.data.title}`}
+              >
+                Preview
+              </button>
+            </div>
           ))}
         </div>
+
+        <WorkPreviewManager items={previewItems} client:idle />
       </section>
     </main>
   </div>
@@ -64,20 +92,28 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
   .filter-btn.active{color:var(--bg);background:var(--accent);border-color:var(--accent);}
   .filter-noscript{font-size:13px;color:var(--text-dimmer);margin-bottom:24px;}
   .archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .archive-card-wrap{position:relative;}
+  .archive-card-wrap.is-hidden{display:none;}
   .archive-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
   .archive-card:hover{transform:translateY(-2px);border-color:var(--border);}
-  .archive-card.is-hidden{display:none;}
-  .archive-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .archive-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-right:64px;}
   .archive-card-title{font-family:var(--serif);font-style:italic;font-size:17px;}
   .archive-card-org{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:10px 0;}
   .archive-card-role{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;}
+  .preview-trigger{
+    position:absolute;top:20px;right:20px;z-index:2;
+    font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-faint);background:var(--bg);border:1px solid var(--border);border-radius:14px;
+    padding:5px 10px;cursor:pointer;transition:color .15s ease,border-color .15s ease;
+  }
+  .preview-trigger:hover,.preview-trigger:focus-visible{color:var(--accent);border-color:var(--accent);}
 </style>
 
 <script>
   import { trackEvent } from '../../scripts/analytics';
 
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cards = document.querySelectorAll<HTMLElement>('.archive-card');
+  const cardWraps = document.querySelectorAll<HTMLElement>('.archive-card-wrap');
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -85,11 +121,17 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       trackEvent('work_filter_used', { filter });
-      cards.forEach((card) => {
-        const cats = JSON.parse(card.dataset.categories ?? '[]') as string[];
+      cardWraps.forEach((wrap) => {
+        const cats = JSON.parse(wrap.dataset.categories ?? '[]') as string[];
         const match = filter === 'All' || cats.includes(filter ?? '');
-        card.classList.toggle('is-hidden', !match);
+        wrap.classList.toggle('is-hidden', !match);
       });
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-preview-trigger]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      trackEvent('work_preview_open', { work: btn.dataset.previewTrigger });
     });
   });
 </script>

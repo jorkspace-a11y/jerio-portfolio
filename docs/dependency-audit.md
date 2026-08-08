@@ -1,5 +1,9 @@
 # Dependency audit
 
+## Release C: zero new npm dependencies
+
+`npx shadcn add dialog drawer` (component scaffolding for the Work preview modal) added `src/components/ui/dialog.tsx` and `drawer.tsx`, both built on `@base-ui/react` and `lucide-react`, already installed in Release B. Confirmed via `git diff package.json`: no diff. The carousel and gradient footer components are hand-written, using only `motion` (already installed) and Tailwind classes. Real components built this release: `WorkPreviewManager.tsx`, `WorkCarousel.tsx`, `GradientFooterEffect.tsx`, `use-media-query.ts` — all in-repo, zero external packages added.
+
 ## Release A: zero new dependencies
 
 The P1 Work-model migration touched schemas, page templates, and YAML content only. `package.json` was unchanged by that release.

@@ -5,6 +5,8 @@ import RailNav from '../../components/nav/RailNav.astro';
 import MobileBar from '../../components/nav/MobileBar.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import ArchiveBlock from '../../components/ArchiveBlock.astro';
+import { WorkCarousel } from '../../components/work/WorkCarousel';
+import type { WorkMediaSlide } from '../../components/work/WorkCarousel';
 
 export async function getStaticPaths() {
   const work = await getCollection('work');
@@ -22,6 +24,16 @@ const {
 } = w.data;
 
 const related = all.filter((e) => e.id !== w.id).slice(0, 3);
+
+// Real project media only, flattened from `media` and every archive block's
+// thumbs — never stock imagery (PRD section 23.3). Items with neither
+// simply render no carousel, a clean text-only page beats fake visuals.
+const carouselSlides: WorkMediaSlide[] = [
+  ...media.map((m) => ({ image: m.src, alt: m.alt })),
+  ...archives.flatMap((a) =>
+    a.groups.flatMap((g) => g.thumbs.map((t) => ({ image: t.src, alt: t.alt, label: g.label })))
+  ),
+];
 
 const allServices = await getCollection('services');
 const serviceLinks = relatedServices.map((slug) => {
@@ -69,7 +81,7 @@ const workJsonLd = {
   <div class="shell">
     <RailNav />
     <main>
-      <section id="work-detail" style="padding-top:64px;">
+      <section id="work-detail" data-work-id={w.id} style="padding-top:64px;">
         <div class="eyebrow"><a href="/work/">Work</a> / {title}</div>
         <div class="work-meta">
           <div><span class="lbl">Organisation</span><span>{organisation}</span></div>
@@ -112,12 +124,10 @@ const workJsonLd = {
           <div class="work-block lesson">{lessons.map((l) => <p>{l}</p>)}</div>
         )}
 
-        {media.length > 0 && (
-          <div class="work-block">
+        {carouselSlides.length > 0 && (
+          <div class="work-block carousel-block">
             <div class="lbl">Media</div>
-            <div class="media-grid">
-              {media.map((m) => <img src={m.src} alt={m.alt} loading="lazy" />)}
-            </div>
+            <WorkCarousel slides={carouselSlides} client:visible />
           </div>
         )}
 
@@ -151,6 +161,13 @@ const workJsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(workJsonLd)} />
 </BaseLayout>
 
+<script>
+  import { trackEvent } from '../../scripts/analytics';
+
+  const section = document.getElementById('work-detail');
+  trackEvent('work_view', { work: section?.dataset.workId });
+</script>
+
 <style>
   .work-meta{display:flex;flex-wrap:wrap;align-items:center;gap:24px 32px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
   .work-meta > div{display:flex;flex-direction:column;gap:4px;}
@@ -167,8 +184,7 @@ const workJsonLd = {
   .outcome{display:flex;flex-direction:column;gap:2px;}
   .outcome-value{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--accent);}
   .outcome-label{font-size:11.5px;color:var(--text-dim);max-width:24ch;}
-  .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
-  .media-grid img{width:100%;border-radius:8px;}
+  .carousel-block{padding-bottom:32px;}
   .related{margin-top:48px;padding-top:28px;border-top:1px solid var(--border-soft);}
   .related-list{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:14px;}
   .related-link{font-family:var(--serif);font-style:italic;font-size:16px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}
