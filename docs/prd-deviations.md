@@ -51,3 +51,23 @@ The PRD document states `main@5d58466...` and `astro-source@14a9fcd...` as the v
 ## `RevoU, Digital Marketing Specialist` / `RevoU, Project Officer` used as both title and organisation
 
 These two former gallery-items don't name a separate company — RevoU is the platform, and the title itself names the role/program. Following the pattern already established by every other item in this dataset (organisation always equals title, verified across all 9 original case-studies), `organisation` was set equal to `title` for these two rather than inventing a separate company name that isn't in the source.
+
+---
+
+# Release B: interactive stack deviations
+
+## shadcn token collision — `--accent` and `--border` got silently overwritten
+
+`npx shadcn init` scans the target CSS file (`src/styles/global.css`) for an existing `:root` block and merges its own default token values into it. WMB's hand-written tokens happen to share two names with shadcn's own convention: `--accent` and `--border`. The init command overwrote `--accent:#CC2B1D` (WMB's brand red) with `oklch(0.97 0 0)` (a near-white gray) and `--border:rgba(22,20,16,.12)` with `oklch(0.922 0 0)` (a generic light gray), and separately pulled in `@fontsource-variable/geist` plus a `--font-sans:'Geist Variable'` override that would have replaced DM Sans sitewide.
+
+All three reverted in the same commit that ran `shadcn init`, before anything using those tokens shipped. `--accent` and `--border` restored to their real values. shadcn's own full token set (`--background`, `--foreground`, `--primary`, `--card`, `--muted`, `--destructive`, `--input`, `--ring`, etc, the names every generated `src/components/ui/*` component actually references) got re-pointed at WMB's existing palette instead of left on shadcn's generic defaults, `--primary` → `var(--accent)` so the default Button variant renders in brand red, `--background`/`--foreground` → `var(--bg)`/`var(--text)`, and so on. Full mapping in `src/styles/global.css`'s `@theme inline` block. This is the PRD section 25 requirement ("must not adopt generic default blue SaaS styling") holding even when the tool being installed actively tries to overwrite the identity it's supposed to be adapted to.
+
+## `client:visible` vs `client:load` on the Release B smoke-test component
+
+PRD section 17.3 recommends `client:visible` for below-fold interactive content and `client:load` only where immediate interaction is required. The `/lab/` smoke-test component (`StackSmokeTest.tsx`) was built with `client:visible` first, testing in a live dev-server browser session showed it never hydrated, the `astro-island` element (which Astro renders as `display:contents`, correctly, by design) never triggered its `IntersectionObserver` in that specific browser tab, traced to the tab not compositing frames in that automation context, not a bug in the component or in Astro's directive itself. Confirmed by switching to `client:load`: hydration and click interactivity both worked immediately.
+
+Kept `client:load` for this component, not just to route around the test-environment quirk: the `/lab/` page's entire content below the intro paragraph *is* this component, there's no real "below the fold, defer for performance" case to make for it, unlike the below-fold Work-preview galleries `client:visible` is actually intended for in PRD section 17.3, and will be used for once Release C builds those.
+
+## shadcn base library: `base` (Base UI), not `radix`
+
+The shadcn CLI's current default/recommended primitive library is Base UI (`-b base`), not the historically-standard Radix UI. PRD section 20 doesn't specify which to use. Went with the CLI's own current recommendation rather than the older convention most existing shadcn tutorials assume, since the PRD elsewhere (Appendix A) explicitly says to check current first-party docs over stale tutorial instructions at execution time, same principle applied here.

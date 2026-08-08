@@ -1,8 +1,20 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
 @font-face{font-family:'Cormorant';font-style:italic;font-weight:300 500;font-display:swap;src:url('/fonts/cormorant-italic.woff2') format('woff2');}
 @font-face{font-family:'Cormorant';font-style:normal;font-weight:300 500;font-display:swap;src:url('/fonts/cormorant-normal.woff2') format('woff2');}
 @font-face{font-family:'DM Sans';font-style:italic;font-weight:300 500;font-display:swap;src:url('/fonts/dmsans-italic.woff2') format('woff2');}
 @font-face{font-family:'DM Sans';font-style:normal;font-weight:300 500;font-display:swap;src:url('/fonts/dmsans-normal.woff2') format('woff2');}
 
+/* `shadcn init` originally wrote generic oklch grays over --accent and
+   --border here (a name collision with its own default token set) and
+   pulled in the Geist font. Both reverted — WMB's identity (red accent,
+   Cormorant/DM Sans) is the single source of truth, shadcn's primitives
+   are re-pointed at it below, not the other way around. See
+   docs/prd-deviations.md, "Release B: shadcn token collision". */
 :root{
   --bg:#FAF8F4; --surface:#F1EEE6; --text:#161410;
   --text-dim:rgba(22,20,16,.72); --text-dimmer:rgba(22,20,16,.50); --text-faint:rgba(22,20,16,.34);
@@ -10,6 +22,51 @@
   --status-delivered:var(--accent-2); --status-ongoing:#8A6512;
   --border:rgba(22,20,16,.12); --border-soft:rgba(22,20,16,.07);
   --serif:'Cormorant',Georgia,serif; --sans:'DM Sans',-apple-system,sans-serif; --mono:ui-monospace,'SF Mono',Consolas,monospace;
+  --radius:0.625rem;
+}
+
+/* Maps the WMB design tokens above into both Tailwind v4's utility
+   namespace (--color-*, --font-*) and shadcn/ui's own token set
+   (--background, --primary, etc, referenced by every generated component
+   in src/components/ui/). Everything resolves back to the same 9 real
+   values defined in :root — there is no second, divergent palette. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-text-dimmer: var(--text-dimmer);
+  --color-text-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --font-serif: var(--serif);
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+
+  /* shadcn/ui's token names, re-pointed at WMB values instead of its
+     generic neutral-gray defaults. */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--text);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--bg);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--text);
+  --color-muted: var(--surface);
+  --color-muted-foreground: var(--text-dim);
+  --color-accent-foreground: var(--bg);
+  --color-destructive: var(--accent);
+  --color-input: var(--border);
+  --color-ring: var(--accent);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
 }
 
 *,*::before,*::after{box-sizing:border-box;}
@@ -177,3 +234,13 @@ h2.head{font-family:var(--serif);font-style:italic;font-weight:400;font-size:cla
   section:last-of-type{break-after:auto;}
   .case,.g-card,.cap{break-inside:avoid;}
 }
+
+.dark {--background:oklch(0.145 0 0);--foreground:oklch(0.985 0 0);--card:oklch(0.205 0 0);--card-foreground:oklch(0.985 0 0);--popover:oklch(0.205 0 0);--popover-foreground:oklch(0.985 0 0);--primary:oklch(0.922 0 0);--primary-foreground:oklch(0.205 0 0);--secondary:oklch(0.269 0 0);--secondary-foreground:oklch(0.985 0 0);--muted:oklch(0.269 0 0);--muted-foreground:oklch(0.708 0 0);--accent:oklch(0.269 0 0);--accent-foreground:oklch(0.985 0 0);--destructive:oklch(0.704 0.191 22.216);--border:oklch(1 0 0 / 10%);--input:oklch(1 0 0 / 15%);--ring:oklch(0.556 0 0);--chart-1:oklch(0.87 0 0);--chart-2:oklch(0.556 0 0);--chart-3:oklch(0.439 0 0);--chart-4:oklch(0.371 0 0);--chart-5:oklch(0.269 0 0);--sidebar:oklch(0.205 0 0);--sidebar-foreground:oklch(0.985 0 0);--sidebar-primary:oklch(0.488 0.243 264.376);--sidebar-primary-foreground:oklch(0.985 0 0);--sidebar-accent:oklch(0.269 0 0);--sidebar-accent-foreground:oklch(0.985 0 0);--sidebar-border:oklch(1 0 0 / 10%);--sidebar-ring:oklch(0.556 0 0);}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;}
+  body {
+    @apply bg-background text-foreground;}
+  html {
+    @apply font-sans;}}
