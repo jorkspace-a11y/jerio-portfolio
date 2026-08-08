@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { r } = Astro.props;
-const { title, type, summary, body, items } = r.data;
+const { title, slug, type, summary, body, items } = r.data;
 const isCalculator = type === 'calculator';
 ---
 <BaseLayout title={`${title} | Resources | Jerio`} description={summary}>
@@ -21,7 +21,7 @@ const isCalculator = type === 'calculator';
   <div class="shell">
     <RailNav />
     <main>
-      <section id="resource" style="padding-top:64px;">
+      <section id="resource" style="padding-top:64px;" data-resource-slug={slug} data-resource-type={type}>
         <div class="eyebrow"><a href="/resources/">Resources</a> / {title}</div>
         <h1 class="resource-title">{title}</h1>
         <p class="resource-summary">{summary}</p>
@@ -87,6 +87,14 @@ const isCalculator = type === 'calculator';
 </style>
 
 <script>
+  import { trackEvent } from '../../../scripts/analytics';
+
+  const resourceSection = document.getElementById('resource');
+  trackEvent('resource_use', {
+    resource: resourceSection?.dataset.resourceSlug,
+    type: resourceSection?.dataset.resourceType,
+  });
+
   const spendEl = document.getElementById('roas-spend') as HTMLInputElement | null;
   const revenueEl = document.getElementById('roas-revenue') as HTMLInputElement | null;
   const marginEl = document.getElementById('roas-margin') as HTMLInputElement | null;

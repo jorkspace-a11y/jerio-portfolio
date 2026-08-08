@@ -87,6 +87,8 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
 </style>
 
 <script>
+  import { trackEvent } from '../../scripts/analytics';
+
   const wordEl = document.getElementById('hero-word');
   const evidenceLink = document.getElementById('hero-evidence') as HTMLAnchorElement | null;
   const projectEl = document.getElementById('hero-evidence-project');
@@ -136,5 +138,10 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
     });
 
     startAuto();
+
+    evidenceLink?.addEventListener('click', () => {
+      const s = states[index];
+      trackEvent('hero_evidence_click', { project: s.project, slug: s.slug });
+    });
   }
 </script>

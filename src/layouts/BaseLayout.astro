@@ -35,6 +35,8 @@ const websiteJsonLd = {
   url: 'https://whatmattersbuilt.co/',
   creator: { '@type': 'Person', name: 'Jerio' },
 };
+
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
 
 <!DOCTYPE html>
@@ -64,6 +66,19 @@ const websiteJsonLd = {
 
   <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+
+  {gaId && (
+    <>
+      <script async is:inline src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+      <script is:inline define:vars={{ gaId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', gaId);
+      </script>
+    </>
+  )}
 </head>
 <body>
   <div id="scroll-progress"></div>

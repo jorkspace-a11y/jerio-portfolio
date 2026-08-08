@@ -80,6 +80,8 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
 </style>
 
 <script>
+  import { trackEvent } from '../../scripts/analytics';
+
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards = document.querySelectorAll<HTMLElement>('.archive-card');
 
@@ -88,6 +90,7 @@ const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
       buttons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
+      trackEvent('work_filter_used', { filter });
       cards.forEach((card) => {
         const cats = card.dataset.categories ?? '';
         const match = filter === 'All' || cats.split(' ').includes(filter ?? '');

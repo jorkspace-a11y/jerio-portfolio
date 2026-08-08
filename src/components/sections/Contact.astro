@@ -89,6 +89,8 @@
 </style>
 
 <script>
+  import { trackEvent } from '../../scripts/analytics';
+
   const form = document.getElementById('talk-form') as HTMLFormElement | null;
   const status = form?.querySelector('.form-status') as HTMLElement | null;
 
@@ -97,6 +99,13 @@
     if (endpointId) {
       form.action = `https://formspree.io/f/${endpointId}`;
     }
+
+    let hasStarted = false;
+    form.addEventListener('focusin', () => {
+      if (hasStarted) return;
+      hasStarted = true;
+      trackEvent('contact_form_start', {});
+    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -131,6 +140,7 @@
         if (res.ok) {
           status.textContent = 'Got it. Your message has been sent. I usually respond within 1–2 business days.';
           status.className = 'form-status success';
+          trackEvent('generate_lead', {});
           form.reset();
         } else {
           status.textContent = 'Something went wrong sending that — email hello@whatmattersbuilt.co directly instead.';

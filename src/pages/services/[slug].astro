@@ -80,7 +80,7 @@ const serviceJsonLd = {
         )}
 
         <div class="service-cta">
-          <a href="/#contact" class="service-cta-link" data-cursor="TALK">Start a project &rarr;</a>
+          <a href="/#contact" class="service-cta-link" data-cursor="TALK" data-service={title}>Start a project &rarr;</a>
         </div>
       </section>
     </main>
@@ -88,6 +88,15 @@ const serviceJsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
 </BaseLayout>
+
+<script>
+  import { trackEvent } from '../../scripts/analytics';
+
+  document.querySelector<HTMLAnchorElement>('.service-cta-link')?.addEventListener('click', (e) => {
+    const service = (e.currentTarget as HTMLAnchorElement).dataset.service;
+    trackEvent('service_cta_click', { service });
+  });
+</script>
 
 <style>
   .service-title{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,4.5vw,46px);margin:0 0 14px;}
