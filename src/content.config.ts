@@ -1,11 +1,12 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { CATEGORIES } from './data/taxonomy';
 
 const thumb = z.object({ src: z.string(), alt: z.string() });
 const archiveGroup = z.object({ label: z.string(), thumbs: z.array(thumb) });
 const archiveBlock = z.object({ title: z.string(), groups: z.array(archiveGroup) });
 
-const category = z.enum(['Strategy', 'Growth', 'Marketing', 'Brand', 'Performance', 'Web & Conversion', 'Operations', 'Systems', 'Data']);
+const category = z.enum(CATEGORIES);
 
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/case-studies' }),

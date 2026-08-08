@@ -4,11 +4,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import RailNav from '../../components/nav/RailNav.astro';
 import MobileBar from '../../components/nav/MobileBar.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import { CATEGORIES } from '../../data/taxonomy';
 
 const caseStudies = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
 const galleryItems = (await getCollection('gallery-items')).sort((a, b) => a.data.order - b.data.order);
 
-const CATEGORIES = ['Growth', 'Marketing', 'Brand', 'Operations', 'Systems'];
+// Filter buttons are derived from the canonical taxonomy (src/data/taxonomy.ts),
+// narrowed to categories with at least one published entry — never a second
+// hand-written list. The underlying taxonomy stays canonical even when a
+// category is temporarily hidden for lack of content.
+const usedCategories = new Set([...caseStudies, ...galleryItems].flatMap((item) => item.data.categories));
+const visibleCategories = CATEGORIES.filter((c) => usedCategories.has(c));
 ---
 <BaseLayout title="Work | Jerio" description="Every project, filterable by discipline — growth, marketing, brand, operations, and systems work by Jerio.">
   <MobileBar />
@@ -21,7 +27,7 @@ const CATEGORIES = ['Growth', 'Marketing', 'Brand', 'Operations', 'Systems'];
 
         <div class="filters" role="group" aria-label="Filter by category">
           <button type="button" class="filter-btn active" data-filter="All">All</button>
-          {CATEGORIES.map((c) => (
+          {visibleCategories.map((c) => (
             <button type="button" class="filter-btn" data-filter={c}>{c}</button>
           ))}
         </div>

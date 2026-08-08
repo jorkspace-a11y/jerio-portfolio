@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 const { cs, all } = Astro.props;
-const { title, organisation, parentProject, role, categories, status } = cs.data;
+const { title, organisation, parentProject, role, categories } = cs.data;
 const related = all.filter((c) => c.id !== cs.id).slice(0, 3);
 
 const breadcrumbJsonLd = {
@@ -24,6 +24,17 @@ const breadcrumbJsonLd = {
     { '@type': 'ListItem', position: 1, name: 'Work', item: 'https://whatmattersbuilt.co/work/' },
     { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/work/${cs.id}/` },
   ],
+};
+
+const workJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description: `${role} for ${organisation}. ${cs.data.situation}`,
+  creator: { '@type': 'Person', name: 'Jerio' },
+  about: organisation,
+  keywords: categories.join(', '),
+  url: `https://whatmattersbuilt.co/work/${cs.id}/`,
 };
 ---
 <BaseLayout title={`${title} | Jerio`} description={`${role} for ${organisation}. ${cs.data.situation}`}>
@@ -55,6 +66,7 @@ const breadcrumbJsonLd = {
     </main>
   </div>
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(workJsonLd)} />
 </BaseLayout>
 
 <style>

@@ -21,6 +21,16 @@ const breadcrumbJsonLd = {
     { '@type': 'ListItem', position: 2, name: title, item: `https://whatmattersbuilt.co/studies/${s.id}/` },
   ],
 };
+
+const studyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description: `${typeLabel}, not commissioned, not implemented for a real client. ${summary}`,
+  creator: { '@type': 'Person', name: 'Jerio' },
+  keywords: categories.join(', '),
+  url: `https://whatmattersbuilt.co/studies/${s.id}/`,
+};
 ---
 <BaseLayout title={`${title} | Studies | Jerio`} description={summary}>
   <MobileBar />
@@ -51,6 +61,7 @@ const breadcrumbJsonLd = {
     </main>
   </div>
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(studyJsonLd)} />
 </BaseLayout>
 
 <style>
