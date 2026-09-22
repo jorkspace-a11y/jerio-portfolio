@@ -25,8 +25,9 @@ const items = await Promise.all(
   <h2 class="head">Six ways the same discipline shows up.</h2>
 
   <div class="selected-list">
-    {items.map((cs) => (
-      <a href={`/work/${cs.id}/`} class="selected-card" data-cursor="VIEW">
+    {items.map((cs, index) => (
+      <a href={`/work/${cs.id}/`} class="selected-card motion-reveal" data-cursor="VIEW" data-tilt>
+        <span class="selected-card-number">0{index + 1}</span>
         <div class="selected-card-head">
           <span class="selected-card-org">{cs.data.organisation}</span>
           <StatusBadge status={cs.data.status} />
@@ -45,8 +46,10 @@ const items = await Promise.all(
   .selected-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
   @media (max-width:1100px){.selected-list{grid-template-columns:repeat(2,1fr);}}
   @media (max-width:640px){.selected-list{grid-template-columns:1fr;}}
-  .selected-card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:26px 24px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
-  .selected-card:hover{transform:translateY(-3px);border-color:var(--border);}
+  .selected-card{--tilt-x:0deg;--tilt-y:0deg;--lift:0px;position:relative;display:flex;flex-direction:column;gap:10px;min-height:260px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:26px 24px;text-decoration:none;color:inherit;transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--lift));transform-style:preserve-3d;transition:transform .18s ease,border-color .2s ease,box-shadow .2s ease;}
+  .selected-card:hover,.selected-card:focus-visible{--lift:-6px;border-color:var(--border);box-shadow:0 22px 40px -28px rgba(22,20,16,.48);}
+  .selected-card>*{transform:translateZ(16px);}
+  .selected-card-number{font-family:var(--mono);font-size:10px;color:var(--text-faint);margin-bottom:auto;}
   .selected-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
   .selected-card-org{font-family:var(--serif);font-style:italic;font-size:18px;}
   .selected-card-role{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:0;}
@@ -54,4 +57,5 @@ const items = await Promise.all(
   .selected-card-link{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:4px;}
   .selected-archive-link{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;}
   .selected-archive-link:hover{color:var(--accent);border-color:var(--accent);}
+  @media (prefers-reduced-motion:reduce){.selected-card{transform:none;transition:border-color .2s ease;}.selected-card>*{transform:none;}}
 </style>

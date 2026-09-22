@@ -58,7 +58,7 @@ updateActive();
 setTimeout(updateActive, 300);
 
 if (!reduced && 'IntersectionObserver' in window) {
-  const targets = document.querySelectorAll('.cap, .case, .g-card');
+  const targets = document.querySelectorAll('.cap, .case, .g-card, .motion-reveal');
   targets.forEach((el) => el.classList.add('reveal'));
   const io = new IntersectionObserver(
     (entries) => {
@@ -72,6 +72,66 @@ if (!reduced && 'IntersectionObserver' in window) {
     { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
   );
   targets.forEach((el) => io.observe(el));
+}
+
+// The homepage borrows Allo Society's sense of depth while keeping WMB's
+// editorial layout. Motion is driven through custom properties so component
+// transforms remain composable and reduced-motion visitors get a still page.
+if (!reduced) {
+  const parallaxItems = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax-x], [data-parallax-y]'));
+  let scrollFrame: number | null = null;
+
+  function updateParallax() {
+    const viewportCenter = window.innerHeight / 2;
+    parallaxItems.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      if (rect.bottom < -160 || rect.top > window.innerHeight + 160) return;
+      const progress = Math.max(-1, Math.min(1, (rect.top + rect.height / 2 - viewportCenter) / window.innerHeight));
+      const xStrength = Number(item.dataset.parallaxX ?? 0);
+      const yStrength = Number(item.dataset.parallaxY ?? 0);
+      item.style.setProperty('--parallax-x', `${progress * xStrength * 34}px`);
+      item.style.setProperty('--parallax-y', `${progress * yStrength * 34}px`);
+    });
+    scrollFrame = null;
+  }
+
+  function requestParallax() {
+    if (scrollFrame === null) scrollFrame = requestAnimationFrame(updateParallax);
+  }
+
+  document.addEventListener('scroll', requestParallax, { passive: true });
+  window.addEventListener('resize', requestParallax);
+  updateParallax();
+
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty('--tilt-x', `${y * -5}deg`);
+        card.style.setProperty('--tilt-y', `${x * 5}deg`);
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('.pointer-scene').forEach((scene) => {
+      const depthItems = Array.from(scene.querySelectorAll<HTMLElement>('[data-depth]'));
+      scene.addEventListener('pointermove', (event) => {
+        const rect = scene.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        depthItems.forEach((item) => {
+          const depth = Number(item.dataset.depth ?? 1);
+          item.style.translate = `${x * depth * 14}px ${y * depth * 14}px`;
+        });
+      });
+      scene.addEventListener('pointerleave', () => depthItems.forEach((item) => { item.style.translate = '0 0'; }));
+    });
+  }
 }
 
 document.querySelectorAll<HTMLImageElement>('.thumb-frame img').forEach((img) => {

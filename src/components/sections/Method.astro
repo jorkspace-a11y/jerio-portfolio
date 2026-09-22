@@ -9,18 +9,28 @@ const steps = [
   <div class="eyebrow">Method</div>
   <h2 class="head">Don't build everything. Build what matters.</h2>
   <div class="method-list">
-    {steps.map((s) => (
-      <div class="method-step">
-        <span class="method-word">{s.word}</span>
+    {steps.map((s, index) => (
+      <div class="method-step motion-reveal">
+        <span class="method-index">0{index + 1}</span>
+        <div class="method-word-wrap" data-parallax-x={index === 1 ? '-1' : '1'}>
+          <span class="method-word">{s.word}</span>
+        </div>
         <p>{s.desc}</p>
+        <span class="method-arrow" aria-hidden="true">{index === steps.length - 1 ? '●' : '↓'}</span>
       </div>
     ))}
   </div>
 </section>
 
 <style>
-  .method-list{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
-  @media (max-width:900px){.method-list{grid-template-columns:1fr;gap:24px;}}
-  .method-word{display:block;font-family:var(--serif);font-style:italic;font-size:24px;color:var(--accent);margin-bottom:10px;}
-  .method-step p{font-size:13.5px;color:var(--text-dim);line-height:1.7;margin:0;max-width:38ch;}
+  .method-list{display:flex;flex-direction:column;border-bottom:1px solid var(--border);}
+  .method-step{display:grid;grid-template-columns:48px minmax(190px,.8fr) minmax(260px,1fr) 24px;gap:24px;align-items:center;border-top:1px solid var(--border);padding:14px 0 10px;overflow:hidden;}
+  .method-index,.method-arrow{font-family:var(--mono);font-size:10px;color:var(--text-faint);}
+  .method-arrow{color:var(--accent);text-align:right;}
+  .method-word-wrap{transform:translate3d(var(--parallax-x,0),0,0);will-change:transform;}
+  .method-word{display:block;font-family:var(--sans);font-size:clamp(44px,6.4vw,92px);line-height:.9;letter-spacing:-.065em;color:var(--text);transition:padding-left .3s ease,color .3s ease;}
+  .method-step:hover .method-word{padding-left:3vw;color:var(--accent);}
+  .method-step p{font-size:13px;color:var(--text-dim);line-height:1.65;margin:0;max-width:42ch;}
+  @media (max-width:760px){.method-step{grid-template-columns:32px 1fr 20px;gap:12px;padding:18px 0;}.method-step p{grid-column:2/4;font-size:12px;}.method-word{font-size:clamp(40px,15vw,70px);}.method-step:hover .method-word{padding-left:0;}}
+  @media (prefers-reduced-motion:reduce){.method-word-wrap{transform:none!important;}.method-word{transition:none;}}
 </style>
