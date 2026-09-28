@@ -77,18 +77,19 @@ a{color:inherit;} ::selection{background:var(--accent);color:var(--bg);}
 img{max-width:100%;display:block;}
 
 .shell{display:flex;min-height:100vh;max-width:1900px;margin:0 auto;}
-.rail{width:260px;flex:none;padding:40px 30px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--border-soft);min-height:100vh;}
+.rail{position:sticky;top:0;width:260px;height:100vh;flex:none;padding:40px 30px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--border-soft);}
 .rail-name{font-family:var(--serif);font-style:italic;font-weight:400;font-size:22px;text-decoration:none;color:var(--text);}
 .rail-name span{font-style:normal;color:var(--accent);}
 .rail-nav{display:flex;flex-direction:column;gap:2px;margin-top:34px;}
-.rail-nav a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--text-dimmer);padding:9px 0;transition:color .15s;position:relative;}
+.rail-nav a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--text-dimmer);padding:9px 0;transition:color .15s,transform .2s ease;position:relative;}
 .rail-nav a::before{content:"";position:absolute;left:-14px;top:50%;width:4px;height:0;background:var(--accent);transform:translateY(-50%);transition:height .2s ease;}
-.rail-nav a:hover,.rail-nav a:focus-visible{color:var(--text);}
+.rail-nav a:hover,.rail-nav a:focus-visible{color:var(--text);transform:translateX(4px);}
 .rail-nav a.active{color:var(--text);}
 .rail-nav a.active::before{height:14px;}
 .rail-nav a.rail-cta{margin-top:16px;padding:10px 16px;border:1px solid var(--accent);border-radius:20px;color:var(--accent);text-align:center;letter-spacing:.08em;font-family:var(--mono);font-size:10px;}
 .rail-nav a.rail-cta::before{display:none;}
 .rail-nav a.rail-cta:hover{color:var(--bg);background:var(--accent);}
+.rail-nav a.rail-cta:hover,.rail-nav a.rail-cta:focus-visible{transform:none;}
 .rail-legend{font-size:10px;color:var(--text-faint);line-height:1.9;}
 .rail-legend .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin-right:7px;}
 .rail-foot{font-size:10px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;}

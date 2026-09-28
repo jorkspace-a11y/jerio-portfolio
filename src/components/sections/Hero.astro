@@ -18,7 +18,7 @@ function resolve(projectTitle: string) {
 const rawStates = [
   { word: 'STRATEGIES', project: 'Sinar Mas Land', role: 'Certification & process gap analysis' },
   { word: 'CAMPAIGNS', project: 'Digimune Indonesia', role: 'Multi-brand marketing management' },
-  { word: 'DIGITAL EXPERIENCES', project: 'Bauntung Digital', role: 'Digital presence strategy' },
+  { word: 'DIGITAL EXPERIENCES', project: 'Meta Pacific', role: 'Brand direction and website strategy' },
   { word: 'OPERATIONS', project: 'Blue Tick Ice', role: 'Operations lead, six departments' },
   { word: 'SYSTEMS', project: 'PT Transkon Jaya', role: 'Fleet compliance & documentation systems' },
 ];
@@ -33,7 +33,7 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
     </div>
 
     <div class="hero-main hero-in d2">
-      <h1>
+      <h1 id="hero-heading" aria-label={`I build ${states[0].word} around what matters.`}>
         I build <span class="hero-word" id="hero-word" data-states={JSON.stringify(states)}>{states[0].word}</span><br />
         around what matters.
       </h1>
@@ -44,7 +44,7 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
       </div>
     </div>
 
-    <a class="hero-evidence hero-in d3" id="hero-evidence" href={`/work/${states[0].slug}/`}>
+    <a class="hero-evidence hero-in d3" id="hero-evidence" href={`/work/${states[0].slug}/`} aria-live="polite">
       <span class="hero-evidence-label">Evidence</span>
       <span class="hero-evidence-project" id="hero-evidence-project">{states[0].project}</span>
       <span class="hero-evidence-role" id="hero-evidence-role">{states[0].role}</span>
@@ -71,9 +71,9 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
      structural connection rather than an unrelated sidebar (PRD section
      46.5). */
   .hero-main h1{font-family:var(--sans);font-weight:300;font-size:clamp(30px,4vw,50px);line-height:1.16;letter-spacing:-.01em;margin:0 0 22px;}
-  .hero-word{font-family:var(--mono);font-weight:500;color:var(--accent);display:inline-block;transition:opacity .3s ease;min-width:min(19ch,100%);}
-  .hero-word.transitioning{opacity:0;}
-  @media (prefers-reduced-motion:reduce){.hero-word{transition:none;}}
+  .hero-word{font-family:var(--mono);font-weight:500;color:var(--accent);display:inline-block;transition:opacity .28s ease,transform .28s ease;min-width:min(19ch,100%);}
+  .hero-word.transitioning{opacity:0;transform:translateY(7px);}
+  @media (prefers-reduced-motion:reduce){.hero-word,.hero-evidence{transition:none!important;}}
   @media (max-width:900px){.hero-main h1{font-size:clamp(26px,7vw,38px);}.hero-word{min-width:0;}}
 
   .hero-capability-select{display:flex;flex-wrap:wrap;gap:16px;}
@@ -82,7 +82,8 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
   .hero-cap-btn[aria-pressed="true"]{color:var(--text);}
   .hero-cap-btn[aria-pressed="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);}
 
-  .hero-evidence{display:block;text-decoration:none;color:inherit;border-left:2px solid var(--accent);padding-left:24px;}
+  .hero-evidence{display:block;text-decoration:none;color:inherit;border-left:2px solid var(--accent);padding-left:24px;transition:opacity .28s ease,transform .28s ease;}
+  .hero-evidence.transitioning{opacity:.25;transform:translateY(7px);}
   .hero-evidence-label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
   .hero-evidence-project{display:block;font-family:var(--mono);font-weight:500;font-size:18px;transition:color .2s ease;}
   .hero-evidence:hover .hero-evidence-project{color:var(--accent);}
@@ -97,6 +98,7 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
   import { trackEvent } from '../../scripts/analytics';
 
   const wordEl = document.getElementById('hero-word');
+  const headingEl = document.getElementById('hero-heading');
   const evidenceLink = document.getElementById('hero-evidence') as HTMLAnchorElement | null;
   const projectEl = document.getElementById('hero-evidence-project');
   const roleEl = document.getElementById('hero-evidence-role');
@@ -116,12 +118,15 @@ const states = rawStates.map((s) => ({ ...s, slug: resolve(s.project) }));
         evidenceLink.href = `/work/${s.slug}/`;
         projectEl.textContent = s.project;
         roleEl.textContent = s.role;
+        headingEl?.setAttribute('aria-label', `I build ${s.word} around what matters.`);
         wordEl.classList.remove('transitioning');
+        evidenceLink.classList.remove('transitioning');
       };
       if (reduced) {
         apply();
       } else {
         wordEl.classList.add('transitioning');
+        evidenceLink.classList.add('transitioning');
         setTimeout(apply, 180);
       }
       buttons.forEach((b, bi) => b.setAttribute('aria-pressed', bi === i ? 'true' : 'false'));

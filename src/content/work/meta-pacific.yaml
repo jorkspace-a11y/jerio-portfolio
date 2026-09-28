@@ -1,0 +1,53 @@
+order: 0
+title: Meta Pacific
+organisation: Meta Pacific
+slug: meta-pacific
+featured: true
+categories: [Strategy, Brand, Web & Conversion]
+industry: Creative technology and growth
+status: delivered
+role: Brand direction and website strategy
+summary: >-
+  Two connected workstreams for the same Bali creative-technology brand: an assignment-based brand direction and a production website built to make the offer, work, and enquiry path clearer.
+context: >-
+  Meta Pacific had broad capability across strategy, production, technology, and growth, but the public presentation needed a clearer position and stronger proof. The brand-direction assignment explored how that position could look; the website work turned the operating offer into a live, structured digital presence.
+scope:
+  - Brand direction, identity routes, campaign applications, and landing-page concepts
+  - Website information architecture, content structure, responsive implementation, and conversion flow
+  - Search foundations, analytics, lead routing, and production QA
+workDone:
+  - >-
+    Brand-direction assignment: built and presented distinct visual routes, logo systems, campaign applications, and landing-page concepts using Meta Pacific's real photography and service context.
+  - >-
+    Production website: structured and shipped the public site across services, solutions, work, field notes, resources, pricing, and contact paths, with mobile behavior and technical search foundations checked before release.
+outcomes:
+  - value: "2"
+    label: Connected workstreams under one Meta Pacific case study
+  - value: "37"
+    label: Website pages covered by the recorded local SEO validation
+limitations:
+  - >-
+    The brand-direction work was produced as an assignment and is shown as design exploration, not as a claim that every route was adopted as Meta Pacific's final identity.
+  - >-
+    Website validation records confirm the tested build and deployment state at the time of review; they do not imply ongoing control of later content or infrastructure changes.
+lessons:
+  - >-
+    The assignment and the website make more sense together when their roles stay explicit: one explored the direction, the other shipped the public system.
+media:
+  - src: /images/meta-pacific-brand-direction.png
+    alt: Meta Pacific brand-direction artwork using black-and-white aerial photography and vermilion typography
+    type: image
+    fit: cover
+  - src: /images/meta-pacific-brand-application.png
+    alt: Editorial Meta Pacific landing-page direction from the brand assignment
+    type: screenshot
+    fit: contain
+  - src: /images/meta-pacific-website-overview.png
+    alt: Meta Pacific production website social preview
+    type: screenshot
+    fit: contain
+  - src: /images/meta-pacific-website-mobile.png
+    alt: Mobile view of the Meta Pacific production website
+    type: screenshot
+    fit: contain
+relatedServices: [brand-digital-presence, digital-strategy, web-conversion]
