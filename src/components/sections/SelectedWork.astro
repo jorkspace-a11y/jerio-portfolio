@@ -22,16 +22,11 @@ const items = await Promise.all(
 ---
 <section id="selected-work">
   <div class="eyebrow">Selected Work</div>
-  <h2 class="head">Six ways the same discipline shows up.</h2>
+  <h2 class="head">Selected projects.</h2>
 
   <div class="selected-list">
-    {items.map((cs, index) => (
-      <a href={`/work/${cs.id}/`} class:list={['selected-card', index === 0 && 'selected-card-featured']} data-cursor="VIEW" data-project-card>
-        {index === 0 && cs.data.media[0] && (
-          <div class="selected-card-media">
-            <img src={cs.data.media[0].src} alt={cs.data.media[0].alt} loading="lazy" decoding="async" />
-          </div>
-        )}
+    {items.map((cs) => (
+      <a href={`/work/${cs.id}/`} class="selected-card" data-cursor="VIEW" data-project-card>
         <div class="selected-card-content">
           <div class="selected-card-head">
             <span class="selected-card-org">{cs.data.organisation}</span>
@@ -49,42 +44,14 @@ const items = await Promise.all(
 </section>
 
 <style>
-  .selected-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
-  @media (max-width:1100px){.selected-list{grid-template-columns:repeat(2,1fr);}}
-  @media (max-width:640px){.selected-list{grid-template-columns:1fr;}}
-  .selected-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;text-decoration:none;color:inherit;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;}
-  .selected-card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(280px circle at var(--card-x,50%) var(--card-y,50%),rgba(255,255,255,.34),transparent 65%);transition:opacity .25s ease;}
-  .selected-card{position:relative;}
-  .selected-card:hover::after,.selected-card:focus-visible::after{opacity:1;}
-  .selected-card:hover,.selected-card:focus-visible{transform:translateY(-3px);border-color:var(--border);box-shadow:0 16px 32px -26px rgba(22,20,16,.55);outline:none;}
-  .selected-card-content{display:flex;flex:1;flex-direction:column;gap:10px;padding:26px 24px;}
-  .selected-card-featured{grid-column:span 2;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(240px,.85fr);}
-  .selected-card-media{min-height:290px;overflow:hidden;background:var(--text);}
-  .selected-card-media img{width:100%;height:100%;object-fit:cover;transition:transform .55s cubic-bezier(.2,.8,.2,1);}
-  .selected-card-featured:hover .selected-card-media img,.selected-card-featured:focus-visible .selected-card-media img{transform:scale(1.025);}
-  .selected-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
-  .selected-card-org{font-family:var(--sans);font-weight:500;font-size:18px;letter-spacing:-.02em;}
-  .selected-card-role{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin:0;}
-  .selected-card-desc{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0;flex:1;}
-  .selected-card-link{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:auto;padding-top:4px;}
-  .selected-card-link span{display:inline-block;transition:transform .2s ease;}
-  .selected-card:hover .selected-card-link span,.selected-card:focus-visible .selected-card-link span{transform:translate(2px,-2px);}
-  .selected-archive-link{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;}
-  .selected-archive-link:hover{color:var(--accent);border-color:var(--accent);}
-  @media (max-width:800px){.selected-card-featured{grid-column:span 2;grid-template-columns:1fr;}.selected-card-media{min-height:240px;}}
-  @media (max-width:640px){.selected-card-featured{grid-column:span 1;}.selected-card-media{min-height:220px;}}
-  @media (prefers-reduced-motion:reduce){.selected-card,.selected-card-media img,.selected-card-link span{transition:none;}.selected-card:hover,.selected-card:focus-visible{transform:none;}.selected-card-featured:hover .selected-card-media img,.selected-card-featured:focus-visible .selected-card-media img{transform:none;}}
+.selected-list{display:flex;flex-direction:column;margin-bottom:28px;}
+.selected-card{display:block;position:relative;border-top:1px solid var(--border);padding:28px 0;text-decoration:none;color:inherit;}
+.selected-card:last-child{border-bottom:1px solid var(--border);}
+.selected-card-content{display:grid;grid-template-columns:1.1fr 1fr 1.3fr 90px;gap:24px;align-items:start;}
+.selected-card-head{display:flex;flex-direction:column;gap:12px;}.selected-card-org{font-size:clamp(23px,2.2vw,32px);letter-spacing:-.025em;line-height:1.2;}
+.selected-card-role{font-size:14px;line-height:1.6;color:var(--text-dimmer);margin:0;}.selected-card-desc{font-size:15px;line-height:1.65;color:var(--text-dim);margin:0;max-width:50ch;}.selected-card-link{font-size:13px;justify-self:end;white-space:nowrap;}.selected-card-link span{display:inline-block;transition:transform .2s;}.selected-card:hover .selected-card-org{color:var(--accent);}.selected-card:hover .selected-card-link span{transform:translate(3px,-3px);}
+.selected-archive-link{display:inline-block;font-size:15px;border-bottom:1px solid #666;padding-bottom:8px;text-decoration:none;}.selected-archive-link:hover{color:var(--accent);}
+@media(max-width:1000px){.selected-card-content{grid-template-columns:1fr 1.4fr 80px;}.selected-card-role{grid-column:1;grid-row:2;}.selected-card-desc{grid-column:2;grid-row:1 / 3;}}
+@media(max-width:600px){.selected-card-content{grid-template-columns:1fr auto;gap:14px;}.selected-card-desc{grid-column:1 / -1;grid-row:3;}.selected-card-role{grid-column:1 / -1;}.selected-card-link{grid-column:2;grid-row:1;}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
-
-<script>
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion && window.matchMedia('(pointer:fine)').matches) {
-    document.querySelectorAll<HTMLElement>('[data-project-card]').forEach((card) => {
-      card.addEventListener('pointermove', (event) => {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--card-x', `${event.clientX - rect.left}px`);
-        card.style.setProperty('--card-y', `${event.clientY - rect.top}px`);
-      });
-    });
-  }
-</script>

@@ -1,76 +1,42 @@
 ---
-import { getCollection } from 'astro:content';
-const work = await getCollection('work');
-const rawStates = [
-  { word: 'DIGITAL EXPERIENCES', project: 'Meta Pacific', role: 'Brand direction and website strategy' },
-  { word: 'STRATEGY', project: 'Sinar Mas Land', role: 'Certification & process gap analysis' },
-  { word: 'CAMPAIGNS', project: 'Digimune Indonesia', role: 'Multi-brand marketing management' },
-  { word: 'OPERATIONS', project: 'Blue Tick Ice', role: 'Operations lead, six departments' },
-  { word: 'SYSTEMS', project: 'PT Transkon Jaya', role: 'Fleet compliance & documentation systems' },
+const projects = [
+ {name:'Meta Pacific',slug:'meta-pacific',role:'Brand direction & website',image:'/images/meta-pacific-brand-direction.png',alt:'Meta Pacific Look Again brand-direction poster'},
+ {name:'Soracha',slug:'01-soracha',role:'Brand identity & photography',image:'/images/img-032-04d0bc24b4.jpeg',alt:'Soracha Creamy Clash brand campaign'},
+ {name:'Digimune Indonesia',slug:'09-digimune-indonesia',role:'Multi-brand marketing',image:'/images/img-072-3cec2bbf67.jpeg',alt:'Campaign artwork from the Digimune Indonesia content archive'},
 ];
-const states = rawStates.map((state) => {
-  const entry = work.find((item) => item.data.title === state.project);
-  if (!entry) throw new Error(`Hero.astro: no Work item found with title "${state.project}".`);
-  const media = entry.data.media[0];
-  return { ...state, slug: entry.id, image: media?.src ?? '', alt: media?.alt ?? '' };
-});
 ---
-<section class="hero" id="hero">
-  <div class="hero-kicker hero-in d1"><span>Strategy / Design / Systems</span><span>Built around the work.</span></div>
-  <div class="hero-stage">
-    <div class="hero-copy hero-in d2">
-      <h1 id="hero-heading" aria-label={`I build ${states[0].word} that matters.`}>
-        <span>I build</span><span class="hero-word" id="hero-word" data-states={JSON.stringify(states)}>{states[0].word}</span><span>that matters.</span>
-      </h1>
-      <p>From unclear problems to work people can use. Strategy, marketing, digital experience, and operating systems.</p>
-      <a class="hero-work-link" id="hero-work-link" href={`/work/${states[0].slug}/`} data-cursor="VIEW">Explore the project <span aria-hidden="true">↗</span></a>
-    </div>
-    <a class:list={['hero-visual hero-in d3', !states[0].image && 'no-image']} id="hero-evidence" href={`/work/${states[0].slug}/`} data-cursor="VIEW" aria-live="polite">
-      <span class="hero-visual-stack" aria-hidden="true"></span>
-      <img id="hero-image" src={states[0].image} alt={states[0].alt} fetchpriority="high" decoding="async" />
-      <span class="hero-image-index" id="hero-image-index">01 / 05</span>
-      <span class="hero-project"><small>Featured project</small><strong id="hero-evidence-project">{states[0].project}</strong><span id="hero-evidence-role">{states[0].role}</span></span>
-    </a>
-    <div class="hero-selector hero-in d4" role="group" aria-label="Select a capability">
-      {states.map((state, index) => <button type="button" class="hero-cap-btn" data-index={index} aria-pressed={index === 0 ? 'true' : 'false'}><span class="selector-dot" aria-hidden="true"></span><span>{state.word}</span></button>)}
-    </div>
+<section class="portfolio-hero" id="hero">
+  <div class="hero-intro">
+    <h1>What matters.<br /><span>Built.</span></h1>
+    <div class="hero-description"><p>I'm Jerio. I work across brand identity, digital marketing, websites, and business operations.</p><a href="/work/">Explore my work <span aria-hidden="true">↗</span></a></div>
   </div>
-  <div class="hero-foot hero-in d4"><span>Digital Marketing &amp; Business Systems Strategist</span><span>Bali, Indonesia</span></div>
+  <div class="project-selector" role="group" aria-label="Select featured project">
+    {projects.map((project,index)=><button type="button" aria-pressed={index===0?'true':'false'} data-project-index={index}><span>{String(index+1).padStart(2,'0')}</span>{project.name}</button>)}
+  </div>
+  <div class="project-stage">
+    {projects.map((project,index)=><a class:list={['project-panel',index===0&&'is-selected']} href={`/work/${project.slug}/`} data-panel-index={index} aria-label={`View ${project.name}: ${project.role}`}>
+      <div class="project-art"><img src={project.image} alt={project.alt} fetchpriority={index===0?'high':'auto'} decoding="async" /></div>
+      <div class="project-caption"><div><h2>{project.name}</h2><p>{project.role}</p></div><span aria-hidden="true">↗</span></div>
+    </a>)}
+  </div>
 </section>
 <style>
-  .hero{min-height:100vh;justify-content:space-between!important;padding:30px 0 24px!important;overflow:hidden;}
-  .hero-kicker,.hero-foot{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-faint);}
-  .hero-stage{display:grid;grid-template-columns:minmax(340px,.9fr) minmax(390px,1.25fr) minmax(150px,.5fr);align-items:center;gap:34px;margin:auto 0;width:100%;}
-  .hero-copy{position:relative;z-index:3;}
-  .hero-copy h1{display:flex;flex-direction:column;font-size:clamp(52px,5vw,72px);font-weight:500;line-height:.86;letter-spacing:-.07em;margin:0 0 34px;}
-  .hero-word{max-width:9.5ch;overflow-wrap:normal;}
-  .hero-word{color:var(--accent);transition:opacity .28s ease,transform .28s ease;}.hero-word.transitioning{opacity:0;transform:translateY(12px);}
-  .hero-copy p{max-width:34ch;font-size:14px;line-height:1.65;color:var(--text-dim);margin:0 0 28px;}
-  .hero-work-link{display:inline-flex;gap:42px;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;border-bottom:1px solid var(--text);padding-bottom:7px;}.hero-work-link span{transition:transform .2s ease}.hero-work-link:hover span{transform:translate(3px,-3px)}
-  .hero-visual{position:relative;z-index:2;display:block;aspect-ratio:1.28/1;color:white;background:#191816;text-decoration:none;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .25s ease;}
-  .hero-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 44%,rgba(0,0,0,.72));pointer-events:none}.hero-visual.transitioning{opacity:.18;transform:translateY(10px) scale(.985)}
-  .hero-visual-stack{position:absolute;inset:-28px 5% 28px -4%;border:1px solid var(--border);transform:translateZ(-1px) rotate(-3deg);background:var(--surface)}.hero-visual-stack::after{content:"";position:absolute;inset:12px -22px -12px 22px;border:1px solid var(--border);background:var(--bg);z-index:-1}
-  .hero-visual img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:transform .6s cubic-bezier(.2,.8,.2,1)}.hero-visual:hover img{transform:scale(1.025)}
-  .hero-visual.no-image img{opacity:0}.hero-visual.no-image::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 34px,rgba(255,255,255,.035) 34px 35px);}
-  .hero-image-index{position:absolute;z-index:2;right:18px;top:16px;font-size:10px;letter-spacing:.14em}.hero-project{position:absolute;z-index:2;left:22px;right:22px;bottom:20px;display:grid;grid-template-columns:1fr auto;align-items:end;gap:5px 18px}.hero-project small{grid-column:1/-1;text-transform:uppercase;letter-spacing:.14em;font-size:9px;opacity:.7}.hero-project strong{font-size:clamp(23px,2.4vw,36px);font-weight:500;letter-spacing:-.04em}.hero-project>span{max-width:24ch;text-align:right;font-size:11px;line-height:1.4;color:rgba(255,255,255,.75)}
-  .hero-selector{position:relative;display:flex;flex-direction:column;padding-left:28px}.hero-selector::before{content:"";position:absolute;left:5px;top:15px;bottom:15px;width:1px;background:var(--border)}
-  .hero-cap-btn{position:relative;display:flex;align-items:center;gap:18px;border:0;background:none;padding:15px 0;color:var(--text-dimmer);text-align:left;font-family:var(--sans);font-size:10px;line-height:1.25;letter-spacing:.05em;cursor:pointer;transition:color .2s ease,transform .2s ease}.hero-cap-btn:hover{color:var(--text);transform:translateX(4px)}
-  .selector-dot{position:absolute;left:-28px;width:9px;height:9px;border:1px solid var(--text-dimmer);border-radius:50%;background:var(--bg);transition:background .2s,border-color .2s,transform .2s}.hero-cap-btn[aria-pressed="true"]{color:var(--accent);font-weight:500}.hero-cap-btn[aria-pressed="true"] .selector-dot{background:var(--accent);border-color:var(--accent);transform:scale(1.25);box-shadow:0 0 0 4px var(--bg),0 0 0 5px var(--accent)}.hero-cap-btn[aria-pressed="true"]::before{content:"";position:absolute;right:calc(100% + 28px);width:42px;height:1px;background:var(--accent)}
-  @media(max-width:1180px){.hero-stage{grid-template-columns:.8fr 1.2fr}.hero-selector{grid-column:1/-1;flex-direction:row;padding:0;flex-wrap:wrap}.hero-selector::before,.selector-dot,.hero-cap-btn[aria-pressed="true"]::before{display:none}.hero-cap-btn{padding:8px 12px 8px 0}.hero-copy h1{font-size:clamp(48px,7vw,78px)}}
-  @media(max-width:760px){.hero{padding:22px 0 18px!important}.hero-kicker span:last-child{display:none}.hero-stage{grid-template-columns:1fr;gap:30px;margin:42px 0}.hero-copy h1{font-size:clamp(46px,14vw,66px);line-height:.9;white-space:normal;margin-bottom:24px}.hero-copy p{font-size:13px}.hero-visual{aspect-ratio:1.08/1}.hero-visual-stack{inset:-14px 5% 14px -2%}.hero-project{left:16px;right:16px;bottom:15px}.hero-project>span{display:none}.hero-selector{order:-1;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}.hero-selector::-webkit-scrollbar{display:none}.hero-cap-btn{white-space:nowrap}.hero-foot{line-height:1.5;flex-direction:column;gap:3px}}
-  @media(prefers-reduced-motion:reduce){.hero-word,.hero-visual,.hero-visual img,.hero-cap-btn,.hero-work-link span{transition:none!important}.hero-visual:hover img{transform:none}}
+  .portfolio-hero{padding-top:58px;padding-bottom:0;}
+  .hero-intro{display:grid;grid-template-columns:1.5fr 1fr;align-items:end;gap:64px;margin-bottom:48px;}
+  h1{font-size:clamp(58px,7.8vw,112px);line-height:1.02;letter-spacing:-.055em;font-weight:500;margin:0;}h1>span{color:var(--accent);}
+  .hero-description{max-width:38ch;padding-bottom:6px;}.hero-description p{font-size:18px;line-height:1.65;color:var(--text-dim);margin:0 0 24px;}.hero-description a{display:inline-flex;gap:40px;font-size:14px;text-decoration:none;border-bottom:1px solid #666;padding-bottom:9px;}.hero-description a:hover{color:var(--accent);}
+  .project-selector{display:flex;gap:30px;border-top:1px solid #333;padding-top:20px;margin-bottom:22px;}.project-selector button{display:flex;gap:12px;color:#a4a4a4;background:none;border:0;padding:0 0 8px;font-size:14px;cursor:pointer;transition:color .2s;}.project-selector button>span{font-size:11px;color:#888}.project-selector button[aria-pressed=true]{color:#fff;border-bottom:1px solid var(--accent);}
+  .project-stage{display:flex;gap:20px;}.project-panel{flex:1;min-width:0;text-decoration:none;transition:flex .6s cubic-bezier(.2,.7,.2,1);}.project-panel.is-selected{flex:1.5;}
+  .project-art{height:420px;overflow:hidden;background:#171717;}.project-art img{width:100%;height:100%;object-fit:contain;transition:transform .6s cubic-bezier(.2,.7,.2,1);}.project-panel:hover img{transform:scale(1.025)}
+  .project-caption{display:flex;justify-content:space-between;gap:12px;padding-top:18px;}.project-caption h2{font-size:20px;font-weight:400;line-height:1.25;letter-spacing:-.02em;margin:0 0 6px}.project-caption p{font-size:13px;color:var(--text-dimmer);margin:0;line-height:1.5;}.project-caption>span{font-size:24px;transition:transform .2s}.project-panel:hover .project-caption>span{transform:translate(3px,-3px);color:var(--accent);}
+  @media(max-width:1000px){.hero-intro{gap:40px;}.hero-description p{font-size:16px;}.project-art{height:330px;}.project-stage{gap:14px}.project-caption h2{font-size:17px;}}
+  @media(max-width:700px){.hero-intro{grid-template-columns:1fr;gap:26px;margin-bottom:32px;}h1{font-size:clamp(46px,10.6vw,74px);letter-spacing:-.04em;}.hero-description{max-width:43ch;}.hero-description p{margin-bottom:18px;}.project-selector{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}.project-selector button{font-size:13px;gap:0;text-align:left;line-height:1.5;align-items:start;}.project-selector button>span{display:none;}.project-panel{display:none;}.project-panel.is-selected{display:block;}.project-art{height:auto;aspect-ratio:1/1;}.project-caption h2{font-size:22px;}.project-caption p{font-size:14px;}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}.project-panel:hover img{transform:none;}}
 </style>
 <script>
-  import { trackEvent } from '../../scripts/analytics';
-  const wordEl=document.getElementById('hero-word'),headingEl=document.getElementById('hero-heading'),visual=document.getElementById('hero-evidence') as HTMLAnchorElement|null,workLink=document.getElementById('hero-work-link') as HTMLAnchorElement|null,imageEl=document.getElementById('hero-image') as HTMLImageElement|null,projectEl=document.getElementById('hero-evidence-project'),roleEl=document.getElementById('hero-evidence-role'),imageIndex=document.getElementById('hero-image-index'),buttons=document.querySelectorAll<HTMLButtonElement>('.hero-cap-btn');
-  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches,finePointer=window.matchMedia('(pointer:fine)').matches;
-  if(wordEl&&visual&&workLink&&imageEl&&projectEl&&roleEl&&imageIndex){
-    const states=JSON.parse(wordEl.dataset.states??'[]') as {word:string;project:string;slug:string;role:string;image:string;alt:string}[];let active=0,timer:number|undefined;
-    const apply=(index:number)=>{const state=states[index];wordEl.textContent=state.word;imageEl.src=state.image;imageEl.alt=state.alt;visual.classList.toggle('no-image',!state.image);visual.href=workLink.href=`/work/${state.slug}/`;projectEl.textContent=state.project;roleEl.textContent=state.role;imageIndex.textContent=`${String(index+1).padStart(2,'0')} / ${String(states.length).padStart(2,'0')}`;headingEl?.setAttribute('aria-label',`I build ${state.word} that matters.`);wordEl.classList.remove('transitioning');visual.classList.remove('transitioning')};
-    const render=(index:number)=>{active=index;buttons.forEach((button,i)=>button.setAttribute('aria-pressed',i===index?'true':'false'));if(reduced)apply(index);else{wordEl.classList.add('transitioning');visual.classList.add('transitioning');window.setTimeout(()=>apply(index),180)}};
-    const start=()=>{if(!reduced)timer=window.setInterval(()=>render((active+1)%states.length),4200)};
-    buttons.forEach(button=>button.addEventListener('click',()=>{if(timer)clearInterval(timer);render(Number(button.dataset.index));timer=window.setTimeout(start,8000)}));
-    if(!reduced&&finePointer){visual.addEventListener('pointermove',(event)=>{const box=visual.getBoundingClientRect(),x=(event.clientX-box.left)/box.width-.5,y=(event.clientY-box.top)/box.height-.5;visual.style.transform=`perspective(900px) rotateX(${-y*3}deg) rotateY(${x*4}deg) translateY(-3px)`});visual.addEventListener('pointerleave',()=>visual.style.transform='')}
-    visual.addEventListener('click',()=>trackEvent('hero_evidence_click',{project:states[active].project,slug:states[active].slug}));start();
-  }
+  const buttons=Array.from(document.querySelectorAll<HTMLButtonElement>('[data-project-index]'));
+  const panels=Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-panel-index]'));
+  function select(index:number){buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));panels.forEach((panel,i)=>panel.classList.toggle('is-selected',i===index));}
+  buttons.forEach((button,index)=>{button.addEventListener('click',()=>select(index));button.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();const next=(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;select(next);buttons[next].focus();}});});
+  panels.forEach((panel,index)=>{panel.addEventListener('pointerenter',()=>{if(window.matchMedia('(hover:hover)').matches)select(index);});panel.addEventListener('focus',()=>select(index));});
 </script>

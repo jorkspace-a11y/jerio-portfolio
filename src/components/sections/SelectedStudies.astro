@@ -5,7 +5,7 @@ const studies = (await getCollection('studies')).sort((a, b) => a.data.order - b
 ---
 <section id="selected-studies">
   <div class="eyebrow">Selected Studies</div>
-  <h2 class="head">Thinking, clearly separated from client work.</h2>
+  <h2 class="head">Independent studies.</h2>
   <p class="studies-teaser-note">Independent and conceptual exercises, never commissioned, never implemented for a real client.</p>
   <div class="studies-teaser-list">
     {studies.map((s) => (
@@ -20,10 +20,10 @@ const studies = (await getCollection('studies')).sort((a, b) => a.data.order - b
 
 <style>
   .studies-teaser-note{font-size:13px;color:var(--text-dim);margin:0 0 24px;max-width:56ch;}
-  .studies-teaser-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .studies-teaser-list{display:grid;grid-template-columns:repeat(2,1fr);gap:36px;}
   @media (max-width:640px){.studies-teaser-list{grid-template-columns:1fr;}}
-  .studies-teaser-card{display:block;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:22px 20px;text-decoration:none;color:inherit;}
+  .studies-teaser-card{display:block;background:transparent;border:0;border-top:1px solid var(--border);border-radius:0;padding:28px 0;text-decoration:none;color:inherit;}
   .studies-teaser-type{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
-  .studies-teaser-title{display:block;font-family:var(--serif);font-size:18px;margin:8px 0;}
-  .studies-teaser-desc{font-size:12.5px;color:var(--text-dim);margin:0;line-height:1.6;}
+  .studies-teaser-title{display:block;font-family:var(--serif);font-size:28px;margin:8px 0;}
+  .studies-teaser-desc{font-size:15px;color:var(--text-dim);margin:0;line-height:1.6;}
 </style>

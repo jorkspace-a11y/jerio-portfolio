@@ -97,7 +97,7 @@ const workJsonLd = {
   <MobileBar />
   <div class="shell">
     <RailNav />
-    <main>
+    <main id="main-content">
       <section id="work-detail" data-work-id={w.id} style="padding-top:64px;">
         <div class="eyebrow"><a href="/work/">Work</a> / {title}</div>
         <h1 class="work-title">{title}</h1>
@@ -108,6 +108,7 @@ const workJsonLd = {
           <div class="lbl-status"><StatusBadge status={status} /></div>
         </div>
 
+        <div class:list={["case-layout",carouselSlides.length===0&&"case-text-only"]}><div class="case-narrative">
         <p class="work-summary">{summary}</p>
 
         {context && <div class="work-block"><div class="lbl">Context</div><p>{context}</p></div>}
@@ -142,6 +143,7 @@ const workJsonLd = {
           <div class="work-block lesson">{lessons.map((l) => <p>{l}</p>)}</div>
         )}
 
+        </div>
         {carouselSlides.length > 0 && (
           <div class="work-block carousel-block">
             <div class="lbl">Media</div>
@@ -149,6 +151,7 @@ const workJsonLd = {
           </div>
         )}
 
+        </div>
         {archives.map((a) => <ArchiveBlock title={a.title} groups={a.groups} />)}
 
         {(serviceLinks.length > 0 || fieldNoteLinks.length > 0 || resourceLinks.length > 0) && (
@@ -187,11 +190,15 @@ const workJsonLd = {
 </script>
 
 <style>
+  .case-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start;}.case-text-only{grid-template-columns:minmax(0,780px);}
+  .case-narrative{min-width:0;}.case-layout .carousel-block{min-width:0;position:sticky;top:110px;}
+  @media(max-width:900px){.case-layout{grid-template-columns:1fr;gap:32px;}.case-layout .carousel-block{position:static;grid-row:1;}}
+
   /* P2 remediation, Direction B (Utilitarian + restrained Neo-Brutalism) +
      Typography System 3 (Modular utility): Work titles move from italic
      Cormorant to weighted mono, active/emphasis states lean on the red
      underline rather than a filled pill. Scoped to Work surfaces only. */
-  .work-title{font-family:var(--mono);font-weight:500;font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.01em;margin:14px 0 24px;max-width:22ch;}
+  .work-title{font-family:var(--mono);font-weight:500;font-size:clamp(36px,5vw,68px);line-height:1.1;letter-spacing:-.035em;text-wrap:balance;line-height:1.08;letter-spacing:-.01em;margin:14px 0 24px;max-width:22ch;}
   .work-meta{display:flex;flex-wrap:wrap;align-items:center;gap:24px 32px;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border-soft);}
   .work-meta > div{display:flex;flex-direction:column;gap:4px;}
   .work-meta .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
@@ -199,9 +206,9 @@ const workJsonLd = {
   .work-summary{font-size:16px;color:var(--text-dim);line-height:1.7;max-width:62ch;margin:0 0 28px;}
   .work-block{margin-bottom:24px;}
   .work-block .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
-  .work-block p{font-size:14px;line-height:1.75;color:var(--text-dim);margin:0 0 10px;max-width:62ch;}
+  .work-block p{font-size:16px;line-height:1.75;color:var(--text-dim);margin:0 0 10px;max-width:62ch;}
   .work-block ul{margin:0;padding-left:18px;}
-  .work-block li{font-size:14px;line-height:1.75;color:var(--text-dim);}
+  .work-block li{font-size:16px;line-height:1.75;color:var(--text-dim);}
   .work-block.lesson p{font-family:var(--sans);font-weight:500;color:var(--text);font-size:16px;}
   .outcomes-grid{display:flex;flex-wrap:wrap;gap:20px 32px;}
   .outcome{display:flex;flex-direction:column;gap:2px;}

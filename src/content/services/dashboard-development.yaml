@@ -2,7 +2,7 @@ order: 6
 title: Dashboard Development
 slug: dashboard-development
 summary: >-
-  Reporting pipelines and dashboards that replace hours of manual compilation with a system that surfaces problems before someone has to go looking for them.
+  Data pipelines and dashboards that bring production, sales, or logistics reporting into one place, with documentation for handover.
 audience:
   - Teams still compiling weekly/monthly reports by hand
   - Operations that need visibility across production, sales, or logistics data

@@ -10,7 +10,7 @@ const recs = (await getCollection('recommendations')).sort((a, b) => a.data.orde
   <MobileBar />
   <div class="shell">
     <RailNav />
-    <main>
+    <main id="main-content">
       <section id="recommendations-index" style="padding-top:64px;">
         <div class="eyebrow">Recommendations</div>
         <h1 class="head">What's actually in use, disclosed plainly.</h1>
@@ -37,7 +37,7 @@ const recs = (await getCollection('recommendations')).sort((a, b) => a.data.orde
 <style>
   .rec-note{font-size:14px;color:var(--text-dim);line-height:1.7;max-width:62ch;margin:0 0 32px;}
   .rec-list{display:flex;flex-direction:column;gap:16px;max-width:640px;}
-  .rec-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:24px 22px;}
+  .rec-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:0;padding:24px 22px;}
   .rec-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
   .rec-card-title{font-family:var(--serif);font-size:18px;}
   .rec-card-relationship{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);}

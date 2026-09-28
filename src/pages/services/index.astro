@@ -2,38 +2,29 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RailNav from '../../components/nav/RailNav.astro';
-import MobileBar from '../../components/nav/MobileBar.astro';
-
 const services = (await getCollection('services', ({ data }) => data.active)).sort((a, b) => a.data.order - b.data.order);
 ---
-<BaseLayout title="Services | Jerio" description="Seven services across strategy, marketing, digital experience, and operations, scoped, with exclusions stated plainly.">
-  <MobileBar />
-  <div class="shell">
-    <RailNav />
-    <main>
-      <section id="services-index" style="padding-top:64px;">
-        <div class="eyebrow">Services</div>
-        <h1 class="head">Scoped work, not a generic retainer.</h1>
-
-        <div class="services-grid">
-          {services.map((s) => (
-            <a href={`/services/${s.data.slug}/`} class="service-card" data-cursor="VIEW">
-              <span class="service-card-title">{s.data.title}</span>
-              <p class="service-card-summary">{s.data.summary}</p>
-              <span class="service-card-link">Learn more</span>
-            </a>
-          ))}
-        </div>
-      </section>
-    </main>
-  </div>
+<BaseLayout title="Services | Jerio" description="Digital strategy, marketing, brand identity, websites, and operational systems. Explore the scope and deliverables for each service.">
+  <div class="shell"><RailNav /><main id="main-content">
+    <section id="services-index">
+      <div class="eyebrow">Services</div>
+      <div class="services-intro"><h1 class="head">What can I<br />help you build?</h1><p>From a brand's first identity to the systems behind its day-to-day work. Explore each service for scope, deliverables, and related projects.</p></div>
+      <div class="service-list">
+        {services.map((s,index) => <details class="service-row" name="services" open={index===0}>
+          <summary><span class="service-number">{String(index+1).padStart(2,'0')}</span><h2>{s.data.title}</h2><span class="service-plus" aria-hidden="true">+</span></summary>
+          <div class="service-body"><p>{s.data.summary}</p><div><span class="deliverables-label">Deliverables</span><ul>{s.data.deliverables.map(d=><li>{d}</li>)}</ul><a href={`/services/${s.data.slug}/`}>Explore {s.data.title.toLowerCase()} <span aria-hidden="true">↗</span></a></div></div>
+        </details>)}
+      </div>
+    </section>
+  </main></div>
 </BaseLayout>
-
 <style>
-  .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
-  .service-card{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:28px 26px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
-  .service-card:hover{transform:translateY(-2px);border-color:var(--border);}
-  .service-card-title{font-family:var(--serif);font-size:19px;}
-  .service-card-summary{font-size:13px;color:var(--text-dim);line-height:1.65;margin:0;flex:1;}
-  .service-card-link{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);}
+  .services-intro{display:grid;grid-template-columns:1.3fr 1fr;gap:64px;align-items:end;margin-bottom:56px}.services-intro h1.head{margin:0;max-width:18ch}.services-intro>p{font-size:18px;line-height:1.65;max-width:40ch;color:var(--text-dim);margin:0 0 5px;}
+  .service-row{border-top:1px solid #3a3a3a;}.service-row:last-child{border-bottom:1px solid #3a3a3a;}
+  summary{display:grid;grid-template-columns:64px 1fr 40px;align-items:center;gap:18px;list-style:none;cursor:pointer;padding:28px 0;}summary::-webkit-details-marker{display:none;}
+  summary h2{font-size:clamp(24px,3.1vw,44px);font-weight:400;line-height:1.2;letter-spacing:-.025em;margin:0;transition:transform .25s,color .25s;}.service-number{font-size:13px;color:var(--text-dimmer);font-variant-numeric:tabular-nums;}.service-plus{font-size:30px;justify-self:end;transition:transform .25s;}summary:hover h2,details[open] h2{color:var(--accent);}summary:hover h2{transform:translateX(6px)}details[open] .service-plus{transform:rotate(45deg);}
+  .service-body{display:grid;grid-template-columns:1fr 1fr;gap:64px;padding:0 58px 36px 82px;animation:service-in .3s ease;}.service-body p{font-size:18px;line-height:1.65;color:var(--text-dim);margin:0;max-width:44ch;}.deliverables-label{font-size:12px;color:var(--text-dimmer);}.service-body ul{padding-left:18px;margin:12px 0 28px;font-size:15px;line-height:1.7;}.service-body a{display:inline-flex;gap:24px;padding-bottom:8px;border-bottom:1px solid #666;font-size:14px;text-decoration:none;}.service-body a:hover{color:var(--accent);}
+  @keyframes service-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  @media(max-width:700px){.services-intro{grid-template-columns:1fr;gap:24px;margin-bottom:36px}.services-intro>p{font-size:16px;}summary{grid-template-columns:28px 1fr 24px;gap:12px;padding:24px 0;}summary h2{font-size:clamp(22px,5vw,30px)}.service-body{grid-template-columns:1fr;gap:24px;padding:0 0 28px 40px;}.service-body p{font-size:16px;}.service-body a{font-size:13px;}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>

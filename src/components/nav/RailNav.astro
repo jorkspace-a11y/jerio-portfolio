@@ -1,19 +1,51 @@
 ---
+import { getCollection } from 'astro:content';
+const services = (await getCollection('services', ({data}) => data.active)).sort((a,b) => a.data.order-b.data.order);
+const path = Astro.url.pathname;
 const links = [
-  { href: '/work/', label: 'Work', marked: true },
-  { href: '/services/', label: 'Services', marked: true },
-  { href: '/studies/', label: 'Studies', marked: true },
-  { href: '/field-notes/', label: 'Field Notes' },
-  { href: '/resources/', label: 'Resources' },
-  { href: '/about/', label: 'About', marked: true },
+  {href:'/work/',label:'Work',children:[{href:'/work/',label:'All projects'},{href:'/work/meta-pacific/',label:'Meta Pacific'},{href:'/work/01-soracha/',label:'Soracha'},{href:'/work/09-digimune-indonesia/',label:'Digimune Indonesia'}]},
+  {href:'/services/',label:'Services',children:[{href:'/services/',label:'Explore services'},...services.map(s=>({href:`/services/${s.data.slug}/`,label:s.data.title}))]},
+  {href:'/studies/',label:'Studies'}, {href:'/field-notes/',label:'Field Notes'}, {href:'/resources/',label:'Resources'}, {href:'/about/',label:'About'},
 ];
 ---
-<nav class="rail">
-  <div>
-    <a href="/" class="rail-name">Jerio<span>.</span></a>
-    <div class="rail-nav">
-      {links.map((l) => <a href={l.href}><span>{l.label}</span>{l.marked && <span class="nav-chevron" aria-hidden="true">⌄</span>}</a>)}
-      <a href="/#contact" class="rail-cta" data-cursor="TALK"><span>Start a Project</span><span aria-hidden="true">↗</span></a>
-    </div>
-  </div>
-</nav>
+<header class="site-nav">
+  <a class="nav-brand" href="/" aria-label="Jerio home">Jerio.</a>
+  <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">Menu <span aria-hidden="true">+</span></button>
+  <nav id="primary-nav" aria-label="Primary navigation">
+    {links.map(link => link.children ? (
+      <details class:list={['nav-group',path.startsWith(link.href)&&'current']}>
+        <summary>{link.label}<span class="chevron" aria-hidden="true"></span></summary>
+        <div class="nav-panel">{link.children.map(child=><a href={child.href} aria-current={path===child.href?'page':undefined}>{child.label}<span aria-hidden="true">↗</span></a>)}</div>
+      </details>
+    ) : <a class:list={['nav-link',path.startsWith(link.href)&&'current']} href={link.href} aria-current={path===link.href?'page':undefined}>{link.label}</a>)}
+    <a class="nav-contact" href="/#contact">Start a project <span aria-hidden="true">↗</span></a>
+  </nav>
+</header>
+<style>
+  .site-nav{position:sticky;top:0;z-index:45;display:flex;align-items:center;gap:64px;min-height:76px;padding:0 40px;background:#080808;border-bottom:1px solid var(--border);}
+  .nav-brand{font-size:24px;font-weight:600;letter-spacing:-.06em;text-decoration:none;}
+  nav{display:flex;align-items:center;gap:32px;flex:1;min-width:0;}
+  .nav-link,summary{font-size:14px;color:#aaa;text-decoration:none;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:28px 0;}
+  summary::-webkit-details-marker{display:none}.current>summary,.nav-link.current,summary:hover,.nav-link:hover,details[open]>summary{color:#fff;}
+  .nav-group{position:relative;}.chevron{width:5px;height:5px;border-right:1px solid;border-bottom:1px solid;transform:rotate(45deg);transition:transform .2s;}details[open] .chevron{transform:rotate(225deg)}
+  .nav-panel{position:absolute;top:100%;left:-24px;min-width:290px;padding:12px 24px;background:#141414;border:1px solid var(--border);animation:menu-in .2s ease;}
+  .nav-panel a{display:flex;justify-content:space-between;gap:24px;padding:15px 0;border-bottom:1px solid var(--border-soft);font-size:14px;text-decoration:none;color:#bbb;}.nav-panel a:last-child{border:0}.nav-panel a:hover,.nav-panel a[aria-current]{color:#fff}.nav-panel a span{color:var(--accent)}
+  .nav-contact{margin-left:auto;display:flex;gap:24px;align-items:center;font-size:13px;text-decoration:none;border:1px solid #555;padding:12px 16px;transition:background .2s,color .2s;white-space:nowrap;}
+  .nav-contact:hover{background:#fff;color:#080808}.menu-toggle{display:none;}
+  @keyframes menu-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  @media(max-width:1050px){.site-nav{gap:28px;padding:0 24px;}nav{gap:20px;}}
+  @media(max-width:850px){.site-nav{min-height:64px;justify-content:space-between;padding:0 20px;}.menu-toggle{display:flex;align-items:center;gap:28px;background:none;border:0;color:#fff;padding:18px 0;font-size:15px;cursor:pointer;}.menu-toggle span{font-size:24px;line-height:1;}nav{display:none;position:absolute;top:100%;left:0;right:0;padding:12px 24px 28px;background:#111;max-height:calc(100dvh - 64px);overflow-y:auto;border-bottom:1px solid var(--border);}nav.is-open{display:block;}.nav-link,summary{padding:17px 0;font-size:22px;border-bottom:1px solid var(--border-soft);justify-content:space-between;}.nav-panel{position:static;min-width:0;padding:0 0 0 20px;border:0;}.nav-panel a{font-size:15px;}.nav-contact{margin-top:24px;justify-content:space-between;width:100%;}.menu-toggle[aria-expanded=true] span{transform:rotate(45deg)}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+<script>
+  const header=document.querySelector<HTMLElement>('.site-nav');
+  const toggle=header?.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav=header?.querySelector('nav');
+  const groups=header?.querySelectorAll<HTMLDetailsElement>('details');
+  const close=()=>{groups?.forEach(group=>group.open=false);nav?.classList.remove('is-open');toggle?.setAttribute('aria-expanded','false');};
+  toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav?.classList.toggle('is-open',open);});
+  groups?.forEach(group=>group.addEventListener('toggle',()=>{if(group.open)groups.forEach(other=>{if(other!==group)other.open=false;});}));
+  document.addEventListener('click',event=>{if(header&&!header.contains(event.target as Node))close();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'){const focused=document.activeElement;close();if(header?.contains(focused)){if(window.matchMedia('(max-width:850px)').matches)toggle?.focus();else (focused?.closest('details')?.querySelector('summary') as HTMLElement)?.focus();}}});
+  nav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));
+</script>

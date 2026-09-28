@@ -11,10 +11,10 @@ const articles = (await getCollection('field-notes', ({ data }) => !data.draft))
   <MobileBar />
   <div class="shell">
     <RailNav />
-    <main>
+    <main id="main-content">
       <section id="field-notes-archive" style="padding-top:64px;">
         <div class="eyebrow">Field Notes</div>
-        <h1 class="head">Notes from the work, not around it.</h1>
+        <h1 class="head">Notes on the work.</h1>
 
         {articles.length === 0 ? (
           <p class="empty-state">Nothing published yet. First pieces are in progress, check back soon, or <a href="/#contact">get in touch</a> if there's something specific worth writing about.</p>
@@ -41,5 +41,5 @@ const articles = (await getCollection('field-notes', ({ data }) => !data.draft))
   .article-card{display:block;padding:24px 0;border-bottom:1px solid var(--border-soft);text-decoration:none;color:inherit;}
   .article-card-category{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
   .article-card-title{display:block;font-family:var(--serif);font-size:22px;margin:8px 0;}
-  .article-card-desc{font-size:13.5px;color:var(--text-dim);margin:0;max-width:62ch;}
+  .article-card-desc{font-size:15px;color:var(--text-dim);margin:0;max-width:62ch;}
 </style>

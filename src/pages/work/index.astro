@@ -46,10 +46,10 @@ const previewItems: WorkPreviewItem[] = work.map((w) => {
   <MobileBar />
   <div class="shell">
     <RailNav />
-    <main>
+    <main id="main-content">
       <section id="work-archive" style="padding-top:64px;">
         <div class="eyebrow">Work</div>
-        <h1 class="head">Every project, one archive.</h1>
+        <h1 class="head">The work.</h1>
 
         <div class="filters" role="group" aria-label="Filter by category">
           <button type="button" class="filter-btn active" data-filter="All">All</button>
@@ -103,7 +103,7 @@ const previewItems: WorkPreviewItem[] = work.map((w) => {
   /* Interactive Work Index: list + sticky preview, replaces the repeated
      card grid entirely (PRD "P2 UI/UX Remediation" section 5-7). */
   .work-shell{display:grid;grid-template-columns:60% 1fr;gap:40px;align-items:start;}
-  @media (max-width:900px){.work-shell{grid-template-columns:1fr;}}
+  @media (max-width:1023px){.work-shell{grid-template-columns:1fr;}}
 
   .work-list{display:flex;flex-direction:column;}
   .work-row{

@@ -37,7 +37,7 @@ media:
   - src: /images/meta-pacific-brand-direction.png
     alt: Meta Pacific brand-direction artwork using black-and-white aerial photography and vermilion typography
     type: image
-    fit: cover
+    fit: contain
   - src: /images/meta-pacific-brand-application.png
     alt: Editorial Meta Pacific landing-page direction from the brand assignment
     type: screenshot

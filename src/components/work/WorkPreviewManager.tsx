@@ -39,7 +39,7 @@ const HOVER_ANALYTICS_DELAY = 500;
 export function WorkPreviewManager({ items }: Props) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const isDesktop = useMediaQuery('(min-width: 900px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
   const hoverTimers = useRef<Map<string, number>>(new Map());
   const announcedIds = useRef<Set<string>>(new Set());
 
@@ -128,7 +128,7 @@ export function WorkPreviewManager({ items }: Props) {
       {/* Desktop sticky preview — structural border (Direction B), no card
           shadow, no rounded corners. Hidden entirely on mobile, the Drawer
           below is mobile's preview surface instead. */}
-      <div className="sticky top-6 hidden self-start border border-text lg:block">
+      <div className="sticky top-24 hidden self-start border border-text lg:block">
         {media}
         <div className="p-6">
           <div className="font-mono text-2xl font-medium">{active.title}</div>
@@ -146,7 +146,8 @@ export function WorkPreviewManager({ items }: Props) {
       </div>
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent>
+        <DrawerContent className="max-h-[90dvh] overflow-y-auto">
+          <button type="button" onClick={() => setDrawerOpen(false)} className="ml-auto mr-4 mt-3 min-h-11 px-3 text-sm" aria-label="Close project preview">Close ×</button>
           <DrawerHeader>
             <DrawerTitle className="font-mono text-xl font-medium">{active.title}</DrawerTitle>
             {showOrg && <DrawerDescription>{active.organisation}</DrawerDescription>}
