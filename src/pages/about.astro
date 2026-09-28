@@ -20,15 +20,17 @@ const personJsonLd = {
   <div class="shell">
     <RailNav />
     <main>
-      <section id="about-page" style="padding-top:64px;">
+      <section id="about-page">
         <div class="eyebrow">About</div>
-        <h1 class="head">I tend to work where strategy meets the reality of running a business.</h1>
-        <div class="about">
-          <p>Marketing work that ignores operations produces plans nobody can execute. Operations work that ignores marketing produces systems nobody outside the business understands the point of. I've spent my career on both sides of that line, which is why the two show up together here instead of as separate specialties.</p>
-          <p>I build brand identity and run digital marketing for founders who don't have an internal team to do it themselves. I started the practice in 2023 while based in East Kalimantan, first as <strong>WWJ</strong>, then <strong>Matari.allo</strong>, before it became <strong>Allo.Society</strong>. By the time I moved to Bali in 2026, Allo.Society was already the name running brand builds from scratch, campaign strategy, CRM systems, and social management across multiple brands.</p>
-          <p>Before that, I ran paid media and CRM for other people's clients: 88 Meta Ads campaigns across four brands at Dream Box, a HubSpot sequence at KKBC that hit a 14.4% click-through rate, a brand launched to page-one Google rankings at RevoU.</p>
-          <p>I also spent years running physical operations, fleets, factories, compliance systems, across East and South Kalimantan before Blue Tick Ice brought me to Bali. That's why the marketing here is built to hold up under scrutiny, not just look good. I've had to answer for both sides of that equation directly.</p>
-          <p>Allo.Society is a separate company I founded, rooted in Bali, commercially scaling since 2025. It's not this site, and this site isn't it. This is my own record of the work, across whichever side of the growth-versus-operations line it happened to sit on.</p>
+        <div class="about-layout">
+          <h1>I work where strategy meets the reality of running a business.</h1>
+          <div class="about">
+            <p class="about-lead">Marketing work that ignores operations produces plans nobody can execute. Operations work that ignores marketing produces systems nobody outside the business understands.</p>
+            <p>I build brand identity and run digital marketing for founders without an internal team. I started the practice in 2023 in East Kalimantan, first as <strong>WWJ</strong>, then <strong>Matari.allo</strong>, before it became <strong>Allo.Society</strong>.</p>
+            <p>Before that, I ran paid media and CRM for other people's clients: 88 Meta Ads campaigns across four brands at Dream Box, a HubSpot sequence at KKBC that reached a 14.4% click-through rate, and a brand launched to page-one Google rankings at RevoU.</p>
+            <p>I also spent years running physical operations, fleets, factories, and compliance systems across East and South Kalimantan before Blue Tick Ice brought me to Bali. That is why the marketing here is built to hold up under scrutiny.</p>
+            <p>Allo.Society is a separate company I founded. This site is my own record of the work, across whichever side of the growth-and-operations line it happened to sit on.</p>
+          </div>
         </div>
         <div class="about-links">
           <a href="/work/">See the work</a>
@@ -41,7 +43,14 @@ const personJsonLd = {
 </BaseLayout>
 
 <style>
+  #about-page{min-height:auto;padding:110px 0 150px;display:block;max-width:1240px;margin:0 auto;}
+  .about-layout{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(420px,1.1fr);gap:clamp(70px,10vw,160px);align-items:start;}
+  .about-layout h1{font-size:clamp(54px,6.5vw,96px);line-height:.92;letter-spacing:-.065em;font-weight:500;margin:0;max-width:9ch;}
+  .about{padding-top:8px;}
+  .about p{font-size:16px;line-height:1.75;max-width:58ch;margin:0 0 28px;color:var(--text-dim);}
+  .about .about-lead{font-size:21px;line-height:1.55;color:var(--text);}
   .about-links{display:flex;gap:28px;margin-top:36px;}
   .about-links a{font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .15s ease,border-color .15s ease;}
   .about-links a:hover{color:var(--accent);border-color:var(--accent);}
+  @media(max-width:800px){#about-page{padding:72px 0 100px}.about-layout{grid-template-columns:1fr;gap:44px}.about-layout h1{font-size:clamp(48px,13vw,70px)}.about p{font-size:15px}.about .about-lead{font-size:18px}}
 </style>

@@ -1,18 +1,18 @@
 ---
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/work/', label: 'Work' },
-  { href: '/about/', label: 'About' },
+  { href: '/work/', label: 'Work', marked: true },
+  { href: '/services/', label: 'Services', marked: true },
+  { href: '/studies/', label: 'Studies', marked: true },
   { href: '/field-notes/', label: 'Field Notes' },
-  { href: '/services/', label: 'Services' },
   { href: '/resources/', label: 'Resources' },
+  { href: '/about/', label: 'About', marked: true },
 ];
 ---
 <nav class="rail">
   <div>
     <a href="/" class="rail-name">Jerio<span>.</span></a>
     <div class="rail-nav">
-      {links.map((l, index) => <a href={l.href}><span class="rail-index">{String(index + 1).padStart(2, '0')}</span><span>{l.label}</span></a>)}
+      {links.map((l) => <a href={l.href}><span>{l.label}</span>{l.marked && <span class="nav-chevron" aria-hidden="true">⌄</span>}</a>)}
       <a href="/#contact" class="rail-cta" data-cursor="TALK"><span>Start a Project</span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
