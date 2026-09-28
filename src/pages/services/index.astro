@@ -33,7 +33,7 @@ const services = (await getCollection('services', ({ data }) => data.active)).so
   .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
   .service-card{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:28px 26px;text-decoration:none;color:inherit;transition:transform .2s ease,border-color .2s ease;}
   .service-card:hover{transform:translateY(-2px);border-color:var(--border);}
-  .service-card-title{font-family:var(--serif);font-style:italic;font-size:19px;}
+  .service-card-title{font-family:var(--serif);font-size:19px;}
   .service-card-summary{font-size:13px;color:var(--text-dim);line-height:1.65;margin:0;flex:1;}
   .service-card-link{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);}
 </style>
