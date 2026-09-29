@@ -1,6 +1,6 @@
 ---
-title: What an operations dashboard should actually shorten
-description: A dashboard isn't the fix. The gap between something breaking and someone finding out is the number that has to shrink first.
+title: Reporting that saves working time
+description: How team training and a reporting pipeline changed the weekly routine at Blue Tick Ice.
 publishedAt: 2026-08-08
 category: Operations
 tags: [operations, dashboards, reporting, manufacturing]

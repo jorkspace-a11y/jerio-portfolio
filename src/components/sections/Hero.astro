@@ -1,42 +1,68 @@
 ---
-const projects = [
- {name:'Meta Pacific',slug:'meta-pacific',role:'Brand direction & website',image:'/images/meta-pacific-brand-direction.png',alt:'Meta Pacific Look Again brand-direction poster'},
- {name:'Soracha',slug:'01-soracha',role:'Brand identity & photography',image:'/images/img-032-04d0bc24b4.jpeg',alt:'Soracha Creamy Clash brand campaign'},
- {name:'Digimune Indonesia',slug:'09-digimune-indonesia',role:'Multi-brand marketing',image:'/images/img-072-3cec2bbf67.jpeg',alt:'Campaign artwork from the Digimune Indonesia content archive'},
-];
+const views=[{name:'Brand',title:'Meta Pacific',detail:'Brand-direction assignment',href:'/work/meta-pacific/'},{name:'Digital',title:'Meta Pacific',detail:'Production website',href:'/work/meta-pacific/'},{name:'Operations',title:'Blue Tick Ice',detail:'Reporting & operating systems · Ongoing',href:'/work/05-blue-tick-ice/'}];
 ---
 <section class="portfolio-hero" id="hero">
-  <div class="hero-intro">
-    <h1>What matters.<br /><span>Built.</span></h1>
-    <div class="hero-description"><p>I'm Jerio. I work across brand identity, digital marketing, websites, and business operations.</p><a href="/work/">Explore my work <span aria-hidden="true">↗</span></a></div>
+ <div class="hero-copy">
+  <p class="hero-kicker">Independent practice by Jerio</p>
+  <h1><span class="line-mask"><span>What matters.</span></span><span class="line-mask"><span class="accent-word">Built.</span></span></h1>
+  <p class="hero-lead">The brand people see.<br/>The systems that make it work.</p>
+  <p class="hero-description">I work across digital marketing, websites, and business operations, from the first decision to the day-to-day running.</p>
+  <a class="hero-link" href="#selected-work">Explore the work <span aria-hidden="true">↓</span></a>
+ </div>
+ <div class="hero-workbench">
+  <div class="bench-top"><span>Inside the work</span><span class="bench-count" aria-hidden="true">01 / 03</span></div>
+  <div class="workbench" aria-label="Featured work preview">
+   <div class="bench-scene is-active" data-scene="0">
+    <div class="art-back layer"><img src="/images/meta-pacific-brand-application-1200.webp" srcset="/images/meta-pacific-brand-application-640.webp 640w, /images/meta-pacific-brand-application-1200.webp 1200w" sizes="(max-width: 800px) 85vw, 45vw" alt="Meta Pacific landing-page art direction" width="1200" height="800" decoding="async"/></div>
+    <div class="art-front layer"><img src="/images/meta-pacific-brand-direction-1200.webp" srcset="/images/meta-pacific-brand-direction-640.webp 640w, /images/meta-pacific-brand-direction-1200.webp 1200w" sizes="(max-width: 800px) 85vw, 45vw" alt="Meta Pacific Look Again brand-direction poster" width="600" height="750" fetchpriority="high"/></div>
+    <span class="artifact-label">Identity → application</span>
+   </div>
+   <div class="bench-scene" data-scene="1" aria-hidden="true" inert>
+    <div class="web-desktop layer"><div class="browser-line"><span></span><span></span><span></span><b>metapacific.co</b></div><img src="/images/meta-pacific-website-overview-1200.webp" srcset="/images/meta-pacific-website-overview-640.webp 640w, /images/meta-pacific-website-overview-1200.webp 1200w" sizes="(max-width: 800px) 85vw, 45vw" alt="Meta Pacific production website" width="1200" height="630" decoding="async"/></div>
+    <div class="web-phone layer"><img src="/images/meta-pacific-website-mobile-1200.webp" srcset="/images/meta-pacific-website-mobile-640.webp 640w, /images/meta-pacific-website-mobile-1200.webp 1200w" sizes="(max-width: 800px) 85vw, 45vw" alt="Meta Pacific responsive mobile website" width="390" height="844" decoding="async"/></div>
+    <span class="artifact-label">Structure → digital experience</span>
+   </div>
+   <div class="bench-scene operations-scene" data-scene="2" aria-hidden="true" inert>
+    <div class="report-sheet layer"><span class="sheet-label">Blue Tick Ice / Reporting</span><p class="sheet-title">From production<br/>to a clear weekly report.</p><div class="report-path"><span>Operations</span><span>Reporting pipeline</span><span>Executive review</span></div><div class="report-result"><span>4 hours</span><span aria-hidden="true">↘</span><strong>&lt; 5 min</strong></div><p class="sheet-foot">Recorded weekly reporting time<br/>Ongoing operations engagement</p></div>
+   </div>
   </div>
-  <div class="project-selector" role="group" aria-label="Select featured project">
-    {projects.map((project,index)=><button type="button" aria-pressed={index===0?'true':'false'} data-project-index={index}><span>{String(index+1).padStart(2,'0')}</span>{project.name}</button>)}
-  </div>
-  <div class="project-stage">
-    {projects.map((project,index)=><a class:list={['project-panel',index===0&&'is-selected']} href={`/work/${project.slug}/`} data-panel-index={index} aria-label={`View ${project.name}: ${project.role}`}>
-      <div class="project-art"><img src={project.image} alt={project.alt} fetchpriority={index===0?'high':'auto'} decoding="async" /></div>
-      <div class="project-caption"><div><h2>{project.name}</h2><p>{project.role}</p></div><span aria-hidden="true">↗</span></div>
-    </a>)}
-  </div>
+  <div class="bench-controls" role="group" aria-label="Explore work by discipline">{views.map((view,i)=><button type="button" data-view={i} aria-pressed={i===0?'true':'false'}><span class="view-number">0{i+1}</span>{view.name}<span class="view-mark" aria-hidden="true">↗</span></button>)}</div>
+  <div class="bench-caption" aria-live="polite"><div><span data-view-title>{views[0].title}</span><small data-view-detail>{views[0].detail}</small></div><a data-view-link href={views[0].href} aria-label="Read featured case study">View project <span aria-hidden="true">↗</span></a></div>
+ </div>
+ <div class="hero-scope"><span>Strategy & brand</span><span>SEO · SEM · CRM</span><span>Websites & digital experiences</span><span>Analytics & operational systems</span></div>
 </section>
 <style>
-  .portfolio-hero{padding-top:58px;padding-bottom:0;}
-  .hero-intro{display:grid;grid-template-columns:1.5fr 1fr;align-items:end;gap:64px;margin-bottom:48px;}
-  h1{font-size:clamp(58px,7.8vw,112px);line-height:1.02;letter-spacing:-.055em;font-weight:500;margin:0;}h1>span{color:var(--accent);}
-  .hero-description{max-width:38ch;padding-bottom:6px;}.hero-description p{font-size:18px;line-height:1.65;color:var(--text-dim);margin:0 0 24px;}.hero-description a{display:inline-flex;gap:40px;font-size:14px;text-decoration:none;border-bottom:1px solid #666;padding-bottom:9px;}.hero-description a:hover{color:var(--accent);}
-  .project-selector{display:flex;gap:30px;border-top:1px solid #333;padding-top:20px;margin-bottom:22px;}.project-selector button{display:flex;gap:12px;color:#a4a4a4;background:none;border:0;padding:0 0 8px;font-size:14px;cursor:pointer;transition:color .2s;}.project-selector button>span{font-size:11px;color:#888}.project-selector button[aria-pressed=true]{color:#fff;border-bottom:1px solid var(--accent);}
-  .project-stage{display:flex;gap:20px;}.project-panel{flex:1;min-width:0;text-decoration:none;transition:flex .6s cubic-bezier(.2,.7,.2,1);}.project-panel.is-selected{flex:1.5;}
-  .project-art{height:420px;overflow:hidden;background:#171717;}.project-art img{width:100%;height:100%;object-fit:contain;transition:transform .6s cubic-bezier(.2,.7,.2,1);}.project-panel:hover img{transform:scale(1.025)}
-  .project-caption{display:flex;justify-content:space-between;gap:12px;padding-top:18px;}.project-caption h2{font-size:20px;font-weight:400;line-height:1.25;letter-spacing:-.02em;margin:0 0 6px}.project-caption p{font-size:13px;color:var(--text-dimmer);margin:0;line-height:1.5;}.project-caption>span{font-size:24px;transition:transform .2s}.project-panel:hover .project-caption>span{transform:translate(3px,-3px);color:var(--accent);}
-  @media(max-width:1000px){.hero-intro{gap:40px;}.hero-description p{font-size:16px;}.project-art{height:330px;}.project-stage{gap:14px}.project-caption h2{font-size:17px;}}
-  @media(max-width:700px){.hero-intro{grid-template-columns:1fr;gap:26px;margin-bottom:32px;}h1{font-size:clamp(46px,10.6vw,74px);letter-spacing:-.04em;}.hero-description{max-width:43ch;}.hero-description p{margin-bottom:18px;}.project-selector{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}.project-selector button{font-size:13px;gap:0;text-align:left;line-height:1.5;align-items:start;}.project-selector button>span{display:none;}.project-panel{display:none;}.project-panel.is-selected{display:block;}.project-art{height:auto;aspect-ratio:1/1;}.project-caption h2{font-size:22px;}.project-caption p{font-size:14px;}}
-  @media(prefers-reduced-motion:reduce){*{transition:none!important;}.project-panel:hover img{transform:none;}}
+ .portfolio-hero{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px 56px;align-items:center;padding-bottom:0;}
+ .hero-kicker{font-size:12px;color:#a5a5a5;margin:0 0 30px;}.hero-copy h1{font-size:var(--type-display);letter-spacing:-.065em;line-height:1.02;font-weight:600;margin:0 0 28px;}.line-mask{display:block;overflow:hidden;padding-bottom:.06em;}.line-mask>span{display:block;animation:word-in .9s var(--ease) both;}.line-mask:nth-child(2)>span{animation-delay:.12s}.accent-word{color:var(--accent)}
+ .hero-lead{font-size:clamp(20px,1.8vw,25px);line-height:1.4;letter-spacing:-.025em;margin:0 0 18px;}.hero-description{font-size:16px;line-height:1.7;max-width:39ch;color:#a7a7a7;margin:0 0 30px;}.hero-link{font-size:14px;display:inline-flex;gap:44px;align-items:center;border-bottom:1px solid #666;padding:0 0 10px;text-decoration:none;}.hero-link span{transition:transform .3s}.hero-link:hover span{transform:translateY(5px)}.hero-link:hover{color:var(--accent)}
+ .hero-workbench{min-width:0;}.bench-top{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8f8f8f;border-bottom:1px solid #333;padding:0 0 14px;}.bench-count{font-variant-numeric:tabular-nums;}
+ .workbench{height:430px;position:relative;overflow:hidden;background:#131313;touch-action:pan-y;}.bench-scene{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateX(35px);transition:opacity .55s var(--ease),transform .65s var(--ease),visibility .55s;}.bench-scene.is-active{opacity:1;visibility:visible;transform:none;}.layer{transition:transform .65s var(--ease);}.bench-scene .layer{transform:translate(var(--pan-x,0px),var(--pan-y,0px));}
+ .art-back{position:absolute;left:6%;right:18%;top:13%;height:67%;background:#202020;box-shadow:0 16px 34px #0006;overflow:hidden}.art-back img{width:100%;height:100%;object-fit:cover;object-position:top;}.art-front{position:absolute;right:7%;top:23%;width:34%;height:68%;box-shadow:-10px 12px 24px #0008;}.art-front img{width:100%;height:100%;object-fit:cover}.bench-scene.is-active .art-front{transform:translate(calc(var(--pan-x,0px) * -1.4),calc(var(--pan-y,0px) * -1.4));}
+ .artifact-label{position:absolute;left:6%;bottom:7%;font-size:11px;color:#aaa;}.web-desktop{position:absolute;left:6%;top:16%;width:78%;box-shadow:0 18px 30px #0008;background:#222;}.web-desktop img{width:100%;aspect-ratio:1.9;object-fit:cover}.browser-line{display:flex;gap:5px;align-items:center;padding:11px;background:#292929}.browser-line>span{width:4px;height:4px;border-radius:50%;background:#777}.browser-line>b{font-size:10px;font-weight:400;color:#aaa;margin-left:12px;}.web-phone{position:absolute;right:7%;top:34%;width:22%;height:56%;border:4px solid #393939;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px #0009;}.web-phone img{width:100%;height:100%;object-fit:cover;object-position:top}
+ .report-sheet{position:absolute;inset:8% 9%;background:#e5e5e5;color:#141414;padding:24px 28px;}.sheet-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em}.sheet-title{font-size:23px;line-height:1.2;letter-spacing:-.04em;margin:18px 0 22px;}.report-path{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #999;border-bottom:1px solid #999;padding:12px 0;font-size:10px;}.report-path>span+span:before{content:'→';padding-right:12px;color:#777}.report-result{display:flex;align-items:center;justify-content:space-between;margin:22px 0 16px;gap:12px}.report-result>span:first-child{font-size:20px;color:#666;text-decoration:line-through;text-decoration-thickness:1px;}.report-result strong{font-size:38px;letter-spacing:-.06em;font-weight:600;color:#cc2b23}.sheet-foot{font-size:10px;line-height:1.5;color:#666;margin:0;}
+ .bench-controls{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #333;}.bench-controls button{min-width:0;display:flex;gap:10px;align-items:center;font:inherit;font-size:14px;min-height:58px;padding:0 12px;background:none;color:#929292;cursor:pointer;border:0;border-bottom:2px solid transparent;transition:color .2s,background .2s;}.bench-controls button[aria-pressed=true]{color:#fff;border-color:var(--accent);background:#171717;}.bench-controls button:hover{color:#fff;background:#171717}.view-number{font-size:10px;color:#777}.view-mark{margin-left:auto;opacity:0;transform:translate(-4px,4px);transition:opacity .3s,transform .3s}.bench-controls button[aria-pressed=true] .view-mark{opacity:1;transform:none;color:var(--accent)}
+ .bench-caption{display:flex;justify-content:space-between;gap:20px;padding-top:18px;min-height:64px;}.bench-caption [data-view-title]{font-size:14px;}.bench-caption small{display:block;font-size:12px;color:#969696;margin-top:6px;line-height:1.5}.bench-caption a{font-size:12px;text-decoration:none;white-space:nowrap;padding-top:3px}.bench-caption a span{margin-left:10px;color:var(--accent)}
+ .hero-scope{grid-column:1/-1;display:flex;justify-content:space-between;gap:16px;border-top:1px solid #333;padding-top:22px;font-size:12px;color:#8e8e8e;}
+ @keyframes word-in{from{transform:translateY(110%)}to{transform:none}}
+ @media(max-width:1150px){.portfolio-hero{gap:40px 32px;}.workbench{height:380px;}.report-sheet{padding:20px}.sheet-title{font-size:20px}.report-result strong{font-size:30px}.report-path{gap:6px;font-size:9px;}.report-path>span+span:before{padding-right:4px;}}
+ @media(max-width:800px){.portfolio-hero{grid-template-columns:1fr;gap:40px;}.hero-copy{max-width:600px;}.hero-copy h1{font-size:clamp(48px,10vw,76px);margin-bottom:24px;}.hero-kicker{margin-bottom:22px}.hero-lead{font-size:22px}.hero-description{max-width:46ch;font-size:15px;}.workbench{height:clamp(300px,70vw,460px);}.hero-scope{display:grid;grid-template-columns:1fr 1fr;font-size:11px;line-height:1.5;gap:16px}.report-sheet{inset:8% 9%;padding:24px}.sheet-title{font-size:clamp(21px,4vw,30px)}.report-path{font-size:10px}.report-result strong{font-size:38px}.bench-controls button{font-size:13px;padding:0 8px;gap:8px;}.view-number{display:none}}
+ @media(max-width:380px){.report-sheet{padding:18px;}.sheet-title{font-size:20px;margin:16px 0}.report-result{margin:16px 0}.report-result strong{font-size:26px;white-space:nowrap;}.report-result>span:first-child{font-size:16px;white-space:nowrap;}.report-result{gap:6px;line-height:1.1;margin:12px 0;}.report-path{font-size:8px;padding:8px 0}.sheet-title{font-size:18px;margin:14px 0}.sheet-foot{font-size:9px;}.bench-caption{gap:8px}.bench-caption small{font-size:11px}.bench-caption a{font-size:11px}.bench-caption a span{margin-left:4px}}
+ @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.bench-scene .layer{transform:none!important;}}
 </style>
 <script>
-  const buttons=Array.from(document.querySelectorAll<HTMLButtonElement>('[data-project-index]'));
-  const panels=Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-panel-index]'));
-  function select(index:number){buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));panels.forEach((panel,i)=>panel.classList.toggle('is-selected',i===index));}
-  buttons.forEach((button,index)=>{button.addEventListener('click',()=>select(index));button.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();const next=(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;select(next);buttons[next].focus();}});});
-  panels.forEach((panel,index)=>{panel.addEventListener('pointerenter',()=>{if(window.matchMedia('(hover:hover)').matches)select(index);});panel.addEventListener('focus',()=>select(index));});
+ const views=[{title:'Meta Pacific',detail:'Brand-direction assignment',href:'/work/meta-pacific/'},{title:'Meta Pacific',detail:'Production website',href:'/work/meta-pacific/'},{title:'Blue Tick Ice',detail:'Reporting & operating systems · Ongoing',href:'/work/05-blue-tick-ice/'}];
+ const hero=document.querySelector<HTMLElement>('.portfolio-hero')!;
+ const bench=hero.querySelector<HTMLElement>('.workbench')!;
+ const buttons=Array.from(hero.querySelectorAll<HTMLButtonElement>('[data-view]'));
+ const scenes=Array.from(hero.querySelectorAll<HTMLElement>('[data-scene]'));
+ const reduced=window.matchMedia('(prefers-reduced-motion:reduce)');
+ let active=0;
+ function select(index:number){active=(index+views.length)%views.length;buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===active)));scenes.forEach((scene,i)=>{scene.classList.toggle('is-active',i===active);scene.setAttribute('aria-hidden',String(i!==active));scene.inert=i!==active;});hero.querySelector('[data-view-title]')!.textContent=views[active].title;hero.querySelector('[data-view-detail]')!.textContent=views[active].detail;hero.querySelector<HTMLAnchorElement>('[data-view-link]')!.href=views[active].href;hero.querySelector('.bench-count')!.textContent=`0${active+1} / 03`;}
+ buttons.forEach((button,index)=>{button.addEventListener('click',()=>select(index));button.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();select(active+(event.key==='ArrowRight'?1:-1));buttons[active].focus();}});});
+ let startX=0,startY=0;
+ bench.addEventListener('dragstart',event=>event.preventDefault());
+ bench.addEventListener('pointerdown',event=>{startX=event.clientX;startY=event.clientY;bench.setPointerCapture(event.pointerId);});
+ bench.addEventListener('pointerup',event=>{const dx=event.clientX-startX;const dy=event.clientY-startY;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)select(active+(dx<0?1:-1));});
+ bench.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduced.matches)return;const rect=bench.getBoundingClientRect();bench.style.setProperty('--pan-x',`${((event.clientX-rect.left)/rect.width-.5)*12}px`);bench.style.setProperty('--pan-y',`${((event.clientY-rect.top)/rect.height-.5)*10}px`);});
+ bench.addEventListener('pointerleave',()=>{bench.style.setProperty('--pan-x','0px');bench.style.setProperty('--pan-y','0px');});
 </script>

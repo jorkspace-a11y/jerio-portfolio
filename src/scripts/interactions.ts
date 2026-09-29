@@ -1,93 +1,35 @@
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const bar = document.getElementById('scroll-progress');
+let progressFrame = 0;
 function updateProgress() {
-  if (!bar) return;
-  const h = document.documentElement;
-  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-  bar.style.width = (isFinite(pct) ? pct : 0) + '%';
+  const root = document.documentElement;
+  const distance = root.scrollHeight - root.clientHeight;
+  if (bar) bar.style.transform = `scaleX(${distance > 0 ? root.scrollTop / distance : 0})`;
+  progressFrame = 0;
 }
-document.addEventListener('scroll', updateProgress, { passive: true });
+document.addEventListener('scroll', () => {
+  if (!progressFrame) progressFrame = requestAnimationFrame(updateProgress);
+}, { passive: true });
 updateProgress();
 
-const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.rail-nav a, .mobile-bar a'));
-const currentPath = window.location.pathname;
-
-// A nav href is same-page-navigable only if it's a bare "#..." hash, or
-// "path#hash" where path matches the current page. Anything else is a
-// normal cross-page link — querySelector must never see a raw href
-// starting with "/", which is not a valid CSS selector and throws.
-function sameHashTarget(href: string): Element | null {
-  const hashIndex = href.indexOf('#');
-  if (hashIndex === -1) return null;
-  const path = href.slice(0, hashIndex) || '/';
-  if (path !== currentPath) return null;
-  const hash = href.slice(hashIndex);
-  return hash.length > 1 ? document.querySelector(hash) : null;
-}
-
-const sections = navLinks
-  .map((a) => sameHashTarget(a.getAttribute('href') ?? ''))
-  .filter((el): el is Element => el !== null);
-
-function updateActive() {
-  const pos = window.scrollY + 120;
-  let current: Element | undefined = sections[0];
-  sections.forEach((s) => {
-    if ((s as HTMLElement).offsetTop <= pos) current = s;
-  });
-  navLinks.forEach((a) => {
-    const href = a.getAttribute('href') ?? '';
-    const hashIndex = href.indexOf('#');
-    const linkPath = hashIndex === -1 ? href : href.slice(0, hashIndex) || '/';
-    const isCurrentPage = linkPath.replace(/\/+$/, '') === currentPath.replace(/\/+$/, '') || (linkPath === '/' && currentPath === '/');
-    if (hashIndex === -1) {
-      a.classList.toggle('active', isCurrentPage);
-    } else {
-      a.classList.toggle('active', sameHashTarget(href) === current && current !== undefined);
-    }
+// Progressive enhancement: content remains visible without JavaScript or with reduced motion.
+if (!reduced.matches) {
+  const targets = document.querySelectorAll('.evidence-heading, .evidence-story, .method-intro, .exp-row, .writing-teaser-card, .studies-teaser-card, .about');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  targets.forEach(target => { target.classList.add('reveal'); observer.observe(target); });
+  reduced.addEventListener('change', () => {
+    if (reduced.matches) targets.forEach(target => target.classList.add('in'));
   });
 }
-document.addEventListener('scroll', updateActive, { passive: true });
-window.addEventListener('load', updateActive);
-window.addEventListener('resize', updateActive);
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(updateActive);
-}
-updateActive();
-setTimeout(updateActive, 300);
 
-if (!reduced && 'IntersectionObserver' in window) {
-  const targets = document.querySelectorAll('.cap, .case, .g-card');
-  targets.forEach((el) => el.classList.add('reveal'));
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
-  );
-  targets.forEach((el) => io.observe(el));
-}
-
-document.querySelectorAll<HTMLImageElement>('.thumb-frame img').forEach((img) => {
-  if (img.complete && img.naturalWidth > 0) {
-    img.classList.add('loaded');
-  } else {
-    img.addEventListener('load', () => img.classList.add('loaded'));
-    img.addEventListener('error', () => img.classList.add('loaded'));
-  }
-});
-
-navLinks.forEach((a) => {
-  a.addEventListener('click', (e) => {
-    const target = sameHashTarget(a.getAttribute('href') ?? '');
-    if (!target) return;
-    e.preventDefault();
-    target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-  });
+document.querySelectorAll<HTMLImageElement>('.thumb-frame img').forEach(img => {
+  if (img.complete && img.naturalWidth > 0) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
 });

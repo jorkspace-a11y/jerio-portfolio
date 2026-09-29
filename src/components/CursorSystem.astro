@@ -6,25 +6,18 @@
 
 <style>
   .wmb-cursor{
-    position:fixed;top:0;left:0;z-index:9999;pointer-events:none;
+    position:fixed;top:0;left:0;z-index:60;pointer-events:none;
     display:flex;align-items:center;justify-content:center;
     transform:translate(-9999px,-9999px);
     will-change:transform;
   }
-  .wmb-cursor-dot{
-    width:8px;height:8px;border-radius:50%;background:var(--accent);
-    transition:width .15s ease,height .15s ease,background .15s ease;
-  }
   .wmb-cursor-label{
     font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--bg);background:var(--accent);border-radius:20px;padding:7px 14px;
+    color:var(--bg);background:var(--accent);border-radius:0;padding:9px 12px;
     white-space:nowrap;opacity:0;transform:scale(.85);transition:opacity .12s ease,transform .12s ease;
   }
   .wmb-cursor.is-active .wmb-cursor-label{opacity:1;transform:scale(1);}
   .wmb-cursor:not(.is-active) .wmb-cursor-label{display:none;}
-  .wmb-cursor:not(.is-active)::before{
-    content:"";display:block;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.7;
-  }
 </style>
 
 <script>
@@ -34,7 +27,6 @@
   if (supportsFinePointer && !reduced) {
     const cursor = document.getElementById('wmb-cursor');
     if (cursor) {
-      document.body.classList.add('wmb-cursor-enabled');
       let targetX = 0;
       let targetY = 0;
       let rafId: number | null = null;

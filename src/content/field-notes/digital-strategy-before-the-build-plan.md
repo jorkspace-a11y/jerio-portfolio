@@ -1,6 +1,6 @@
 ---
-title: What I check before a digital strategy becomes a build plan
-description: Three checks, in order, before a strategy turns into work someone actually pays to execute. Skip the order and the plan looks fine until it meets the business.
+title: Three checks before a build plan
+description: Verify the current state, qualify the problem, and agree on a practical plan.
 publishedAt: 2026-08-08
 category: Strategy
 tags: [strategy, digital-strategy, audits, planning]

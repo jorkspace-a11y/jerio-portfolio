@@ -1,26 +1,18 @@
 ---
-const steps = [
-  { word: 'What', desc: "Review the existing work, speak with the team, and identify the problem." },
-  { word: 'Matters', desc: 'Agree on priorities, scope, and the result the team needs.' },
-  { word: 'Built', desc: "Build, test, document, and hand over the work." },
+const steps=[
+ {word:'What',title:'Understand the actual problem.',desc:'Review the existing work, speak with the people using it, and map where things break down.',output:'A clear problem, supported by evidence.'},
+ {word:'Matters',title:'Decide what is worth changing.',desc:'Agree on the priorities, responsibilities, and scope. Define the result before choosing the tools.',output:'A practical scope and a shared definition of success.'},
+ {word:'Built',title:'Put the work into use.',desc:'Build, test with the team, document the decisions, and hand over something people can keep running.',output:'A working system, with a clear owner.'},
 ];
 ---
-<section id="method">
-  <div class="eyebrow">Method</div>
-  <h2 class="head">How I approach a project.</h2>
-  <div class="method-list">
-    {steps.map((s) => (
-      <div class="method-step">
-        <span class="method-word">{s.word}</span>
-        <p>{s.desc}</p>
-      </div>
-    ))}
-  </div>
+<section id="method" class="method-section">
+ <div class="method-intro"><p class="eyebrow">The approach</p><h2 class="head">Before the build,<br/>get the question right.</h2><a href="/services/">Explore services ↗</a></div>
+ <div class="method-sequence">
+  {steps.map((step,i)=><details class="method-step" name="method" open={i===0}><summary><span class="step-number">0{i+1}</span><span class="method-word">{step.word}</span><span class="step-symbol" aria-hidden="true">+</span></summary><div class="step-content"><h3>{step.title}</h3><p>{step.desc}</p><p class="step-output"><span>Leave with</span>{step.output}</p></div></details>)}
+ </div>
 </section>
-
 <style>
-  .method-list{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
-  @media (max-width:900px){.method-list{grid-template-columns:1fr;gap:24px;}}
-  .method-word{display:block;font-family:var(--serif);font-size:24px;color:var(--accent);margin-bottom:10px;}
-  .method-step p{font-size:15px;color:var(--text-dim);line-height:1.7;margin:0;max-width:38ch;}
+ .method-section{display:grid;grid-template-columns:1fr 1.2fr;gap:10%;padding-bottom:30px}.method-intro .head{font-size:var(--type-h2);line-height:1.15;max-width:15ch}.method-intro>a{font-size:14px;text-decoration:none;color:#aaa;border-bottom:1px solid #555;padding-bottom:8px}.method-step{border-top:1px solid #444}.method-step:last-child{border-bottom:1px solid #444}summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:24px;padding:25px 0}summary::-webkit-details-marker{display:none}.step-number{font-size:11px;color:#888}.method-word{font-size:clamp(30px,3vw,42px);line-height:1.05;letter-spacing:-.035em}.step-symbol{margin-left:auto;font-size:25px;color:#999;transition:transform .3s}.method-step[open] .method-word{color:var(--accent)}.method-step[open] .step-symbol{transform:rotate(45deg)}.step-content{padding:0 0 26px 40px;animation:step-in .4s var(--ease)}.step-content h3{font-size:19px;line-height:1.4;margin:0 0 12px;font-weight:400;letter-spacing:-.02em}.step-content>p{font-size:15px;color:#aaa;line-height:1.65;max-width:46ch;margin:0 0 24px}.step-content .step-output{font-size:13px;margin-bottom:0;color:#ddd;border-left:2px solid var(--accent);padding-left:16px}.step-output span{display:block;font-size:10px;color:#888;margin-bottom:7px}@keyframes step-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+ @media(max-width:700px){.method-section{display:block}.method-intro{margin-bottom:36px}.method-intro .head{max-width:20ch}.step-content{padding-left:34px}summary{gap:18px;padding:23px 0}}
+ @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>

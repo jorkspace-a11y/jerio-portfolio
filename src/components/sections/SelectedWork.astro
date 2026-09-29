@@ -1,57 +1,49 @@
 ---
 import { getEntry } from 'astro:content';
-import StatusBadge from '../StatusBadge.astro';
-
-const ids = [
-  'meta-pacific',
-  '05-blue-tick-ice',
-  '09-digimune-indonesia',
-  '01-soracha',
-  '06-pt-transkon-jaya',
-  '08-sinar-mas-land',
+const selected=[
+ {id:'meta-pacific',image:'/images/meta-pacific-brand-application-1200.webp',alt:'Meta Pacific brand application',problem:'A broad creative-technology offer needed a clearer public presence.',built:'Brand-direction studies and a production website, brought together in one case study.',proof:'Two connected workstreams'},
+ {id:'05-blue-tick-ice',image:'',alt:'',problem:'Six departments needed shared operating practices and reliable reporting.',built:'Team training, a reporting pipeline, and recurring account operations.',proof:'Weekly reporting: 4 hours to under 5 minutes'},
+ {id:'09-digimune-indonesia',image:'/images/img-072-3cec2bbf67.jpeg',alt:'77 campaign artwork from the Digimune Indonesia engagement',problem:'Cafero, XBooster, and 77 needed distinct content under one engagement.',built:'Separate visual directions, brand voices, and content calendars.',proof:'Ongoing multi-brand marketing'},
+ {id:'01-soracha',image:'/images/img-032-04d0bc24b4.jpeg',alt:'Soracha campaign photography and brand application',problem:'A new food-and-beverage brand needed an identity and a public presence.',built:'Brand identity, photography direction, and marketing materials.',proof:'Identity and campaign applications'},
 ];
-const items = await Promise.all(
-  ids.map(async (id) => {
-    const entry = await getEntry('work', id);
-    if (!entry) {
-      throw new Error(`SelectedWork.astro: Work id "${id}" not found — check for a typo or a renamed/removed entry.`);
-    }
-    return entry;
-  })
-);
+const items=await Promise.all(selected.map(async item=>{const entry=await getEntry('work',item.id);if(!entry)throw new Error(`Missing project ${item.id}`);return {...item,data:entry.data};}));
 ---
-<section id="selected-work">
-  <div class="eyebrow">Selected Work</div>
-  <h2 class="head">Selected projects.</h2>
-
-  <div class="selected-list">
-    {items.map((cs) => (
-      <a href={`/work/${cs.id}/`} class="selected-card" data-cursor="VIEW" data-project-card>
-        <div class="selected-card-content">
-          <div class="selected-card-head">
-            <span class="selected-card-org">{cs.data.organisation}</span>
-            <StatusBadge status={cs.data.status} />
-          </div>
-          <p class="selected-card-role">{cs.data.role}</p>
-          <p class="selected-card-desc">{cs.data.summary}</p>
-          <span class="selected-card-link">View Work <span aria-hidden="true">↗</span></span>
-        </div>
-      </a>
-    ))}
+<section id="selected-work" class="evidence-section">
+ <div class="evidence-heading"><div><p class="eyebrow">Selected work</p><h2 class="head">See what changed.</h2></div><p>Different problems.<br/>A closer look at the work behind them.</p></div>
+ <div class="evidence-layout">
+  <div class="evidence-stage" aria-hidden="true">
+   {items.map((item,index)=><div class:list={['evidence-visual',index===0&&'is-active']} data-evidence-visual={index}>
+    {item.image?<img src={item.image} alt="" loading="lazy" decoding="async" width="900" height="1100"/>:<div class="operations-proof"><span>Blue Tick Ice / Operations</span><p>Less time compiling.<br/>More time acting.</p><div class="time-comparison"><div><small>Before</small><strong>4 hrs</strong><i style="--bar-size:100%"></i></div><div><small>After</small><strong>&lt; 5 min</strong><i style="--bar-size:2.1%"></i></div></div><span>Recorded weekly executive reporting time</span></div>}
+    <div class="evidence-image-caption"><span>0{index+1} / 04</span><span>{item.data.organisation}</span></div>
+   </div>)}
   </div>
-
-  <a href="/work/" class="selected-archive-link">See the full archive &rarr;</a>
+  <div class="evidence-stories">
+   {items.map((item,index)=><article class="evidence-story" data-evidence-story={index}>
+    <div class="story-meta"><span>0{index+1} / {item.data.categories.join(' + ')}</span><span>{item.data.status==='ongoing'?'Ongoing':'Delivered'}</span></div>
+    <h3>{item.data.organisation}</h3>
+    <p class="story-role">{item.data.role}</p>
+    {item.image&&<img class="story-mobile-image" src={item.image} alt={item.alt} width="700" height="800" loading="lazy" decoding="async"/>}
+    <dl><div><dt>The problem</dt><dd>{item.problem}</dd></div><div><dt>The work</dt><dd>{item.built}</dd></div></dl>
+    <p class="story-proof">{item.proof}</p>
+    <a href={`/work/${item.id}/`}>Inside the project <span aria-hidden="true">↗</span></a>
+   </article>)}
+  </div>
+ </div>
+ <a href="/work/" class="archive-link"><span>Explore the full project archive</span><span aria-hidden="true">↗</span></a>
 </section>
-
 <style>
-.selected-list{display:flex;flex-direction:column;margin-bottom:28px;}
-.selected-card{display:block;position:relative;border-top:1px solid var(--border);padding:28px 0;text-decoration:none;color:inherit;}
-.selected-card:last-child{border-bottom:1px solid var(--border);}
-.selected-card-content{display:grid;grid-template-columns:1.1fr 1fr 1.3fr 90px;gap:24px;align-items:start;}
-.selected-card-head{display:flex;flex-direction:column;gap:12px;}.selected-card-org{font-size:clamp(23px,2.2vw,32px);letter-spacing:-.025em;line-height:1.2;}
-.selected-card-role{font-size:14px;line-height:1.6;color:var(--text-dimmer);margin:0;}.selected-card-desc{font-size:15px;line-height:1.65;color:var(--text-dim);margin:0;max-width:50ch;}.selected-card-link{font-size:13px;justify-self:end;white-space:nowrap;}.selected-card-link span{display:inline-block;transition:transform .2s;}.selected-card:hover .selected-card-org{color:var(--accent);}.selected-card:hover .selected-card-link span{transform:translate(3px,-3px);}
-.selected-archive-link{display:inline-block;font-size:15px;border-bottom:1px solid #666;padding-bottom:8px;text-decoration:none;}.selected-archive-link:hover{color:var(--accent);}
-@media(max-width:1000px){.selected-card-content{grid-template-columns:1fr 1.4fr 80px;}.selected-card-role{grid-column:1;grid-row:2;}.selected-card-desc{grid-column:2;grid-row:1 / 3;}}
-@media(max-width:600px){.selected-card-content{grid-template-columns:1fr auto;gap:14px;}.selected-card-desc{grid-column:1 / -1;grid-row:3;}.selected-card-role{grid-column:1 / -1;}.selected-card-link{grid-column:2;grid-row:1;}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+ .evidence-heading{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:44px;}.evidence-heading .head{margin:0}.evidence-heading>p{color:#999;font-size:15px;line-height:1.6;margin:0;}
+ .evidence-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:7%;align-items:start;}.evidence-stage{position:sticky;top:128px;height:min(65vh,620px);min-height:390px;background:#151515;overflow:hidden;}.evidence-visual{position:absolute;inset:0;opacity:0;transform:translateY(30px) scale(.98);transition:opacity .55s var(--ease),transform .7s var(--ease);}.evidence-visual.is-active{opacity:1;transform:none}.evidence-visual>img{width:100%;height:calc(100% - 48px);object-fit:contain;}.evidence-image-caption{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;padding:16px 20px;font-size:12px;color:#aaa;background:#191919;}
+ .evidence-story{min-height:540px;padding:28px 0 60px;border-top:1px solid #383838;display:flex;flex-direction:column;justify-content:center;}.story-meta{font-size:11px;color:#939393;display:flex;justify-content:space-between;gap:20px;line-height:1.5;margin-bottom:24px;}.story-meta>span:last-child{color:var(--text-dim)}.evidence-story h3{font-size:clamp(28px,3vw,40px);font-weight:500;letter-spacing:-.045em;line-height:1.1;margin:0 0 12px}.story-role{font-size:14px;color:#a5a5a5;margin:0 0 28px;line-height:1.5}.evidence-story dl{margin:0}.evidence-story dl>div{margin-bottom:22px}.evidence-story dt{font-size:11px;color:#929292;margin-bottom:8px}.evidence-story dd{font-size:16px;line-height:1.65;margin:0;max-width:43ch;color:#d0d0d0}.story-proof{font-size:15px;line-height:1.5;color:var(--text);padding-top:18px;border-top:1px solid #333;margin:4px 0 28px;}.evidence-story>a{display:flex;align-items:center;justify-content:space-between;font-size:13px;text-decoration:none;color:#aaa;}.evidence-story>a>span{font-size:24px;color:var(--accent);transition:transform .25s}.evidence-story>a:hover{color:#fff}.evidence-story>a:hover>span{transform:translate(4px,-4px)}.story-mobile-image{display:none}
+ .operations-proof{height:calc(100% - 48px);padding:40px;display:flex;flex-direction:column;justify-content:center;background:#dcdcdc;color:#151515}.operations-proof>span{font-size:11px;line-height:1.5;color:#555}.operations-proof>p{font-size:clamp(25px,3vw,40px);letter-spacing:-.04em;line-height:1.15;margin:25px 0 32px;}.time-comparison{margin-bottom:32px}.time-comparison>div{margin-bottom:22px}.time-comparison small{font-size:12px;color:#555;margin-right:16px}.time-comparison strong{font-size:24px;font-weight:400}.time-comparison i{display:block;width:var(--bar-size);min-width:6px;height:10px;background:#444;margin-top:10px;transform-origin:left;}.time-comparison>div:last-child i{background:#d62d24}.evidence-visual.is-active .time-comparison i{animation:bar-in .8s var(--ease) both;}.archive-link{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #555;border-bottom:1px solid #555;padding:28px 0;font-size:18px;text-decoration:none;}.archive-link>span:last-child{color:var(--accent);font-size:30px;transition:transform .3s}.archive-link:hover>span:last-child{transform:translate(5px,-5px)}
+ @keyframes bar-in{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+ @media(max-width:1000px){.evidence-layout{gap:5%}.evidence-story{min-height:520px}.evidence-stage{top:104px;height:500px}.operations-proof{padding:24px;}}
+ @media(max-width:700px){.evidence-heading{display:block;margin-bottom:32px}.evidence-heading>p{margin-top:18px;font-size:14px}.evidence-layout{display:block}.evidence-stage{display:none}.evidence-story{padding:26px 0 44px;min-height:0;margin-bottom:24px}.evidence-story h3{font-size:32px}.story-mobile-image{display:block;width:100%;height:360px;object-fit:contain;background:#151515;margin:0 0 26px}.story-meta{font-size:10px;gap:16px;margin-bottom:22px}.evidence-story dd{font-size:15px}.archive-link{font-size:15px;gap:24px}.story-role{margin-bottom:22px}}
+ @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
+<script>
+ const stories=Array.from(document.querySelectorAll<HTMLElement>('[data-evidence-story]'));
+ const visuals=Array.from(document.querySelectorAll<HTMLElement>('[data-evidence-visual]'));
+ const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const index=Number((entry.target as HTMLElement).dataset.evidenceStory);visuals.forEach((visual,i)=>visual.classList.toggle('is-active',i===index));}});},{rootMargin:'-30% 0px -40% 0px',threshold:0});
+ stories.forEach(story=>observer.observe(story));
+</script>

@@ -1,6 +1,6 @@
 ---
-title: "Segmentation before automation: what a CRM result is actually telling you"
-description: A CRM sequence delivered a 14.4% click-through rate. The design that produced it, segmentation and copy built before anything was automated, is the part worth examining.
+title: Segmentation before automation
+description: A closer look at the segmentation, copy, and workflow behind a KKBC CRM sequence.
 publishedAt: 2026-08-08
 updatedAt: 2026-08-08
 category: Marketing

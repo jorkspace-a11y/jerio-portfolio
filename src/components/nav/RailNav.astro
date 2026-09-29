@@ -2,50 +2,79 @@
 import { getCollection } from 'astro:content';
 const services = (await getCollection('services', ({data}) => data.active)).sort((a,b) => a.data.order-b.data.order);
 const path = Astro.url.pathname;
-const links = [
-  {href:'/work/',label:'Work',children:[{href:'/work/',label:'All projects'},{href:'/work/meta-pacific/',label:'Meta Pacific'},{href:'/work/01-soracha/',label:'Soracha'},{href:'/work/09-digimune-indonesia/',label:'Digimune Indonesia'}]},
-  {href:'/services/',label:'Services',children:[{href:'/services/',label:'Explore services'},...services.map(s=>({href:`/services/${s.data.slug}/`,label:s.data.title}))]},
-  {href:'/studies/',label:'Studies'}, {href:'/field-notes/',label:'Field Notes'}, {href:'/resources/',label:'Resources'}, {href:'/about/',label:'About'},
+const groups = [
+ {label:'Work',href:'/work/',intro:'The work, in context.',description:'Brand decisions, digital builds, and the systems behind them.',links:[{href:'/work/meta-pacific/',label:'Meta Pacific',detail:'Brand direction & website',image:'/images/meta-pacific-brand-direction-1200.webp'},{href:'/work/05-blue-tick-ice/',label:'Blue Tick Ice',detail:'Operations & reporting'},{href:'/work/01-soracha/',label:'Soracha',detail:'Identity & photography',image:'/images/img-032-04d0bc24b4.jpeg'},{href:'/work/09-digimune-indonesia/',label:'Digimune Indonesia',detail:'Multi-brand marketing',image:'/images/img-072-3cec2bbf67.jpeg'}]},
+ {label:'Services',href:'/services/',intro:'From the public face to the working system.',description:'Choose a starting point. The scope comes from the problem.',links:services.map(s=>({href:`/services/${s.data.slug}/`,label:s.data.title,detail:'',image:undefined}))},
+ {label:'Resources',href:'/resources/',intro:'Tools for the work.',description:'Checklists and calculators for decisions that need more than instinct.',links:[{href:'/resources/calculators/roas-calculator/',label:'ROAS calculator',detail:'Campaign economics'},{href:'/resources/guides/marketing-audit-checklist/',label:'Marketing audit',detail:'Find the gaps'},{href:'/resources/guides/operations-kpi-checklist/',label:'Operations KPIs',detail:'Choose what to measure'}]},
 ];
 ---
 <header class="site-nav">
-  <a class="nav-brand" href="/" aria-label="Jerio home">Jerio.</a>
+ <div class="nav-bar">
+  <a class="nav-brand" href="/" aria-label="What Matters Built home">what matters<span>built<span class="brand-stop">.</span></span></a>
   <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav">Menu <span aria-hidden="true">+</span></button>
   <nav id="primary-nav" aria-label="Primary navigation">
-    {links.map(link => link.children ? (
-      <details class:list={['nav-group',path.startsWith(link.href)&&'current']}>
-        <summary>{link.label}<span class="chevron" aria-hidden="true"></span></summary>
-        <div class="nav-panel">{link.children.map(child=><a href={child.href} aria-current={path===child.href?'page':undefined}>{child.label}<span aria-hidden="true">↗</span></a>)}</div>
-      </details>
-    ) : <a class:list={['nav-link',path.startsWith(link.href)&&'current']} href={link.href} aria-current={path===link.href?'page':undefined}>{link.label}</a>)}
-    <a class="nav-contact" href="/#contact">Start a project <span aria-hidden="true">↗</span></a>
+   {groups.slice(0,2).map(group=><details class:list={['nav-group',path.startsWith(group.href)&&'current']}>
+    <summary>{group.label}<span class="chevron" aria-hidden="true"></span></summary>
+    <div class="nav-panel"><div class="nav-panel-inner">
+     <div class="panel-intro"><p class="panel-label">{group.label}</p><p class="panel-title">{group.intro}</p><p class="panel-description">{group.description}</p><a class="panel-all" href={group.href}>Explore all {group.label.toLowerCase()} <span aria-hidden="true">↗</span></a></div>
+     <div class:list={['panel-links',group.label==='Services'&&'service-links']}>{group.links.map((child,index)=><a href={child.href} data-preview={child.image} aria-current={path===child.href?'page':undefined}><span class="link-index">{String(index+1).padStart(2,'0')}</span><span>{child.label}{child.detail&&<small>{child.detail}</small>}</span><span class="link-arrow" aria-hidden="true">↗</span></a>)}</div>
+     {group.label==='Work'&&<a class="panel-image" href="/work/meta-pacific/" aria-label="View Meta Pacific"><img src="/images/meta-pacific-brand-direction-1200.webp" srcset="/images/meta-pacific-brand-direction-640.webp 640w, /images/meta-pacific-brand-direction-1200.webp 1200w" sizes="(max-width: 800px) 85vw, 45vw" alt="Meta Pacific brand direction" width="600" height="750"/><span>Inside the project ↗</span></a>}
+    </div></div>
+   </details>)}
+   <a class:list={['nav-link',path.startsWith('/studies/')&&'current']} href="/studies/">Studies</a>
+   <a class:list={['nav-link',path.startsWith('/field-notes/')&&'current']} href="/field-notes/">Field Notes</a>
+   {groups.slice(2).map(group=><details class:list={['nav-group',path.startsWith(group.href)&&'current']}><summary>{group.label}<span class="chevron" aria-hidden="true"></span></summary><div class="nav-panel"><div class="nav-panel-inner"><div class="panel-intro"><p class="panel-label">Resources</p><p class="panel-title">{group.intro}</p><p class="panel-description">{group.description}</p><a class="panel-all" href={group.href}>All resources ↗</a></div><div class="panel-links">{group.links.map(child=><a href={child.href}><span>{child.label}<small>{child.detail}</small></span><span class="link-arrow" aria-hidden="true">↗</span></a>)}</div></div></div></details>)}
+   <a class:list={['nav-link',path.startsWith('/about/')&&'current']} href="/about/">About</a>
+   <a class="nav-contact" href="/#contact">Start a project <span aria-hidden="true">↗</span></a>
   </nav>
+ </div>
 </header>
+<div class="nav-scrim" aria-hidden="true"></div>
 <style>
-  .site-nav{position:sticky;top:0;z-index:45;display:flex;align-items:center;gap:64px;min-height:76px;padding:0 40px;background:#080808;border-bottom:1px solid var(--border);}
-  .nav-brand{font-size:24px;font-weight:600;letter-spacing:-.06em;text-decoration:none;}
-  nav{display:flex;align-items:center;gap:32px;flex:1;min-width:0;}
-  .nav-link,summary{font-size:14px;color:#aaa;text-decoration:none;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:28px 0;}
-  summary::-webkit-details-marker{display:none}.current>summary,.nav-link.current,summary:hover,.nav-link:hover,details[open]>summary{color:#fff;}
-  .nav-group{position:relative;}.chevron{width:5px;height:5px;border-right:1px solid;border-bottom:1px solid;transform:rotate(45deg);transition:transform .2s;}details[open] .chevron{transform:rotate(225deg)}
-  .nav-panel{position:absolute;top:100%;left:-24px;min-width:290px;padding:12px 24px;background:#141414;border:1px solid var(--border);animation:menu-in .2s ease;}
-  .nav-panel a{display:flex;justify-content:space-between;gap:24px;padding:15px 0;border-bottom:1px solid var(--border-soft);font-size:14px;text-decoration:none;color:#bbb;}.nav-panel a:last-child{border:0}.nav-panel a:hover,.nav-panel a[aria-current]{color:#fff}.nav-panel a span{color:var(--accent)}
-  .nav-contact{margin-left:auto;display:flex;gap:24px;align-items:center;font-size:13px;text-decoration:none;border:1px solid #555;padding:12px 16px;transition:background .2s,color .2s;white-space:nowrap;}
-  .nav-contact:hover{background:#fff;color:#080808}.menu-toggle{display:none;}
-  @keyframes menu-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-  @media(max-width:1050px){.site-nav{gap:28px;padding:0 24px;}nav{gap:20px;}}
-  @media(max-width:850px){.site-nav{min-height:64px;justify-content:space-between;padding:0 20px;}.menu-toggle{display:flex;align-items:center;gap:28px;background:none;border:0;color:#fff;padding:18px 0;font-size:15px;cursor:pointer;}.menu-toggle span{font-size:24px;line-height:1;}nav{display:none;position:absolute;top:100%;left:0;right:0;padding:12px 24px 28px;background:#111;max-height:calc(100dvh - 64px);overflow-y:auto;border-bottom:1px solid var(--border);}nav.is-open{display:block;}.nav-link,summary{padding:17px 0;font-size:22px;border-bottom:1px solid var(--border-soft);justify-content:space-between;}.nav-panel{position:static;min-width:0;padding:0 0 0 20px;border:0;}.nav-panel a{font-size:15px;}.nav-contact{margin-top:24px;justify-content:space-between;width:100%;}.menu-toggle[aria-expanded=true] span{transform:rotate(45deg)}}
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+ .site-nav{position:sticky;top:0;z-index:45;background:var(--bg);border-bottom:1px solid var(--border);}
+ .nav-bar{max-width:1500px;margin:auto;display:flex;align-items:center;gap:clamp(28px,5vw,80px);height:92px;padding:0 56px;}
+ .nav-brand{font-size:18px;font-weight:600;line-height:.98;letter-spacing:-.06em;text-decoration:none;flex-shrink:0;}.nav-brand>span{display:block}.brand-stop{color:var(--accent)}
+ nav{display:flex;align-items:center;gap:28px;flex:1;min-width:0;}
+ .nav-link,summary{font-size:14px;line-height:1.3;color:#aaa;text-decoration:none;cursor:pointer;list-style:none;display:flex;align-items:center;gap:9px;padding:34px 0;position:relative;transition:color .2s;}
+ summary::-webkit-details-marker{display:none}.nav-link:after,summary:after{content:'';position:absolute;bottom:21px;left:0;width:100%;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+ .current>summary,.nav-link.current,summary:hover,.nav-link:hover,details[open]>summary{color:#fff;}.current>summary:after,.nav-link.current:after,summary:hover:after,.nav-link:hover:after,details[open]>summary:after{transform:scaleX(1)}
+ .chevron{width:5px;height:5px;border-right:1px solid;border-bottom:1px solid;transform:rotate(45deg);transition:transform .3s;}details[open] .chevron{transform:rotate(225deg)}
+ .nav-panel{position:absolute;top:100%;left:0;right:0;background:#101010;border-bottom:1px solid #444;box-shadow:0 24px 36px #0005;animation:menu-in .35s var(--ease);}
+ .nav-panel-inner{max-width:1500px;margin:auto;padding:40px 56px 44px;display:flex;gap:52px;align-items:start;}
+ .panel-intro{flex:0 0 27%;}.panel-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 20px}.panel-title{font-size:30px;line-height:1.15;letter-spacing:-.035em;margin:0 0 18px;text-wrap:balance}.panel-description{font-size:14px;line-height:1.65;color:#a3a3a3;max-width:33ch;margin:0 0 24px;}
+ .panel-all{font-size:13px;text-decoration:none;display:inline-flex;gap:32px;padding-bottom:8px;border-bottom:1px solid #777;}.panel-all:hover{color:var(--accent)}
+ .panel-links{flex:1;min-width:0;}.panel-links>a{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #303030;font-size:19px;text-decoration:none;transition:color .2s;}.panel-links>a:first-child{padding-top:0}.panel-links small{display:block;font-size:12px;color:#929292;line-height:1.6;margin-top:6px;}.link-index{font-size:11px;color:#888;align-self:start;padding-top:5px}.link-arrow{margin-left:auto;transition:transform .3s var(--ease);font-size:17px;}.panel-links>a:hover{color:var(--accent)}.panel-links>a:hover .link-arrow{transform:translate(4px,-4px)}
+ .service-links{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;}.service-links>a{font-size:17px;min-height:64px;padding:14px 0;}.service-links>a:first-child{padding-top:14px;}
+ .panel-image{flex:0 0 23%;text-decoration:none;position:relative;overflow:hidden;max-height:300px;background:#222}.panel-image img{width:100%;height:260px;object-fit:contain;transition:transform .4s var(--ease);}.panel-image:hover img{transform:scale(1.035)}.panel-image>span{display:block;font-size:12px;padding:12px 16px;background:#1a1a1a}
+ .nav-contact{margin-left:auto;display:flex;gap:22px;align-items:center;font-size:13px;text-decoration:none;border:1px solid #555;padding:13px 16px;white-space:nowrap;transition:background .25s,color .25s;}.nav-contact:hover{background:var(--text);color:var(--bg)}.nav-contact span{transition:transform .25s}.nav-contact:hover span{transform:translate(2px,-2px)}.menu-toggle{display:none;}
+ .nav-scrim{position:fixed;inset:92px 0 0;z-index:40;background:#0009;pointer-events:none;opacity:0;transition:opacity .35s;}.site-nav:has(details[open])+.nav-scrim{opacity:1;}
+ @keyframes menu-in{from{opacity:0;transform:translateY(-12px);clip-path:inset(0 0 100% 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
+ @media(max-width:1200px){.nav-bar{padding:0 28px;gap:32px;}nav{gap:20px;}.nav-panel-inner{padding:32px;gap:32px;}}
+ @media(max-width:1000px){.nav-bar{height:72px;padding:0 24px;justify-content:space-between}.nav-brand{font-size:17px}.menu-toggle{display:flex;align-items:center;gap:28px;background:none;border:0;color:#fff;padding:18px 0;font-size:15px;cursor:pointer;}.menu-toggle span{font-size:24px;line-height:1;transition:transform .3s;}.menu-toggle[aria-expanded=true] span{transform:rotate(45deg)}nav{display:none;position:absolute;top:100%;left:0;right:0;padding:12px 24px 32px;background:#101010;max-height:calc(100dvh - 72px);overflow-y:auto;border-bottom:1px solid #444;}nav.is-open{display:block;animation:menu-in .3s var(--ease)}.nav-link,summary{padding:19px 0;font-size:23px;border-bottom:1px solid #303030;justify-content:space-between;}.nav-link:after,summary:after{display:none}.nav-panel{position:static;border:0;box-shadow:none;background:none;}.nav-panel-inner{padding:8px 0 24px;display:block;}.panel-intro{display:block;margin:8px 0 16px}.panel-intro>.panel-label,.panel-intro>.panel-title,.panel-intro>.panel-description{display:none}.panel-links>a{font-size:16px;padding:14px 0;}.service-links{display:block}.panel-image{display:none}.nav-contact{margin-top:24px;justify-content:space-between}.nav-scrim{top:72px}.site-nav:has(nav.is-open)+.nav-scrim{opacity:1}}
+ @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 <script>
-  const header=document.querySelector<HTMLElement>('.site-nav');
-  const toggle=header?.querySelector<HTMLButtonElement>('.menu-toggle');
-  const nav=header?.querySelector('nav');
-  const groups=header?.querySelectorAll<HTMLDetailsElement>('details');
-  const close=()=>{groups?.forEach(group=>group.open=false);nav?.classList.remove('is-open');toggle?.setAttribute('aria-expanded','false');};
-  toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav?.classList.toggle('is-open',open);});
-  groups?.forEach(group=>group.addEventListener('toggle',()=>{if(group.open)groups.forEach(other=>{if(other!==group)other.open=false;});}));
-  document.addEventListener('click',event=>{if(header&&!header.contains(event.target as Node))close();});
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'){const focused=document.activeElement;close();if(header?.contains(focused)){if(window.matchMedia('(max-width:850px)').matches)toggle?.focus();else (focused?.closest('details')?.querySelector('summary') as HTMLElement)?.focus();}}});
-  nav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));
+ const header=document.querySelector<HTMLElement>('.site-nav')!;
+ const toggle=header.querySelector<HTMLButtonElement>('.menu-toggle')!;
+ const nav=header.querySelector('nav')!;
+ const groups=Array.from(header.querySelectorAll<HTMLDetailsElement>('details'));
+ const desktop=window.matchMedia('(min-width:1001px) and (hover:hover)');
+ let leaveTimer:ReturnType<typeof setTimeout>;
+ function close(){groups.forEach(g=>g.open=false);nav.classList.remove('is-open');toggle.setAttribute('aria-expanded','false');}
+ function open(group:HTMLDetailsElement){clearTimeout(leaveTimer);groups.forEach(g=>g.open=g===group);}
+ toggle.addEventListener('click',()=>{const show=toggle.getAttribute('aria-expanded')!=='true';close();nav.classList.toggle('is-open',show);toggle.setAttribute('aria-expanded',String(show));});
+ groups.forEach(group=>{
+  group.addEventListener('pointerenter',()=>{if(desktop.matches)open(group);});
+  group.addEventListener('pointerleave',()=>{if(desktop.matches)leaveTimer=setTimeout(()=>{if(!group.contains(document.activeElement))group.open=false;},180);});
+  group.addEventListener('toggle',()=>{if(group.open)groups.forEach(g=>{if(g!==group)g.open=false;});});
+  group.addEventListener('focusout',()=>{requestAnimationFrame(()=>{if(!group.contains(document.activeElement))group.open=false;});});
+ });
+ document.addEventListener('click',event=>{if(!header.contains(event.target as Node))close();});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'){const focused=document.activeElement;const summary=focused?.closest('details')?.querySelector('summary');close();if(header.contains(focused)){if(window.innerWidth<=1000)toggle.focus();else summary?.focus();}}});
+ nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',close));
+ window.matchMedia('(max-width:1000px)').addEventListener('change',close);
+ header.querySelectorAll<HTMLAnchorElement>('[data-preview]').forEach(link=>{
+  const show=()=>{const image=header.querySelector<HTMLImageElement>('.panel-image img');const preview=header.querySelector<HTMLAnchorElement>('.panel-image');if(image&&preview&&link.dataset.preview){image.removeAttribute("srcset");image.src=link.dataset.preview;image.alt=link.textContent?.trim()||'Project preview';preview.href=link.href;preview.setAttribute('aria-label',`View ${image.alt}`);}};
+  link.addEventListener('pointerenter',show);link.addEventListener('focus',show);
+ });
 </script>

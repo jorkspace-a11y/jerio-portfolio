@@ -9,8 +9,8 @@ const entries = [
 ];
 ---
 <section id="experience">
-  <div class="eyebrow">Experience</div>
-  <h2 class="head">Where the work happened.</h2>
+  <div class="experience-intro"><div class="eyebrow">Experience</div>
+  <h2 class="head">Where the work happened.</h2></div>
   <div class="exp-list">
     {entries.map((e) => (
       <div class="exp-row">
@@ -28,12 +28,13 @@ const entries = [
 </section>
 
 <style>
+#experience{display:grid;grid-template-columns:1fr 1.7fr;gap:7%;}.experience-intro{position:sticky;top:130px;align-self:start;}@media(max-width:800px){#experience{display:block}.experience-intro{position:static;}}
   .exp-list{display:flex;flex-direction:column;}
   .exp-row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;padding:20px 0;border-bottom:1px solid var(--border-soft);}
   @media (max-width:640px){.exp-row{grid-template-columns:1fr;gap:6px;}}
   .exp-org{font-family:var(--serif);font-size:17px;}
   .exp-role-line{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
   .exp-role{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dimmer);}
-  .exp-period{font-family:var(--mono);font-size:10px;color:var(--text-faint);}
-  .exp-note{font-size:13px;color:var(--text-dim);line-height:1.6;margin:0;max-width:56ch;}
+  .exp-period{font-family:var(--mono);font-size:12px;color:var(--text-faint);}
+  .exp-note{font-size:15px;color:var(--text-dim);line-height:1.6;margin:0;max-width:56ch;}
 </style>
